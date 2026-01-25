@@ -10,7 +10,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import com.pathplanner.lib.auto.NamedCommands;
+import frc.robot.commands.indexShoot;
 import frc.robot.commands.creepMode;
 import frc.robot.commands.Deploy;
 import frc.robot.commands.intake;
