@@ -6,10 +6,19 @@ package frc.robot;
 
 import frc.robot.Constants.Operator;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShootSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import com.pathplanner.lib.auto.NamedCommands;
 import frc.robot.commands.creepMode;
+import frc.robot.commands.Deploy;
+import frc.robot.commands.intake;
+import frc.robot.commands.shoot;
+import frc.robot.commands.hoodDown;
+import frc.robot.commands.hoodUp;
+import frc.robot.commands.testShoot;
+import frc.robot.commands.indexer;
 
 
 /**
@@ -20,18 +29,22 @@ import frc.robot.commands.creepMode;
  */
 public class RobotContainer {
   CommandXboxController m_driverController = new CommandXboxController(Operator.kDriverControllerPort);
-  //DriveSubsystem m_drive;
+  DriveSubsystem m_drive;
+  IntakeSubsystem m_intake;
+  ShootSubsystem m_shoot;
+
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    m_intake = new IntakeSubsystem();
     // Configure the trigger bindings
     //NamedCommands.registerCommand("Creep Mode", new creepMode(m_drive));
   // The robot's subsystems and commands are defined here...
-    // m_drive.setDefaultCommand(
-    //       m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
-    //           m_driverController::getRightX));
+    m_drive.setDefaultCommand(
+          m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
+              m_driverController::getRightX));
     configureBindings();
   }
 
@@ -45,7 +58,16 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    m_driverController.a().whileTrue(new Deploy(m_intake,0.1));
+    m_driverController.b().whileTrue(new intake(m_intake,-0.1));
+    m_driverController.rightTrigger().whileTrue(new shoot(m_shoot,.3));
+    m_driverController.leftTrigger().whileTrue(new shoot(m_shoot,.5));
+    m_driverController.rightBumper().whileTrue(new hoodDown(m_shoot,.3));
+    m_driverController.leftBumper().whileTrue(new hoodUp(m_shoot,.3));
+    m_driverController.x().whileTrue(new testShoot(m_shoot));
+    m_driverController.leftStick().toggleOnTrue(new creepMode(m_drive));
+    m_driverController.rightStick().toggleOnTrue(new creepMode(m_drive));
+    m_driverController.y().whileTrue(new indexer(m_shoot, 0.5));
   }
 
   /**
