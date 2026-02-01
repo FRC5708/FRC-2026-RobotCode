@@ -9,18 +9,18 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private SparkMax m_deploy = new SparkMax(10, MotorType.kBrushless);
-  private SparkMax m_intake = new SparkMax(11, MotorType.kBrushless);
+  //private SparkMax m_deploy = new SparkMax(10, MotorType.kBrushless);
+  //private SparkMax m_intake = new SparkMax(11, MotorType.kBrushless);
   /** Creates a new Intake. */
   public IntakeSubsystem() {
 
   }
 
   public void deploy(double power) {
-    m_deploy.set(power);
+    //m_deploy.set(power);
   }
   public void intake(double power) {
-    m_intake.set(power);
+    //m_intake.set(power);
   }
 
   @Override

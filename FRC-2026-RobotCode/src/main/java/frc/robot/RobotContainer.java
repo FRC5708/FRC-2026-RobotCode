@@ -8,6 +8,10 @@ import frc.robot.Constants.Operator;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
+
+import java.io.IOException;
+import java.text.ParseException;
+
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.indexShoot;
@@ -19,7 +23,6 @@ import frc.robot.commands.hoodDown;
 import frc.robot.commands.hoodUp;
 import frc.robot.commands.testShoot;
 import frc.robot.commands.indexer;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,9 +39,12 @@ public class RobotContainer {
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  /** The container for the robot. Contains subsystems, OI devices, and commands. 
+     * @throws org.json.simple.parser.ParseException */
+    public RobotContainer() throws IOException, org.json.simple.parser.ParseException{
     m_intake = new IntakeSubsystem();
+    m_drive = new DriveSubsystem();
+    m_shoot = new ShootSubsystem();
     // Configure the trigger bindings
     //NamedCommands.registerCommand("Creep Mode", new creepMode(m_drive));
   // The robot's subsystems and commands are defined here...
@@ -68,6 +74,7 @@ public class RobotContainer {
     m_driverController.leftStick().toggleOnTrue(new creepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new creepMode(m_drive));
     m_driverController.y().whileTrue(new indexer(m_shoot, 0.5));
+    
   }
 
   /**

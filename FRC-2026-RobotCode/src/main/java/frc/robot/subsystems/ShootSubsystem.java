@@ -13,8 +13,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 
 public class ShootSubsystem extends SubsystemBase {
-  private SparkMax m_shootLeft = new SparkMax(20, MotorType.kBrushless);
-  private SparkMax m_shootRight = new SparkMax(21, MotorType.kBrushless);
+  private SparkMax m_shootLeft = new SparkMax(21, MotorType.kBrushless);
+  private SparkMax m_shootRight = new SparkMax(22, MotorType.kBrushless);
   
   private SparkMax m_indexOne = new SparkMax(23, MotorType.kBrushless);
   private SparkMax m_indexTwo = new SparkMax(24, MotorType.kBrushless);
