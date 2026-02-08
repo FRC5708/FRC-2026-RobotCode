@@ -7,11 +7,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Deploy extends Command {
+public class testDeploy extends Command {
   private final IntakeSubsystem m_intake; 
   private double m_power;
   /** Creates a new intake. */
-  public Deploy(IntakeSubsystem intake, double power) {
+  public testDeploy(IntakeSubsystem intake, double power) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
     m_power = power;
@@ -25,7 +25,7 @@ public class Deploy extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.deploy(m_power);
+    m_intake.testDeploy(m_power);
   }
 
   // Called once the command ends or is interrupted.

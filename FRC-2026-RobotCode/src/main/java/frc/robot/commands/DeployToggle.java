@@ -3,19 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-import frc.robot.subsystems.IntakeSubsystem;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Deploy extends Command {
-  private final IntakeSubsystem m_intake; 
-  private double m_power;
-  /** Creates a new intake. */
-  public Deploy(IntakeSubsystem intake, double power) {
+public class DeployToggle extends Command {
+  /** Creates a new DeployToggle. */
+  private final IntakeSubsystem m_intake;
+  public DeployToggle(IntakeSubsystem  intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
-    m_power = power;
-    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
@@ -25,14 +23,12 @@ public class Deploy extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.deploy(m_power);
+    m_intake.toggleIn();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_intake.deploy(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

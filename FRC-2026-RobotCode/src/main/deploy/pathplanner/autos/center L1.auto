@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "startmid-east"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootL1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "spitCoral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "toL2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "back from center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "spin"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "L1s",
+  "choreoAuto": false
+}

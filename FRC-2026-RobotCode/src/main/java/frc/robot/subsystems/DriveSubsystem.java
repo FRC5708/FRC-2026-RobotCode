@@ -10,10 +10,10 @@ import java.util.function.DoubleSupplier;
 
 import org.json.simple.parser.ParseException;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,6 +22,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,11 +30,10 @@ import frc.robot.Constants.Drive;
 import frc.robot.Constants.Operator;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  public SwerveDrive swerveDrive;
+  private SwerveDrive swerveDrive;
 
   SwerveDriveOdometry m_odometry;
   Field2d m_field = new Field2d();

@@ -17,8 +17,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.indexShoot;
 import frc.robot.commands.creepMode;
 import frc.robot.commands.Deploy;
+import frc.robot.commands.DeployToggle;
 import frc.robot.commands.intake;
 import frc.robot.commands.shoot;
+import frc.robot.commands.testDeploy;
 import frc.robot.commands.hoodDown;
 import frc.robot.commands.hoodUp;
 import frc.robot.commands.testShoot;
@@ -51,6 +53,7 @@ public class RobotContainer {
     m_drive.setDefaultCommand(
           m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
               m_driverController::getRightX));
+    m_intake.setDefaultCommand(new Deploy(m_intake,0.2));
     configureBindings();
   }
 
@@ -64,13 +67,17 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.a().whileTrue(new Deploy(m_intake,0.1));
+    m_driverController.a().onTrue(new DeployToggle(m_intake));
     m_driverController.b().whileTrue(new intake(m_intake,-0.1));
-    m_driverController.rightTrigger().whileTrue(new shoot(m_shoot,.3));
-    m_driverController.leftTrigger().whileTrue(new shoot(m_shoot,.5));
+    m_driverController.rightTrigger().whileTrue(new testDeploy(m_intake, -.3));
+    m_driverController.leftTrigger().whileTrue(new testDeploy(m_intake, .3));
+    //m_driverController.rightTrigger().whileTrue(new shoot(m_shoot,.3));
+    //m_driverController.leftTrigger().whileTrue(new shoot(m_shoot,1.));
     m_driverController.rightBumper().whileTrue(new hoodDown(m_shoot,.3));
     m_driverController.leftBumper().whileTrue(new hoodUp(m_shoot,.3));
+
     m_driverController.x().whileTrue(new testShoot(m_shoot));
+    
     m_driverController.leftStick().toggleOnTrue(new creepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new creepMode(m_drive));
     m_driverController.y().whileTrue(new indexer(m_shoot, 0.5));

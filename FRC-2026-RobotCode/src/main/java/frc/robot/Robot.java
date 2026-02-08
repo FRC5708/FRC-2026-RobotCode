@@ -34,6 +34,10 @@ public class Robot extends TimedRobot {
       // If this triggers it means for some reason is didn't read the swerve files right
       e.printStackTrace();
     }
+    /*FrontLeft: 91.40616*/
+    /*FrontRight: 191.60172*/
+    /*BackLeft: 235.98648*/
+    /*BackRight: 303.13476*/
   }
 
   /**
