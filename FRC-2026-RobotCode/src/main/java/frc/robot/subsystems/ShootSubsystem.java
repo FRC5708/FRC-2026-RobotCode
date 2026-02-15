@@ -24,11 +24,17 @@ public class ShootSubsystem extends SubsystemBase {
   private SparkMax m_stageRight = new SparkMax(29, MotorType.kBrushless);
 
   private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
+  private RelativeEncoder m_encoderHood = m_hood.getEncoder();
+
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
-  private GenericEntry speed = 
-    tab.add("Speed of Shooter",0.1)
-      .getEntry();
+  private GenericEntry targetSpeed = tab.add("Target Speed",0.55).getEntry();
+  private GenericEntry powerLeft = tab.add("Power going into Left", 0).getEntry();
+  private GenericEntry powerRight = tab.add("Power going into Rightt", 0).getEntry();
+  private GenericEntry velocityLeft = tab.add("Velocity Left", 0).getEntry();
+  private GenericEntry velocityRight = tab.add("Velocity Right", 0).getEntry();
+  private GenericEntry hoodPosition = tab.add("Hood Pos", 0).getEntry();
+    
 
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
   /** Creates a new Intake. */
@@ -37,7 +43,7 @@ public class ShootSubsystem extends SubsystemBase {
   }
 
   private double velocityToProperSpeed(double velocity, double properSpeed, double thresh) {
-    velocity /= 5676; // Hopefully converts from RPM to percent
+    velocity /= 1300; // Hopefully converts from RPM to percent
     double returnSpeed = properSpeed; 
     if (velocity < thresh && properSpeed > thresh) {
         returnSpeed += properSpeed-velocity;
@@ -56,7 +62,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void testShoot() {
     double thresh = 0.5;
-    double power = speed.getDouble(0.1);
+    double power = targetSpeed.getDouble(0.1);
     m_shootLeft.set(velocityToProperSpeed(m_encoderLeft.getVelocity(),-power, thresh));
     m_shootRight.set(velocityToProperSpeed(m_encoderLeft.getVelocity(),power, thresh));
   }
@@ -64,7 +70,7 @@ public class ShootSubsystem extends SubsystemBase {
   public void testAllShootSystems() {
     double thresh = 0.5;
     stage(-.4);
-    double power = speed.getDouble(0.1);
+    double power = targetSpeed.getDouble(0.1);
     m_shootLeft.set(velocityToProperSpeed(m_encoderLeft.getVelocity(),-power, thresh));
     m_shootRight.set(velocityToProperSpeed(m_encoderLeft.getVelocity(),power, thresh));
   }
@@ -86,6 +92,16 @@ public class ShootSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    double shootingPowerLeft = m_shootLeft.get();
+    double shootingPowerRight = m_shootRight.get();
+    double activeVelocityLeft = m_encoderLeft.getVelocity()/1250;
+    double activeVelocityRight = m_encoderRight.getVelocity()/1250;
+    double hoodPos = m_encoderHood.getPosition();
+
+    powerLeft.setDouble(shootingPowerLeft);
+    powerRight.setDouble(shootingPowerRight);
+    velocityLeft.setDouble(activeVelocityLeft);
+    velocityRight.setDouble(activeVelocityRight);
+    hoodPosition.setDouble(hoodPos);
   }
 }

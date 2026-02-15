@@ -81,7 +81,7 @@ public class RobotContainer {
 
     m_driverController.x().whileTrue(new TestShoot(m_shoot, m_index));
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, 1));
-    m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, .5));
+    m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, .6));
 
     m_driverController.rightBumper().whileTrue(new HoodDown(m_shoot,.125));
     m_driverController.leftBumper().whileTrue(new HoodUp(m_shoot,.1));

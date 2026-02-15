@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class IndexSubsystem extends SubsystemBase {
-  private SparkMax m_index = new SparkMax(25, MotorType.kBrushless);
-  private RelativeEncoder m_encoderIndex = m_index.getEncoder();
+  //private SparkMax m_index = new SparkMax(25, MotorType.kBrushless);
+  //private RelativeEncoder m_encoderIndex = m_index.getEncoder();
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
   private GenericEntry speed = 
@@ -32,20 +32,20 @@ public class IndexSubsystem extends SubsystemBase {
   public void indexToStage (boolean On){
     if (On){
     double power = speed.getDouble(0.3);
-    m_index.set(power);
+    //m_index.set(power);
     }
     else {
-      m_index.set(0);
+      //m_index.set(0);
     }
   }
 
   public void indexFromStage (boolean On){
     if (On){
       double power = speed.getDouble(0.3);
-    m_index.set(-power);
+      //m_index.set(-power);
     }
     else {
-      m_index.set(0);
+      //m_index.set(0);
     }
   }
 
