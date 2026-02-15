@@ -7,11 +7,11 @@ import frc.robot.subsystems.ShootSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class hoodDown extends Command {
+public class HoodDown extends Command {
   private final ShootSubsystem m_shooterHood; 
   private double m_power;
   /** Creates a new Intake. */
-  public hoodDown(ShootSubsystem hood, double power) {
+  public HoodDown(ShootSubsystem hood, double power) {
     // Use addRequirements
     m_shooterHood = hood;
     m_power = power;

@@ -5,26 +5,27 @@
 package frc.robot;
 
 import frc.robot.Constants.Operator;
-import frc.robot.subsystems.DriveSubsystem;
+//import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.IndexSubsystem;
 
 import java.io.IOException;
 import java.text.ParseException;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.indexShoot;
-import frc.robot.commands.creepMode;
+import frc.robot.commands.TestAllShootThings;
+//import frc.robot.commands.creepMode;
 import frc.robot.commands.Deploy;
 import frc.robot.commands.DeployToggle;
-import frc.robot.commands.intake;
-import frc.robot.commands.shoot;
-import frc.robot.commands.testDeploy;
-import frc.robot.commands.hoodDown;
-import frc.robot.commands.hoodUp;
-import frc.robot.commands.testShoot;
-import frc.robot.commands.indexer;
+import frc.robot.commands.Intake;
+import frc.robot.commands.Shoot;
+import frc.robot.commands.TestDeploy;
+import frc.robot.commands.HoodDown;
+import frc.robot.commands.HoodUp;
+import frc.robot.commands.TestShoot;
+import frc.robot.commands.Stage;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,9 +35,10 @@ import frc.robot.commands.indexer;
  */
 public class RobotContainer {
   CommandXboxController m_driverController = new CommandXboxController(Operator.kDriverControllerPort);
-  DriveSubsystem m_drive;
+  //DriveSubsystem m_drive;
   IntakeSubsystem m_intake;
   ShootSubsystem m_shoot;
+  IndexSubsystem m_index;
 
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -45,15 +47,17 @@ public class RobotContainer {
      * @throws org.json.simple.parser.ParseException */
     public RobotContainer() throws IOException, org.json.simple.parser.ParseException{
     m_intake = new IntakeSubsystem();
-    m_drive = new DriveSubsystem();
+    //m_drive = new DriveSubsystem();
     m_shoot = new ShootSubsystem();
+    m_index = new IndexSubsystem();
+
     // Configure the trigger bindings
     //NamedCommands.registerCommand("Creep Mode", new creepMode(m_drive));
   // The robot's subsystems and commands are defined here...
-    m_drive.setDefaultCommand(
-          m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
-              m_driverController::getRightX));
-    m_intake.setDefaultCommand(new Deploy(m_intake,0.2));
+    // m_drive.setDefaultCommand(
+    //       m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
+    //           m_driverController::getRightX));
+    // m_intake.setDefaultCommand(new Deploy(m_intake,0.0));
     configureBindings();
   }
 
@@ -67,21 +71,23 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.a().onTrue(new DeployToggle(m_intake));
-    m_driverController.b().whileTrue(new intake(m_intake,-0.1));
-    m_driverController.rightTrigger().whileTrue(new testDeploy(m_intake, -.3));
-    m_driverController.leftTrigger().whileTrue(new testDeploy(m_intake, .3));
-    //m_driverController.rightTrigger().whileTrue(new shoot(m_shoot,.3));
-    //m_driverController.leftTrigger().whileTrue(new shoot(m_shoot,1.));
-    m_driverController.rightBumper().whileTrue(new hoodDown(m_shoot,.3));
-    m_driverController.leftBumper().whileTrue(new hoodUp(m_shoot,.3));
+    // m_driverController.b().whileTrue(new Intake(m_intake, m_index, -0.1));
 
-    m_driverController.x().whileTrue(new testShoot(m_shoot));
+    // m_driverController.a().onTrue(new DeployToggle(m_intake));
+    // m_driverController.rightTrigger().whileTrue(new TestDeploy(m_intake, -.3));
+    // m_driverController.leftTrigger().whileTrue(new TestDeploy(m_intake, .3));
+
+    m_driverController.y().whileTrue(new Stage(m_shoot, 0.4));
+
+    m_driverController.x().whileTrue(new TestShoot(m_shoot, m_index));
+    m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, 1));
+    m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, .5));
+
+    m_driverController.rightBumper().whileTrue(new HoodDown(m_shoot,.125));
+    m_driverController.leftBumper().whileTrue(new HoodUp(m_shoot,.1));
     
-    m_driverController.leftStick().toggleOnTrue(new creepMode(m_drive));
-    m_driverController.rightStick().toggleOnTrue(new creepMode(m_drive));
-    m_driverController.y().whileTrue(new indexer(m_shoot, 0.5));
-    
+    //m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
+    //m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
   }
 
   /**

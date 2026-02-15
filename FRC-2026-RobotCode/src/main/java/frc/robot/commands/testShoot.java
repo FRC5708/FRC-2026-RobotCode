@@ -4,16 +4,20 @@
 
 package frc.robot.commands;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.IndexSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class testShoot extends Command {
+public class TestShoot extends Command {
   private final ShootSubsystem m_shoot; 
+  private final IndexSubsystem m_index;
   /** Creates a new Intake. */
-  public testShoot(ShootSubsystem shoot) {
+  public TestShoot(ShootSubsystem shoot, IndexSubsystem index) {
     // Use addRequirements
     m_shoot = shoot;
+    m_index = index;
+
   }
 
   // Called when the command is initially scheduled.
@@ -24,17 +28,21 @@ public class testShoot extends Command {
   @Override
   public void execute() {
     m_shoot.testShoot();
+    m_index.indexToStage(true);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shoot.shoot(0);
+    m_shoot.stage(0);
+    m_index.indexToStage(false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

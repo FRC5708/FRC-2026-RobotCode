@@ -4,16 +4,19 @@
 
 package frc.robot.commands;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IndexSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class intake extends Command {
+public class Intake extends Command {
   private final IntakeSubsystem m_intake; 
+  private final IndexSubsystem m_index;
   private double m_power;
   /** Creates a new Intake. */
-  public intake(IntakeSubsystem intake, double power) {
+  public Intake(IntakeSubsystem intake, IndexSubsystem index, double power) {
     // Use addRequirements
     m_intake = intake;
+    m_index = index;
     m_power = power;
   }
 
@@ -25,12 +28,14 @@ public class intake extends Command {
   @Override
   public void execute() {
     m_intake.intake(m_power);
+    m_index.indexToStage(true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_intake.intake(0);
+    m_index.indexToStage(false);
   }
 
   // Returns true when the command should end.
