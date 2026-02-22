@@ -7,18 +7,21 @@ package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.hardware.TalonFXS;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class ShootSubsystem extends SubsystemBase {
-  private SparkMax m_shootLeft = new SparkMax(26, MotorType.kBrushless);
-  private SparkMax m_shootRight = new SparkMax(27, MotorType.kBrushless);
-  private RelativeEncoder m_encoderLeft = m_shootLeft.getEncoder();
-  private RelativeEncoder m_encoderRight = m_shootRight.getEncoder();
+  private TalonFXS m_shootLeft = new TalonFXS(26);
+  private TalonFXS m_shootRight = new TalonFXS(27);
+  // private RelativeEncoder m_encoderLeft = m_shootLeft.getEncoder();
+  // private RelativeEncoder m_encoderRight = m_shootRight.getEncoder();
   
   private SparkMax m_stageLeft = new SparkMax(28, MotorType.kBrushless);
   private SparkMax m_stageRight = new SparkMax(29, MotorType.kBrushless);
@@ -42,8 +45,10 @@ public class ShootSubsystem extends SubsystemBase {
 
   }
 
-  private double velocityToProperSpeed(double velocity, double properSpeed, double thresh) {
-    velocity /= 1300; // Hopefully converts from RPM to percent
+  private double velocityToProperSpeed(StatusSignal<AngularVelocity> velocityStatusSignal, double properSpeed, double thresh) {
+    double velocity = velocityStatusSignal.getValueAsDouble();
+    
+    //velocity /= 1300; // Hopefully converts from RPM to percent
     double returnSpeed = properSpeed; 
     if (velocity < thresh && properSpeed > thresh) {
         returnSpeed += properSpeed-velocity;
@@ -56,23 +61,23 @@ public class ShootSubsystem extends SubsystemBase {
     stage(-.4);
     //m_shootLeft.set(1);
     //m_shootRight.set(-1);
-    m_shootLeft.set(velocityToProperSpeed(m_encoderLeft.getVelocity(),-power, thresh));
-    m_shootRight.set(velocityToProperSpeed(m_encoderRight.getVelocity(),power, thresh));
+    m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
+    m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
   }
 
   public void testShoot() {
     double thresh = 0.5;
     double power = targetSpeed.getDouble(0.1);
-    m_shootLeft.set(velocityToProperSpeed(m_encoderLeft.getVelocity(),-power, thresh));
-    m_shootRight.set(velocityToProperSpeed(m_encoderLeft.getVelocity(),power, thresh));
+    m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
+    m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
   }
 
   public void testAllShootSystems() {
     double thresh = 0.5;
     stage(-.4);
     double power = targetSpeed.getDouble(0.1);
-    m_shootLeft.set(velocityToProperSpeed(m_encoderLeft.getVelocity(),-power, thresh));
-    m_shootRight.set(velocityToProperSpeed(m_encoderLeft.getVelocity(),power, thresh));
+    m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
+    m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
   }
 
   public void stage(double speed) {
@@ -94,8 +99,8 @@ public class ShootSubsystem extends SubsystemBase {
   public void periodic() {
     double shootingPowerLeft = m_shootLeft.get();
     double shootingPowerRight = m_shootRight.get();
-    double activeVelocityLeft = m_encoderLeft.getVelocity()/1250;
-    double activeVelocityRight = m_encoderRight.getVelocity()/1250;
+    double activeVelocityLeft = m_shootLeft.getVelocity().getValueAsDouble();
+    double activeVelocityRight = m_shootRight.getVelocity().getValueAsDouble();
     double hoodPos = m_encoderHood.getPosition();
 
     powerLeft.setDouble(shootingPowerLeft);

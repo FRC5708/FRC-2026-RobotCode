@@ -7,7 +7,7 @@
 // import edu.wpi.first.wpilibj2.command.Command;
 // import frc.robot.subsystems.DriveSubsystem;
 
-// public class creepMode extends Command {
+// public class CreepMode extends Command {
 //   private DriveSubsystem m_drive;
 //   public creepMode(DriveSubsystem drive) {
 //   m_drive = drive;
