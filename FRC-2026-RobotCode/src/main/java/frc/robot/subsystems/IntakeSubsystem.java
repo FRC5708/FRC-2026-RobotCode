@@ -11,8 +11,8 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class IntakeSubsystem extends SubsystemBase {
-  //private SparkMax m_deploy = new SparkMax(11, MotorType.kBrushless);
-  //private SparkMax m_intake = new SparkMax(12, MotorType.kBrushless);
+  private SparkMax m_deploy = new SparkMax(11, MotorType.kBrushless);
+  private SparkMax m_intake = new SparkMax(12, MotorType.kBrushless);
   //private RelativeEncoder m_intake_encoder = m_intake.getEncoder();
   //private RelativeEncoder m_deploy_encoder = m_deploy.getEncoder();
   private double stoppedSpeed = 0.1;
@@ -26,7 +26,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void testDeploy(double power) {
-    //m_deploy.set(power);
+    m_deploy.set(power);
   }
 
   public void toggleIn() {
@@ -66,7 +66,7 @@ public class IntakeSubsystem extends SubsystemBase {
     
   }
   public void intake(double power) {
-    //m_intake.set(power);
+    m_intake.set(-power);
   }
 
   @Override

@@ -40,4 +40,12 @@ public final class Constants {
       backRightPosition
     );
   }
+
+  public static class Shooter {
+    public static final int canIDShootLeft = 26;
+    public static final int canIDShootRight = 27;
+    public static final int canIDStageLeft = 28;
+    public static final int canIDStageRight = 29;
+    public static final int canIDHood = 30;
+  }
 }

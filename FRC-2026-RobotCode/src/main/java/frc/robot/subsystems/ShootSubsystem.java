@@ -8,7 +8,10 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -42,7 +45,11 @@ public class ShootSubsystem extends SubsystemBase {
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
   /** Creates a new Intake. */
   public ShootSubsystem() {
-
+    TalonFXSConfiguration conf = new TalonFXSConfiguration();
+    conf.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
+    conf.ExternalFeedback.ExternalFeedbackSensorSource = ExternalFeedbackSensorSourceValue.Commutation;
+    m_shootLeft.getConfigurator().apply(conf);
+    m_shootRight.getConfigurator().apply(conf);
   }
 
   private double velocityToProperSpeed(StatusSignal<AngularVelocity> velocityStatusSignal, double properSpeed, double thresh) {
@@ -57,19 +64,22 @@ public class ShootSubsystem extends SubsystemBase {
   }
 
   public void shoot(double power) {
-    double thresh = 0.5;
+    //double thresh = 0.5;
     stage(-.4);
-    //m_shootLeft.set(1);
-    //m_shootRight.set(-1);
-    m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
-    m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
+    m_shootLeft.set(-power);
+    m_shootRight.set(power);
+    //m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
+    //m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
   }
 
   public void testShoot() {
-    double thresh = 0.5;
+    //double thresh = 0.5;
     double power = targetSpeed.getDouble(0.1);
-    m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
-    m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
+    stage(-.4);
+    m_shootLeft.set(-power);
+    m_shootRight.set(power);
+    // m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
+    // m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
   }
 
   public void testAllShootSystems() {

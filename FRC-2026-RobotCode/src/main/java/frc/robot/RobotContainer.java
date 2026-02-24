@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.Operator;
-//import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexSubsystem;
@@ -35,7 +35,7 @@ import frc.robot.commands.Stage;
  */
 public class RobotContainer {
   CommandXboxController m_driverController = new CommandXboxController(Operator.kDriverControllerPort);
-  //DriveSubsystem m_drive;
+  DriveSubsystem m_drive;
   IntakeSubsystem m_intake;
   ShootSubsystem m_shoot;
   IndexSubsystem m_index;
@@ -47,16 +47,16 @@ public class RobotContainer {
      * @throws org.json.simple.parser.ParseException */
     public RobotContainer() throws IOException, org.json.simple.parser.ParseException{
     m_intake = new IntakeSubsystem();
-    //m_drive = new DriveSubsystem();
+    m_drive = new DriveSubsystem();
     m_shoot = new ShootSubsystem();
     m_index = new IndexSubsystem();
 
     // Configure the trigger bindings
     //NamedCommands.registerCommand("Creep Mode", new creepMode(m_drive));
   // The robot's subsystems and commands are defined here...
-    // m_drive.setDefaultCommand(
-    //       m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
-    //           m_driverController::getRightX));
+    m_drive.setDefaultCommand(
+           m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
+               m_driverController::getRightX));
     // m_intake.setDefaultCommand(new Deploy(m_intake,0.0));
     configureBindings();
   }
@@ -71,15 +71,16 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // m_driverController.b().whileTrue(new Intake(m_intake, m_index, -0.1));
+    m_driverController.b().whileTrue(new Intake(m_intake, m_index, -0.1));
 
-    // m_driverController.a().onTrue(new DeployToggle(m_intake));
-    // m_driverController.rightTrigger().whileTrue(new TestDeploy(m_intake, -.3));
-    // m_driverController.leftTrigger().whileTrue(new TestDeploy(m_intake, .3));
+    //m_driverController.a().onTrue(new DeployToggle(m_intake));
+    
+    m_driverController.x().whileTrue(new TestDeploy(m_intake, -.5));
+    m_driverController.y().whileTrue(new TestDeploy(m_intake, .3));
 
-    m_driverController.y().whileTrue(new Stage(m_shoot, 0.4));
+    //m_driverController.y().whileTrue(new Stage(m_shoot, 0.4));
 
-    m_driverController.x().whileTrue(new TestShoot(m_shoot, m_index));
+    //m_driverController.x().whileTrue(new TestShoot(m_shoot, m_index));
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, 1));
     m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, .6));
 
