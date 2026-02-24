@@ -40,6 +40,14 @@ public final class Constants {
       backRightPosition
     );
   }
+  public static class Intake {
+    public static final int canIDDeploy = 11;
+    public static final int canIDIntake = 12;
+  }
+
+  public static class Index {
+    public static final int canIDIndex = 25;
+  }
 
   public static class Shooter {
     public static final int canIDShootLeft = 26;

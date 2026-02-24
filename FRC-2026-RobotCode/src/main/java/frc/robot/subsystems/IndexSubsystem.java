@@ -4,7 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.RelativeEncoder;
+import frc.robot.Constants.Index;
+
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
@@ -15,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class IndexSubsystem extends SubsystemBase {
-  private SparkMax m_index = new SparkMax(25, MotorType.kBrushless);
+  private SparkMax m_index = new SparkMax(Index.canIDIndex, MotorType.kBrushless);
   //private RelativeEncoder m_encoderIndex = m_index.getEncoder();
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");

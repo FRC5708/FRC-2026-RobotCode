@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.Constants.Shooter;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -21,15 +23,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class ShootSubsystem extends SubsystemBase {
-  private TalonFXS m_shootLeft = new TalonFXS(26);
-  private TalonFXS m_shootRight = new TalonFXS(27);
+  private TalonFXS m_shootLeft = new TalonFXS(Shooter.canIDShootLeft);
+  private TalonFXS m_shootRight = new TalonFXS(Shooter.canIDShootRight);
   // private RelativeEncoder m_encoderLeft = m_shootLeft.getEncoder();
   // private RelativeEncoder m_encoderRight = m_shootRight.getEncoder();
   
-  private SparkMax m_stageLeft = new SparkMax(28, MotorType.kBrushless);
-  private SparkMax m_stageRight = new SparkMax(29, MotorType.kBrushless);
+  private SparkMax m_stageLeft = new SparkMax(Shooter.canIDStageLeft, MotorType.kBrushless);
+  private SparkMax m_stageRight = new SparkMax(Shooter.canIDStageRight, MotorType.kBrushless);
 
-  private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
+  private SparkMax m_hood = new SparkMax(Shooter.canIDHood, MotorType.kBrushless);
   private RelativeEncoder m_encoderHood = m_hood.getEncoder();
 
 
@@ -65,7 +67,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void shoot(double power) {
     //double thresh = 0.5;
-    stage(-.4);
+    stage(.4);
     m_shootLeft.set(-power);
     m_shootRight.set(power);
     //m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
@@ -75,7 +77,7 @@ public class ShootSubsystem extends SubsystemBase {
   public void testShoot() {
     //double thresh = 0.5;
     double power = targetSpeed.getDouble(0.1);
-    stage(-.4);
+    stage(.4);
     m_shootLeft.set(-power);
     m_shootRight.set(power);
     // m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
