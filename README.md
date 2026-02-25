@@ -16,6 +16,7 @@
   * X held - Retract Intake
 * Intake (Gather)
   * ?
+  * A held - Reverses the direction of fuel to put out of the robot
   * B held - Gather from floor
 * Shoot
   * ?
