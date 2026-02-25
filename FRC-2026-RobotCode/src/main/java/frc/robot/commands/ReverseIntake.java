@@ -3,20 +3,19 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IndexSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Shoot extends Command {
-  private final ShootSubsystem m_shoot; 
-    private final IndexSubsystem m_index;
-
+public class ReverseIntake extends Command {
+  private final IntakeSubsystem m_intake; 
+  private final IndexSubsystem m_index;
   private double m_power;
   /** Creates a new Intake. */
-  public Shoot(ShootSubsystem shoot, IndexSubsystem index, double power) {
+  public ReverseIntake(IntakeSubsystem intake, IndexSubsystem index, double power) {
     // Use addRequirements
-    m_shoot = shoot;
+    m_intake = intake;
     m_index = index;
     m_power = power;
   }
@@ -28,16 +27,15 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shoot.shoot(m_power);
-    //m_index.indexToStage(true);
+    m_intake.intake(m_power);
+    m_index.indexFromStage(true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shoot.shoot(0);
-    //m_index.indexToStage(false);
-    m_shoot.stage(0);
+    m_intake.intake(0);
+    m_index.indexFromStage(false);
   }
 
   // Returns true when the command should end.

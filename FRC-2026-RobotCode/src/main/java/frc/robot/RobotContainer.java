@@ -11,15 +11,15 @@ import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IndexSubsystem;
 
 import java.io.IOException;
-import java.text.ParseException;
+import org.json.simple.parser.ParseException;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.TestAllShootThings;
-//import frc.robot.commands.creepMode;
+import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
-// import frc.robot.commands.deploy;
 import frc.robot.commands.Intake;
+import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.TestDeploy;
 import frc.robot.commands.HoodDown;
@@ -45,7 +45,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. 
      * @throws org.json.simple.parser.ParseException */
-    public RobotContainer() throws IOException, org.json.simple.parser.ParseException{
+    public RobotContainer() throws IOException, ParseException{
     m_intake = new IntakeSubsystem();
     m_drive = new DriveSubsystem();
     m_shoot = new ShootSubsystem();
@@ -72,6 +72,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_driverController.b().whileTrue(new Intake(m_intake, m_index, -0.1));
+    m_driverController.povDown().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
+
 
     //m_driverController.a().onTrue(new DeployToggle(m_intake));
     
@@ -81,14 +83,14 @@ public class RobotContainer {
     //m_driverController.y().whileTrue(new Stage(m_shoot, 0.4));
 
     //m_driverController.x().whileTrue(new TestShoot(m_shoot, m_index));
-    m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, 1));
-    m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, .6));
+    m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, 2));
+    m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, 10));
 
     m_driverController.rightBumper().whileTrue(new HoodDown(m_shoot,.125));
     m_driverController.leftBumper().whileTrue(new HoodUp(m_shoot,.1));
     
-    //m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
-    //m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
+    m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
+    m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
   }
 
   /**

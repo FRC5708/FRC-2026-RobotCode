@@ -4,27 +4,35 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants.Shooter;
-
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.TalonFXSConfiguration;
-import com.ctre.phoenix6.hardware.TalonFXS;
-import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.MotorArrangementValue;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Shooter;
 
 
 public class ShootSubsystem extends SubsystemBase {
-  private TalonFXS m_shootLeft = new TalonFXS(Shooter.canIDShootLeft);
-  private TalonFXS m_shootRight = new TalonFXS(Shooter.canIDShootRight);
+  private TalonFXS m_shootLeftSecondary;
+  private TalonFXS m_shootRightPrime;
+
+  private final VoltageOut voltageRequest = new VoltageOut(0);
+  private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
+
   // private RelativeEncoder m_encoderLeft = m_shootLeft.getEncoder();
   // private RelativeEncoder m_encoderRight = m_shootRight.getEncoder();
   
@@ -47,39 +55,63 @@ public class ShootSubsystem extends SubsystemBase {
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
   /** Creates a new Intake. */
   public ShootSubsystem() {
-    TalonFXSConfiguration conf = new TalonFXSConfiguration();
-    conf.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
-    conf.ExternalFeedback.ExternalFeedbackSensorSource = ExternalFeedbackSensorSourceValue.Commutation;
-    m_shootLeft.getConfigurator().apply(conf);
-    m_shootRight.getConfigurator().apply(conf);
-  }
+    TalonFXSConfiguration primeShooterMotorConfig = new TalonFXSConfiguration();
+    primeShooterMotorConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
+    primeShooterMotorConfig.ExternalFeedback.ExternalFeedbackSensorSource = ExternalFeedbackSensorSourceValue.Commutation;
 
-  private double velocityToProperSpeed(StatusSignal<AngularVelocity> velocityStatusSignal, double properSpeed, double thresh) {
-    double velocity = velocityStatusSignal.getValueAsDouble();
+    primeShooterMotorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+    primeShooterMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     
-    //velocity /= 1300; // Hopefully converts from RPM to percent
-    double returnSpeed = properSpeed; 
-    if (velocity < thresh && properSpeed > thresh) {
-        returnSpeed += properSpeed-velocity;
-    }
-    return returnSpeed;
+    primeShooterMotorConfig.CurrentLimits.StatorCurrentLimit = 120;
+    primeShooterMotorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+
+    primeShooterMotorConfig.Slot0.kS = 0.01;
+    primeShooterMotorConfig.Slot0.kV = 0;
+    primeShooterMotorConfig.Slot0.kA = 0;
+    primeShooterMotorConfig.Slot0.kP = 0.5;
+    primeShooterMotorConfig.Slot0.kI = 0;
+    primeShooterMotorConfig.Slot0.kD = 0;
+    
+    primeShooterMotorConfig.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
+
+    m_shootRightPrime = new TalonFXS(Shooter.canIDShootRight);
+    m_shootRightPrime.getConfigurator().apply(primeShooterMotorConfig);
+
+    TalonFXSConfiguration secondaryShooterMotorConfig = new TalonFXSConfiguration();
+    secondaryShooterMotorConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
+    secondaryShooterMotorConfig.ExternalFeedback.ExternalFeedbackSensorSource = ExternalFeedbackSensorSourceValue.Commutation;
+
+    secondaryShooterMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+    secondaryShooterMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    
+    secondaryShooterMotorConfig.CurrentLimits.StatorCurrentLimit = 120;
+    primeShooterMotorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+
+    m_shootLeftSecondary = new TalonFXS(Shooter.canIDShootLeft);
+    m_shootLeftSecondary.getConfigurator().apply(secondaryShooterMotorConfig);
+    m_shootLeftSecondary.setControl(new Follower(Shooter.canIDShootRight, MotorAlignmentValue.Aligned));
   }
 
   public void shoot(double power) {
     //double thresh = 0.5;
-    stage(.4);
-    m_shootLeft.set(-power);
-    m_shootRight.set(power);
-    //m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
-    //m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
+    //stage(.75);
+    if (power == 0){
+     m_shootRightPrime.setControl(voltageRequest.withOutput(0)); 
+    }
+    else {
+          m_shootRightPrime.set(1);
+      //m_shootRightPrime.setControl(voltageRequest.withOutput(1));
+      //m_shootRightPrime.setControl(velocityRequest.withVelocity(power));
+    }
   }
 
   public void testShoot() {
     //double thresh = 0.5;
     double power = targetSpeed.getDouble(0.1);
-    stage(.4);
-    m_shootLeft.set(-power);
-    m_shootRight.set(power);
+    stage(.75);
+    m_shootRightPrime.set(power);
     // m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
     // m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
   }
@@ -88,8 +120,7 @@ public class ShootSubsystem extends SubsystemBase {
     double thresh = 0.5;
     stage(-.4);
     double power = targetSpeed.getDouble(0.1);
-    m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
-    m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
+    m_shootRightPrime.set(power);
   }
 
   public void stage(double speed) {
@@ -109,10 +140,10 @@ public class ShootSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double shootingPowerLeft = m_shootLeft.get();
-    double shootingPowerRight = m_shootRight.get();
-    double activeVelocityLeft = m_shootLeft.getVelocity().getValueAsDouble();
-    double activeVelocityRight = m_shootRight.getVelocity().getValueAsDouble();
+    double shootingPowerLeft = m_shootLeftSecondary.get();
+    double shootingPowerRight = m_shootRightPrime.get();
+    double activeVelocityLeft = m_shootLeftSecondary.getVelocity().getValueAsDouble();
+    double activeVelocityRight = m_shootRightPrime.getVelocity().getValueAsDouble();
     double hoodPos = m_encoderHood.getPosition();
 
     powerLeft.setDouble(shootingPowerLeft);
@@ -121,4 +152,15 @@ public class ShootSubsystem extends SubsystemBase {
     velocityRight.setDouble(activeVelocityRight);
     hoodPosition.setDouble(hoodPos);
   }
+
+  // private double velocityToProperSpeed(StatusSignal<AngularVelocity> velocityStatusSignal, double properSpeed, double thresh) {
+  //   double velocity = velocityStatusSignal.getValueAsDouble();
+    
+  //   //velocity /= 1300; // Hopefully converts from RPM to percent
+  //   double returnSpeed = properSpeed; 
+  //   if (velocity < thresh && properSpeed > thresh) {
+  //       returnSpeed += properSpeed-velocity;
+  //   }
+  //   return returnSpeed;
+  // }
 }

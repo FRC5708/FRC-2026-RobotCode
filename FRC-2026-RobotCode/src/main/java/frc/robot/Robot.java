@@ -5,7 +5,7 @@
 package frc.robot;
 
 import java.io.IOException;
-import java.text.ParseException;
+import org.json.simple.parser.ParseException;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     try {
       m_robotContainer = new RobotContainer();
-    } catch (IOException | org.json.simple.parser.ParseException e) {
+    } catch (IOException | ParseException e) {
       // If this triggers it means for some reason is didn't read the swerve files right
       e.printStackTrace();
     }
