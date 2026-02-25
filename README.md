@@ -5,6 +5,7 @@
 * PID closed-loop control of stage (SparkMax)
 * Calibrate shooting based on distance to HUB -- lots and lots of test shots and data collection
 * Detect indexing jam (fuel jammed against stage stalls indexer)
+* Configure pathplanner and verify with a simple movement auto path
 
 # Driver Controls
 
