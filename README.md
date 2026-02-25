@@ -54,7 +54,7 @@ Future Improvement: Auto-align to face HUB using vision
 
 ## Collapse hopper (Retract/Protect intake, Prepare to shoot)
 
-Possibly run intake while collapsing to shuffle fuel in the hopper.
+Possibly run intake at low power while collapsing to shuffle fuel in the hopper. This will shuffle the balls without launching them out of the hopper.
 
 ## Yeet Fuel (Passing between zones)
 
