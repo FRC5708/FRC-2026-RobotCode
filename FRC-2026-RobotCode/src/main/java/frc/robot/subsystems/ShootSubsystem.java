@@ -62,9 +62,13 @@ public class ShootSubsystem extends SubsystemBase {
     primeShooterMotorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     primeShooterMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    
-    primeShooterMotorConfig.CurrentLimits.StatorCurrentLimit = 120;
-    primeShooterMotorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+
+    // at 11.7V battery voltage and 100% motor power on both shooter
+    // motors, the velocity reading was approx 89. What units?
+    // 42 ticks per revolution on the commutator. Neo's max speed
+    // is 5676 RPM at 12V.
+    //
+    // velocity could be in revolutions per second.
 
     primeShooterMotorConfig.Slot0.kS = 0.01;
     primeShooterMotorConfig.Slot0.kV = 0;
@@ -74,7 +78,7 @@ public class ShootSubsystem extends SubsystemBase {
     primeShooterMotorConfig.Slot0.kD = 0;
     
     primeShooterMotorConfig.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
-
+    
     m_shootRightPrime = new TalonFXS(Shooter.canIDShootRight);
     m_shootRightPrime.getConfigurator().apply(primeShooterMotorConfig);
 
@@ -85,23 +89,25 @@ public class ShootSubsystem extends SubsystemBase {
     secondaryShooterMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     secondaryShooterMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    
-    secondaryShooterMotorConfig.CurrentLimits.StatorCurrentLimit = 120;
-    primeShooterMotorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
     m_shootLeftSecondary = new TalonFXS(Shooter.canIDShootLeft);
     m_shootLeftSecondary.getConfigurator().apply(secondaryShooterMotorConfig);
-    m_shootLeftSecondary.setControl(new Follower(Shooter.canIDShootRight, MotorAlignmentValue.Aligned));
+    m_shootLeftSecondary.setControl(new Follower(Shooter.canIDShootRight, MotorAlignmentValue.Opposed));
   }
 
   public void shoot(double power) {
     //double thresh = 0.5;
     //stage(.75);
-    if (power == 0){
-     m_shootRightPrime.setControl(voltageRequest.withOutput(0)); 
+    if (0.0001 > power && power > -0.0001){
+      m_shootRightPrime.set(0);
+      // Once a motor is controlled directly, it seems like the follower
+      // mode is disabled and it reverts to direct control. Maybe follower
+      // should be dynamically set at the start of shooting?
+      //m_shootLeftSecondary.set(0);
     }
     else {
-          m_shootRightPrime.set(1);
+      m_shootRightPrime.set(1);
+      //m_shootLeftSecondary.set(1);
       //m_shootRightPrime.setControl(voltageRequest.withOutput(1));
       //m_shootRightPrime.setControl(velocityRequest.withVelocity(power));
     }
