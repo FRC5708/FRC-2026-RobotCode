@@ -10,14 +10,12 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.Constants.Intake;
 
 public class IntakeSubsystem extends SubsystemBase {
   private SparkMax m_deploy = new SparkMax(Intake.canIDDeploy, MotorType.kBrushless);
   private SparkMax m_intake = new SparkMax(Intake.canIDIntake, MotorType.kBrushless);
   //private RelativeEncoder m_intake_encoder = m_intake.getEncoder();
   //private RelativeEncoder m_deploy_encoder = m_deploy.getEncoder();
-  private double stoppedSpeed = 0.1;
   private DigitalInput forwardCheck = new DigitalInput(0);
   private DigitalInput backwardCheck = new DigitalInput(1);
 
