@@ -15,7 +15,6 @@ import org.json.simple.parser.ParseException;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.TestAllShootThings;
 import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
 import frc.robot.commands.Intake;
@@ -24,7 +23,6 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.TestDeploy;
 import frc.robot.commands.HoodDown;
 import frc.robot.commands.HoodUp;
-import frc.robot.commands.TestShoot;
 import frc.robot.commands.Stage;
 
 /**
@@ -77,14 +75,14 @@ public class RobotContainer {
 
     //m_driverController.a().onTrue(new DeployToggle(m_intake));
     
-    m_driverController.x().whileTrue(new TestDeploy(m_intake, -.5));
-    m_driverController.y().whileTrue(new TestDeploy(m_intake, .3));
+    //m_driverController.x().whileTrue(new TestDeploy(m_intake, -.5));
+    //m_driverController.y().whileTrue(new TestDeploy(m_intake, .3));
 
-    //m_driverController.y().whileTrue(new Stage(m_shoot, 0.4));
+    m_driverController.y().whileTrue(new Stage(m_shoot, 1));
 
     //m_driverController.x().whileTrue(new TestShoot(m_shoot, m_index));
-    m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, 2));
-    m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, 10));
+    m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
+    m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
 
     m_driverController.rightBumper().whileTrue(new HoodDown(m_shoot,.125));
     m_driverController.leftBumper().whileTrue(new HoodUp(m_shoot,.1));

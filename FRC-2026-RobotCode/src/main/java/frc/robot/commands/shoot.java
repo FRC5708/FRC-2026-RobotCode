@@ -3,41 +3,62 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-import frc.robot.subsystems.ShootSubsystem;
-import frc.robot.subsystems.IndexSubsystem;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.Shooter;
+import frc.robot.subsystems.IndexSubsystem;
+import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Shoot extends Command {
   private final ShootSubsystem m_shoot; 
-    private final IndexSubsystem m_index;
+  private final IndexSubsystem m_index;
+  private final IntakeSubsystem m_intake;
+  private final Timer m_timer = new Timer();
 
-  private double m_power;
   /** Creates a new Intake. */
-  public Shoot(ShootSubsystem shoot, IndexSubsystem index, double power) {
+  public Shoot(ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake) {
     // Use addRequirements
     m_shoot = shoot;
     m_index = index;
-    m_power = power;
+    m_intake = intake;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_timer.reset();
+    m_timer.start(); 
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shoot.shoot(m_power);
-    //m_index.indexToStage(true);
+    if (m_timer.hasElapsed(Shooter.shootWindUp)){
+      m_shoot.shoot(true);
+      m_shoot.stage(-1);
+      m_index.indexToStage(true);
+      m_intake.intake(.2);
+    }
+    else {
+      m_shoot.shoot(true);
+      m_shoot.stage(.4);
+      m_index.indexFromStage(true);
+    }
   }
 
-  // Called once the command ends or is interrupted.
+  // Called once the command ends or is intrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shoot.shoot(0);
-    //m_index.indexToStage(false);
+    m_shoot.shoot(false);
     m_shoot.stage(0);
+    m_index.indexToStage(false);
+    m_intake.intake(0);
+    m_timer.stop();
   }
 
   // Returns true when the command should end.

@@ -32,7 +32,7 @@ public class IndexSubsystem extends SubsystemBase {
 
   public void indexToStage (boolean On){
     if (On){
-    double power = speed.getDouble(0.6);
+    double power = speed.getDouble(0.8);
     m_index.set(-power);
     }
     else {

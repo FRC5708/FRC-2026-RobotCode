@@ -4,12 +4,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.ShootSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Stage extends Command {
   private final ShootSubsystem m_shoot; 
+  private final Timer m_timer = new Timer();
   private double m_power;
   /** Creates a new indexer. */
   public Stage(ShootSubsystem shoot, double power) {
@@ -20,18 +23,28 @@ public class Stage extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_timer.reset();
+    m_timer.start();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shoot.stage(m_power);
+    //if (m_timer.hasElapsed(1.5)) {
+      m_shoot.stageLeft(m_power);
+    //}
+    //else {
+      //m_shoot.stageRight(m_power);
+    //}
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shoot.stage(0);
+    m_shoot.stageLeft(0);
+    m_shoot.stageRight(0);
+    m_timer.stop();
   }
 
   // Returns true when the command should end.

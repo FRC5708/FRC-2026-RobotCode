@@ -32,24 +32,30 @@ public class ShootSubsystem extends SubsystemBase {
 
   private final VoltageOut voltageRequest = new VoltageOut(0);
   private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
-
-  // private RelativeEncoder m_encoderLeft = m_shootLeft.getEncoder();
-  // private RelativeEncoder m_encoderRight = m_shootRight.getEncoder();
   
   private SparkMax m_stageLeft = new SparkMax(Shooter.canIDStageLeft, MotorType.kBrushless);
   private SparkMax m_stageRight = new SparkMax(Shooter.canIDStageRight, MotorType.kBrushless);
+
+  private RelativeEncoder m_stageEncoderLeft = m_stageLeft.getEncoder();
+  private RelativeEncoder m_stageEncoderRight = m_stageRight.getEncoder();
 
   private SparkMax m_hood = new SparkMax(Shooter.canIDHood, MotorType.kBrushless);
   private RelativeEncoder m_encoderHood = m_hood.getEncoder();
 
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
-  private GenericEntry targetSpeed = tab.add("Target Speed",0.55).getEntry();
+  private GenericEntry targetDistance = tab.add("Target Distance",50).getEntry();
   private GenericEntry powerLeft = tab.add("Power going into Left", 0).getEntry();
   private GenericEntry powerRight = tab.add("Power going into Rightt", 0).getEntry();
   private GenericEntry velocityLeft = tab.add("Velocity Left", 0).getEntry();
   private GenericEntry velocityRight = tab.add("Velocity Right", 0).getEntry();
+
   private GenericEntry hoodPosition = tab.add("Hood Pos", 0).getEntry();
+
+  private GenericEntry stagePowerLeft = tab.add("Stage Power going into Left", 0).getEntry();
+  private GenericEntry stagePowerRight = tab.add("Stage Power going into Rightt", 0).getEntry();
+  private GenericEntry stageVelocityLeft = tab.add("Stage Velocity Left", 0).getEntry();
+  private GenericEntry stageVelocityRight = tab.add("Stage Velocity Right", 0).getEntry();
     
 
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
@@ -93,47 +99,27 @@ public class ShootSubsystem extends SubsystemBase {
     m_shootLeftSecondary.setControl(new Follower(Shooter.canIDShootRight, MotorAlignmentValue.Opposed));
   }
 
-  public void shoot(double power) {
-    //double thresh = 0.5;
-    stage(-.5);
-    double speed = targetSpeed.getDouble(0.55);
-    if (0.0001 > power && power > -0.0001){
-      m_shootRightPrime.setControl(voltageRequest.withOutput(0));
-      // Once a motor is controlled directly, it seems like the follower
-      // mode is disabled and it reverts to direct control. Maybe follower
-      // should be dynamically set at the start of shooting?
-      //m_shootLeftSecondary.set(0);
+  public void shoot(boolean shootGood) {
+    double speed = targetDistance.getDouble(50);
+    if (shootGood){
+      m_shootRightPrime.setControl(velocityRequest.withVelocity(speed));
     }
     else {
-       m_shootRightPrime.setControl(velocityRequest.withVelocity(speed));
-      //m_shootRightPrime.set(speed);
-      //m_shootLeftSecondary.set(1);
-      //m_shootRightPrime.setControl(voltageRequest.withOutput(1));
+      m_shootRightPrime.set(0);
     }
-  }
-
-  public void testShoot() {
-    //double thresh = 0.5;
-    double power = targetSpeed.getDouble(0.1);
-    stage(.75);
-    m_shootRightPrime.set(power);
-    // m_shootLeft.set(velocityToProperSpeed(m_shootLeft.getVelocity(),-power, thresh));
-    // m_shootRight.set(velocityToProperSpeed(m_shootRight.getVelocity(),power, thresh));
-  }
-
-  public void testAllShootSystems() {
-    double thresh = 0.5;
-    stage(-.4);
-    double power = targetSpeed.getDouble(0.1);
-    m_shootRightPrime.set(power);
   }
 
   public void stage(double speed) {
-    m_stageLeft.set(speed);
-    m_stageRight.set(speed);
+    m_stageLeft.set(-speed);
+    m_stageRight.set(-speed);
   }
 
-  
+  public void stageLeft(double speed) {
+    m_stageLeft.set(-speed);
+  }
+  public void stageRight(double speed) {
+    m_stageRight.set(-speed);
+  }
 
   public void hoodDown(double power) {
     m_hood.set(-power);
@@ -145,17 +131,29 @@ public class ShootSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double shootingPowerLeft = m_shootLeftSecondary.get();
-    double shootingPowerRight = m_shootRightPrime.get();
-    double activeVelocityLeft = m_shootLeftSecondary.getVelocity().getValueAsDouble();
-    double activeVelocityRight = m_shootRightPrime.getVelocity().getValueAsDouble();
-    double hoodPos = m_encoderHood.getPosition();
+    double m_shooterPowerLeft = m_shootLeftSecondary.get();
+    double m_shooterPowerRight = m_shootRightPrime.get();
+    double m_shooterVelocityLeft = m_shootLeftSecondary.getVelocity().getValueAsDouble();
+    double m_shooterVelocityRight = m_shootRightPrime.getVelocity().getValueAsDouble();
 
-    powerLeft.setDouble(shootingPowerLeft);
-    powerRight.setDouble(shootingPowerRight);
-    velocityLeft.setDouble(activeVelocityLeft);
-    velocityRight.setDouble(activeVelocityRight);
-    hoodPosition.setDouble(hoodPos);
+    double m_hoodPos = m_encoderHood.getPosition();
+
+    double m_stagePowerLeft = m_stageLeft.get();
+    double m_stagePowerRight = m_stageRight.get();
+    double m_stageVelocityLeft = m_stageEncoderLeft.getVelocity();
+    double m_stageVelocityRight = m_stageEncoderRight.getVelocity();
+
+    powerLeft.setDouble(m_shooterPowerLeft);
+    powerRight.setDouble(m_shooterPowerRight);
+    velocityLeft.setDouble(m_shooterVelocityLeft);
+    velocityRight.setDouble(m_shooterVelocityRight);
+
+    hoodPosition.setDouble(m_hoodPos);
+
+    stagePowerLeft.setDouble(m_stagePowerLeft);
+    stagePowerRight.setDouble(m_stagePowerRight);
+    stageVelocityLeft.setDouble(m_stageVelocityLeft);
+    stageVelocityRight.setDouble(m_stageVelocityRight);
   }
 
   // private double velocityToProperSpeed(StatusSignal<AngularVelocity> velocityStatusSignal, double properSpeed, double thresh) {

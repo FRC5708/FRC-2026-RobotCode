@@ -50,10 +50,12 @@ public final class Constants {
   }
 
   public static class Shooter {
-    public static final int canIDShootLeft = 26;
-    public static final int canIDShootRight = 27;
+    public static final int canIDShootLeft = 26; // use Phoenix tuner
+    public static final int canIDShootRight = 27; // use Phoenix tuner
     public static final int canIDStageLeft = 28;
     public static final int canIDStageRight = 29;
     public static final int canIDHood = 30;
+    //0.020 is one tick
+    public static final double shootWindUp = .25;
   }
 }
