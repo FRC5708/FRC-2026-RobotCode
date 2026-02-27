@@ -3,10 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.IndexSubsystem;
@@ -40,13 +37,13 @@ public class Shoot extends Command {
   public void execute() {
     if (m_timer.hasElapsed(Shooter.shootWindUp)){
       m_shoot.shoot(true);
-      m_shoot.stage(-1);
+      m_shoot.stage(1);
       m_index.indexToStage(true);
       m_intake.intake(.2);
     }
     else {
       m_shoot.shoot(true);
-      m_shoot.stage(.4);
+      m_shoot.stage(-.4);
       m_index.indexFromStage(true);
     }
   }

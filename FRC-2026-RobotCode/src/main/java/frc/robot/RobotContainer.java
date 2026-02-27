@@ -20,7 +20,7 @@ import frc.robot.commands.Deploy;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.TestDeploy;
+import frc.robot.commands.SplitStage;
 import frc.robot.commands.HoodDown;
 import frc.robot.commands.HoodUp;
 import frc.robot.commands.Stage;
@@ -69,24 +69,32 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    
+    //For testing/debugging commands
+    //m_driverController.y().whileTrue(new Stage(m_shoot, 1));
+    //m_driverController.x().whileTrue(new SplitStage(m_shoot, .5, false));
+    //m_driverController.y().whileTrue(new SplitStage(m_shoot, -.5, false));
+    //m_driverController.a().whileTrue(new SplitStage(m_shoot, .5, true));
+    //m_driverController.b().whileTrue(new SplitStage(m_shoot, -.5, true));
+    
+    //For the comp
+    //Intake controls
     m_driverController.b().whileTrue(new Intake(m_intake, m_index, -0.1));
     m_driverController.povDown().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
 
+    //Deploy the funnel controls
+    m_driverController.a().whileTrue(new Deploy(m_intake, .6));
+    m_driverController.b().whileTrue(new Deploy(m_intake, -.6));
 
-    //m_driverController.a().onTrue(new DeployToggle(m_intake));
-    
-    //m_driverController.x().whileTrue(new TestDeploy(m_intake, -.5));
-    //m_driverController.y().whileTrue(new TestDeploy(m_intake, .3));
-
-    m_driverController.y().whileTrue(new Stage(m_shoot, 1));
-
-    //m_driverController.x().whileTrue(new TestShoot(m_shoot, m_index));
+    //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
     m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
 
+    //Hood controls
     m_driverController.rightBumper().whileTrue(new HoodDown(m_shoot,.125));
     m_driverController.leftBumper().whileTrue(new HoodUp(m_shoot,.1));
     
+    //Creep mode + driving is with joysticks(look above)
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
   }
