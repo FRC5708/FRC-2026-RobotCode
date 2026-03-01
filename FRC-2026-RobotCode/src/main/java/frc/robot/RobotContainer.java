@@ -13,6 +13,7 @@ import frc.robot.subsystems.IndexSubsystem;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CreepMode;
@@ -100,7 +101,7 @@ public class RobotContainer {
     //Creep mode + driving is with joysticks(look above)
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
-    m_driverController.start().onTrue(m_drive.zeroGyro());
+    m_driverController.start().onTrue(m_drive.zeroGyroCommand());
   }
 
   /**
