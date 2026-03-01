@@ -125,6 +125,10 @@ public class DriveSubsystem extends SubsystemBase {
     return swerveDrive.getPose();
   }
 
+  public double getDistanceToPose(Pose2d pose) {
+    return getPose().getTranslation().getDistance(pose.getTranslation());
+  }
+
   public void resetPose(Pose2d initialHolonomicPose) {
     this.swerveDrive.resetOdometry(initialHolonomicPose);
   }
