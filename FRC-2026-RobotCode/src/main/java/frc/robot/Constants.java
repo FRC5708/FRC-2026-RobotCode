@@ -56,6 +56,6 @@ public final class Constants {
     public static final int canIDStageRight = 29;
     public static final int canIDHood = 30;
     //0.020 is one tick
-    public static final double shootWindUp = .25;
+    public static final double shootWindUp = .3;
   }
 }

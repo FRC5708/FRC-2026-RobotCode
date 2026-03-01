@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
 import frc.robot.commands.Intake;
+import frc.robot.commands.OnlyIndexFromStage;
+import frc.robot.commands.OnlyIndexToStage;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SplitStage;
@@ -76,19 +78,20 @@ public class RobotContainer {
     //m_driverController.y().whileTrue(new SplitStage(m_shoot, -.5, false));
     //m_driverController.a().whileTrue(new SplitStage(m_shoot, .5, true));
     //m_driverController.b().whileTrue(new SplitStage(m_shoot, -.5, true));
+    //m_driverController.rightTrigger().whileTrue(new OnlyIndexToStage(m_index));
+    //m_driverController.leftTrigger().whileTrue(new OnlyIndexFromStage(m_index));
     
     //For the comp
     //Intake controls
-    m_driverController.b().whileTrue(new Intake(m_intake, m_index, -0.1));
-    m_driverController.povDown().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
+    m_driverController.leftTrigger().whileTrue(new Intake(m_intake, m_index, 0.55));
+    m_driverController.y().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
 
     //Deploy the funnel controls
-    m_driverController.a().whileTrue(new Deploy(m_intake, .6));
-    m_driverController.b().whileTrue(new Deploy(m_intake, -.6));
+    m_driverController.a().whileTrue(new Deploy(m_intake, 1.0));
+    m_driverController.x().whileTrue(new Deploy(m_intake, -.85));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
-    m_driverController.leftTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
 
     //Hood controls
     m_driverController.rightBumper().whileTrue(new HoodDown(m_shoot,.125));
@@ -97,6 +100,7 @@ public class RobotContainer {
     //Creep mode + driving is with joysticks(look above)
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
+    m_driverController.start().onTrue(m_drive.zeroGyro());
   }
 
   /**

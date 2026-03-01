@@ -36,13 +36,13 @@ public class Shoot extends Command {
   @Override
   public void execute() {
     if (m_timer.hasElapsed(Shooter.shootWindUp)){
-      m_shoot.shoot(true);
+      //m_shoot.shoot(true);
       m_shoot.stage(1);
       m_index.indexToStage(true);
       m_intake.intake(.2);
     }
     else {
-      m_shoot.shoot(true);
+      //m_shoot.shoot(true);
       m_shoot.stage(-.4);
       m_index.indexFromStage(true);
     }
@@ -51,7 +51,7 @@ public class Shoot extends Command {
   // Called once the command ends or is intrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shoot.shoot(false);
+    //m_shoot.shoot(false);
     m_shoot.stage(0);
     m_index.indexToStage(false);
     m_intake.intake(0);
