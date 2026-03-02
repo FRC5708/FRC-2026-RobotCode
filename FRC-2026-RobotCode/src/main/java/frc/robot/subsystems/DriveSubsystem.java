@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.function.DoubleSupplier;
 
 import org.json.simple.parser.ParseException;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -32,7 +33,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Drive;
 import frc.robot.Constants.Operator;
+import frc.robot.Constants.FieldConstants.PosesOfInterest;
 import frc.robot.subsystems.vision.Camera;
+import frc.robot.subsystems.vision.VisionUtils;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 
@@ -116,8 +119,19 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     Pose2d pose = getPose();
+    for (var camera : cameras) {
+      camera.periodic();
+      var observations = camera.getPoseObservations();
+      for (var observation : observations) {
+        swerveDrive.addVisionMeasurement(
+          observation.pose().toPose2d(),
+          observation.timestampSeconds(),
+          VisionUtils.collapse3DstddevsTo2d(observation.stddevs())
+        );
+      }
+    }
     m_field.setRobotPose(getPose());
-    double m_targetDistance = getDistanceToPose(pose);
+    double m_targetDistance = getDistanceToPose(PosesOfInterest.redHub);
     targetDistance.setDouble(m_targetDistance);
     //Comment out the following one to reduce feedback
     System.out.println(pose);

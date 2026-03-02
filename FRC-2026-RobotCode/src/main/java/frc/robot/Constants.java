@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -57,5 +60,11 @@ public final class Constants {
     public static final int canIDHood = 30;
     //0.020 is one tick
     public static final double shootWindUp = .3;
+  }
+
+  public static class FieldConstants {
+    public static class PosesOfInterest {
+      public static final Pose2d redHub = new Pose2d(Units.inchesToMeters(483.11),Units.inchesToMeters(135.09),new Rotation2d(0));
+    }
   }
 }
