@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.function.DoubleSupplier;
 
 import org.json.simple.parser.ParseException;
@@ -28,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Drive;
 import frc.robot.Constants.Operator;
+import frc.robot.subsystems.vision.Camera;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 
@@ -36,6 +38,7 @@ public class DriveSubsystem extends SubsystemBase {
   private SwerveDrive swerveDrive;
 
   SwerveDriveOdometry m_odometry;
+  ArrayList<Camera> cameras = new ArrayList<>();
   Field2d m_field = new Field2d();
   double creepMode;
 
