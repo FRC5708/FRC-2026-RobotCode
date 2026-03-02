@@ -18,21 +18,21 @@ public class VisionConstants {
 
     public static final VisionStdDevs kDefaultSDseed = new CameraIO.VisionStdDevs(0.5,1.0,4.0,8.0);
 
-    public static final AprilTagFieldLayout kFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+    public static final AprilTagFieldLayout kFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
     public static enum PhotonCamConfig {
-        BLUE_CAM(
-            "blue_cam",
+        RED_CAMERA(
+            "red_camera",
             kDefaultSDseed,
-            0.0, 0.0, 0.0, // x, y, z in inches
-            0.0, 0.0, 0.0, // roll, pitch, yaw in degrees
+            7.924, -10.886, 15.456, // x, y, z in inches
+            0.0, 0.0, 195, // roll, pitch, yaw in degrees
             true, 1.0 // headingFree, headingScaleFactor (Constrained PnP parameters)
         ),
 
-        RED_CAM(
-            "red_cam",
+        BLUE_CAMERA(
+            "blue_camera",
             kDefaultSDseed,
-            0.0, 0.0, 0.0, // x, y, z in inches
-            0.0, 0.0, 0.0, // roll, pitch, yaw in degrees
+            -7.924, -10.886, 15.456, // x, y, z in inches
+            0.0, 0.0, 165, // roll, pitch, yaw in degrees
             true, 1.0 // headingFree, headingScaleFactor (Constrained PnP parameters)
         );
 
