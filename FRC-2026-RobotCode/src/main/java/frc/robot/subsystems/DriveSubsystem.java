@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotation;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Drive;
 import frc.robot.Constants.Operator;
+import frc.robot.Constants.Auto.RotationK;
+import frc.robot.Constants.Auto.TranslationK;
 import frc.robot.Constants.FieldConstants.PosesOfInterest;
 import frc.robot.subsystems.vision.Camera;
 import frc.robot.subsystems.vision.VisionConstants;
@@ -81,8 +85,8 @@ public class DriveSubsystem extends SubsystemBase {
                                                               // module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic
                                         // drive trains
-            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(TranslationK.kP, TranslationK.kI, TranslationK.kD), // Translation PID constants
+            new PIDConstants(RotationK.kP, RotationK.kI, RotationK.kD) // Rotation PID constants
         ),
         config,
         () -> {
@@ -120,6 +124,10 @@ public class DriveSubsystem extends SubsystemBase {
           false);
     });
   };
+
+  public SwerveDrive getSwerveDrive() {
+    return swerveDrive;
+  }
 
   @Override
   public void periodic() {

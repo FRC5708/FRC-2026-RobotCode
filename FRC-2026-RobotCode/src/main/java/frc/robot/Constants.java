@@ -42,6 +42,22 @@ public final class Constants {
       backLeftPosition,
       backRightPosition
     );
+
+  }
+
+  public static class Auto {
+    public static class TranslationK {
+      public static final double kP = 5.0;
+      public static final double kI = 0.0;
+      public static final double kD = 0.0;
+    }
+
+    public static class RotationK {
+      public static final double kP = 5.0;
+      public static final double kI = 0.0;
+      public static final double kD = 0.0;
+    }
+
   }
   public static class Intake {
     public static final int canIDDeploy = 11;
