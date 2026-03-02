@@ -19,6 +19,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -35,7 +36,9 @@ import frc.robot.Constants.Drive;
 import frc.robot.Constants.Operator;
 import frc.robot.Constants.FieldConstants.PosesOfInterest;
 import frc.robot.subsystems.vision.Camera;
+import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionUtils;
+import frc.robot.subsystems.vision.io.CameraIOPhoton;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 
@@ -58,6 +61,9 @@ public class DriveSubsystem extends SubsystemBase {
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     RobotConfig config = RobotConfig.fromGUISettings();
+
+    cameras.add(new Camera(new CameraIOPhoton(VisionConstants.PhotonCamConfig.RED_CAMERA,() -> new Pose3d(getPose()),() -> getPose().getRotation())));
+    cameras.add(new Camera(new CameraIOPhoton(VisionConstants.PhotonCamConfig.BLUE_CAMERA,() -> new Pose3d(getPose()),() -> getPose().getRotation())));
 
     // Makes the swerve drive with Json files
     swerveDrive = new SwerveParser(swerveJsons).createSwerveDrive(Drive.maxSpeed);
