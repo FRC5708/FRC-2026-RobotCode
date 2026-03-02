@@ -21,8 +21,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -41,6 +44,9 @@ public class DriveSubsystem extends SubsystemBase {
   ArrayList<Camera> cameras = new ArrayList<>();
   Field2d m_field = new Field2d();
   double creepMode;
+
+  private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
+  private GenericEntry targetDistance = tab.add("Distance from Pose",0).getEntry();
 
   public DriveSubsystem() throws IOException, ParseException {
     File swerveJsons = new File(Filesystem.getDeployDirectory(), "swerve");
@@ -109,7 +115,12 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    Pose2d pose = getPose();
     m_field.setRobotPose(getPose());
+    double m_targetDistance = getDistanceToPose(pose);
+    targetDistance.setDouble(m_targetDistance);
+    //Comment out the following one to reduce feedback
+    System.out.println(pose);
   }
 
   public void creepModeToggle() {
