@@ -16,8 +16,13 @@ import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -27,6 +32,8 @@ import frc.robot.Constants.Shooter;
 
 
 public class ShootSubsystem extends SubsystemBase {
+  public int hoodSetPoint = 0;
+
   private TalonFXS m_shootLeftSecondary;
   private TalonFXS m_shootRightPrime;
 
@@ -41,6 +48,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   private SparkMax m_hood = new SparkMax(Shooter.canIDHood, MotorType.kBrushless);
   private RelativeEncoder m_encoderHood = m_hood.getEncoder();
+  private SparkClosedLoopController m_hoodPidController;
 
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
@@ -97,6 +105,15 @@ public class ShootSubsystem extends SubsystemBase {
     m_shootLeftSecondary = new TalonFXS(Shooter.canIDShootLeft);
     m_shootLeftSecondary.getConfigurator().apply(secondaryShooterMotorConfig);
     m_shootLeftSecondary.setControl(new Follower(Shooter.canIDShootRight, MotorAlignmentValue.Opposed));
+
+    m_hoodPidController = m_hood.getClosedLoopController();
+    SparkMaxConfig config = new SparkMaxConfig();
+
+    // Set PID gains
+    config.closedLoop
+    .p(0.14) //So I don't have kG or gravity so I'm temporarliy puting it in P, and adding .1 to it so it should react fast if its too fast I will make it smaller
+    .i(.2)
+    .d(0.05);
   }
 
   public void shoot(boolean shootGood) {
@@ -114,20 +131,17 @@ public class ShootSubsystem extends SubsystemBase {
     m_stageRight.set(-speed);
   }
 
-  public void stageLeft(double speed) {
-    m_stageLeft.set(-speed);
-  }
-  public void stageRight(double speed) {
-    m_stageRight.set(-speed);
+  public void hood(double setPoint){
+    m_hoodPidController.setSetpoint(setPoint, ControlType.kPosition);
   }
 
-  public void hoodDown(double power) {
-    m_hood.set(-power);
-}
+  public int getHoodSetpoint (){
+    return hoodSetPoint;
+  }
 
-  public void hoodUp(double power){
-    m_hood.set(power);
-  } 
+  public void changeHoodSetpoint (int delta){
+    hoodSetPoint += delta;
+  }
 
   @Override
   public void periodic() {
@@ -166,4 +180,20 @@ public class ShootSubsystem extends SubsystemBase {
   //   }
   //   return returnSpeed;
   // }
+
+  //   public void hoodDown(double power) {
+//     m_hood.set(-power);
+// }
+
+//   public void hoodUp(double power){
+//     m_hood.set(power);
+//   } 
+
+  public void stageLeft(double speed) {
+    m_stageLeft.set(-speed);
+  }
+
+  public void stageRight(double speed) {
+    m_stageRight.set(-speed);
+  }
 }

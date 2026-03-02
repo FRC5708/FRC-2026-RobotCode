@@ -7,14 +7,12 @@ import frc.robot.subsystems.ShootSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class HoodDown extends Command {
-  private final ShootSubsystem m_shooterHood; 
-  private double m_power;
+public class HoodPID extends Command {
+  private final ShootSubsystem m_shoot; 
   /** Creates a new Intake. */
-  public HoodDown(ShootSubsystem hood, double power) {
+  public HoodPID(ShootSubsystem hood) {
     // Use addRequirements
-    m_shooterHood = hood;
-    m_power = power;
+    m_shoot = hood;
   }
 
   // Called when the command is initially scheduled.
@@ -24,13 +22,23 @@ public class HoodDown extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooterHood.hoodDown(m_power);
+    switch (m_shoot.getHoodSetpoint()) {
+      case 1:
+        m_shoot.hood(0);
+      case 2:
+        m_shoot.hood(0.0725);
+      case 3:
+        m_shoot.hood(.5);
+      default:
+        break;
+    }
   }
+
+
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooterHood.hoodDown(0);
   }
 
   // Returns true when the command should end.

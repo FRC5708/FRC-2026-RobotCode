@@ -23,8 +23,8 @@ import frc.robot.commands.OnlyIndexToStage;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SplitStage;
-import frc.robot.commands.HoodDown;
-import frc.robot.commands.HoodUp;
+import frc.robot.commands.HoodPID;
+import frc.robot.commands.HoodSetpointChange;
 import frc.robot.commands.Stage;
 
 /**
@@ -57,6 +57,7 @@ public class RobotContainer {
     m_drive.setDefaultCommand(
            m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
                m_driverController::getRightX));
+    m_shoot.setDefaultCommand(new HoodPID(m_shoot));
     // m_intake.setDefaultCommand(new Deploy(m_intake,0.0));
     configureBindings();
   }
@@ -94,8 +95,8 @@ public class RobotContainer {
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
 
     //Hood controls
-    m_driverController.rightBumper().whileTrue(new HoodDown(m_shoot,.125));
-    m_driverController.leftBumper().whileTrue(new HoodUp(m_shoot,.1));
+    m_driverController.rightBumper().whileTrue(new HoodSetpointChange(m_shoot, 1));
+    m_driverController.leftBumper().whileTrue(new HoodSetpointChange(m_shoot,-1));
     
     //Creep mode + driving is with joysticks(look above)
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));

@@ -20,9 +20,7 @@ public class IndexSubsystem extends SubsystemBase {
   //private RelativeEncoder m_encoderIndex = m_index.getEncoder();
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
-  private GenericEntry speed = 
-    tab.add("Speed of Index", 0.6)
-      .getEntry();
+  private GenericEntry speed = tab.add("Speed of Index", 0.6).getEntry();
 
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
   /** Creates a new Intake. */
