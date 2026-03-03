@@ -13,6 +13,7 @@ public class HoodPID extends Command {
   public HoodPID(ShootSubsystem hood) {
     // Use addRequirements
     m_shoot = hood;
+    addRequirements(m_shoot);
   }
 
   // Called when the command is initially scheduled.

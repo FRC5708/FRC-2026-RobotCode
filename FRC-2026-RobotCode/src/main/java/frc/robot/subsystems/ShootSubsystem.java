@@ -66,6 +66,8 @@ public class ShootSubsystem extends SubsystemBase {
   private GenericEntry velocityRight = tab.add("Velocity Right", 0).getEntry();
 
   private GenericEntry hoodPosition = tab.add("Hood Pos", 0).getEntry();
+  private GenericEntry targetHoodSetpoint = tab.add("Hood Setpoint", 0).getEntry();
+
 
   private GenericEntry stagePowerLeft = tab.add("Stage Power going into Left", 0).getEntry();
   private GenericEntry stagePowerRight = tab.add("Stage Power going into Rightt", 0).getEntry();
@@ -144,10 +146,6 @@ public class ShootSubsystem extends SubsystemBase {
     m_hoodPidController.setSetpoint(setPoint, ControlType.kPosition);
   }
 
-  public int getHoodSetpoint (){
-    return hoodSetPoint;
-  }
-
   public void changeHoodSetpoint (int delta){
     hoodSetPoint += delta;
   }
@@ -172,11 +170,17 @@ public class ShootSubsystem extends SubsystemBase {
     velocityRight.setDouble(m_shooterVelocityRight);
 
     hoodPosition.setDouble(m_hoodPos);
+    targetHoodSetpoint.setDouble(getHoodSetpoint());
+
 
     stagePowerLeft.setDouble(m_stagePowerLeft);
     stagePowerRight.setDouble(m_stagePowerRight);
     stageVelocityLeft.setDouble(m_stageVelocityLeft);
     stageVelocityRight.setDouble(m_stageVelocityRight);
+  }
+
+  public int getHoodSetpoint (){
+    return hoodSetPoint;
   }
 
   public double getLeftStagePower() {

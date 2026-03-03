@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.epilogue.Epilogue; //VSCode is dumb, this class is generated, ignore the red squiggly line
+//VSCode is actully quite smart just it hadent been built until you build it which causes it to have a red line until is built
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
