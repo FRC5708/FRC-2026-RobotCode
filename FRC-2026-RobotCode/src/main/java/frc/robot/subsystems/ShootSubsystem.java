@@ -34,7 +34,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
 
 //TODO: Clean up shuffleboard stuff?
-@Logged
 public class ShootSubsystem extends SubsystemBase {
   public int hoodSetPoint = 0;
 
@@ -60,19 +59,19 @@ public class ShootSubsystem extends SubsystemBase {
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
   private GenericEntry targetDistance = tab.add("Target Distance",50).getEntry();
-  private GenericEntry powerLeft = tab.add("Power going into Left", 0).getEntry();
-  private GenericEntry powerRight = tab.add("Power going into Rightt", 0).getEntry();
-  private GenericEntry velocityLeft = tab.add("Velocity Left", 0).getEntry();
-  private GenericEntry velocityRight = tab.add("Velocity Right", 0).getEntry();
+  // private GenericEntry powerLeft = tab.add("Power going into Left", 0).getEntry();
+  // private GenericEntry powerRight = tab.add("Power going into Rightt", 0).getEntry();
+  // private GenericEntry velocityLeft = tab.add("Velocity Left", 0).getEntry();
+  // private GenericEntry velocityRight = tab.add("Velocity Right", 0).getEntry();
 
   private GenericEntry hoodPosition = tab.add("Hood Pos", 0).getEntry();
   private GenericEntry targetHoodSetpoint = tab.add("Hood Setpoint", 0).getEntry();
 
 
-  private GenericEntry stagePowerLeft = tab.add("Stage Power going into Left", 0).getEntry();
-  private GenericEntry stagePowerRight = tab.add("Stage Power going into Rightt", 0).getEntry();
-  private GenericEntry stageVelocityLeft = tab.add("Stage Velocity Left", 0).getEntry();
-  private GenericEntry stageVelocityRight = tab.add("Stage Velocity Right", 0).getEntry();
+  // private GenericEntry stagePowerLeft = tab.add("Stage Power going into Left", 0).getEntry();
+  // private GenericEntry stagePowerRight = tab.add("Stage Power going into Rightt", 0).getEntry();
+  // private GenericEntry stageVelocityLeft = tab.add("Stage Velocity Left", 0).getEntry();
+  // private GenericEntry stageVelocityRight = tab.add("Stage Velocity Right", 0).getEntry();
     
 
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
@@ -152,31 +151,29 @@ public class ShootSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double m_shooterPowerLeft = m_shootLeftSecondary.get();
-    double m_shooterPowerRight = m_shootRightPrime.get();
-    double m_shooterVelocityLeft = getLeftShooterVelocity();
-    double m_shooterVelocityRight = getRightShooterVelocity();
+    // double m_shooterPowerLeft = m_shootLeftSecondary.get();
+    // double m_shooterPowerRight = m_shootRightPrime.get();
+    // double m_shooterVelocityLeft = getLeftShooterVelocity();
+    // double m_shooterVelocityRight = getRightShooterVelocity();
 
-    double m_hoodPos = m_encoderHood.getPosition();
+    // double m_stagePowerLeft = m_stageLeft.get();
+    // double m_stagePowerRight = m_stageRight.get();
+    // double m_stageVelocityLeft = m_stageEncoderLeft.getVelocity();
+    // double m_stageVelocityRight = m_stageEncoderRight.getVelocity();
 
-    double m_stagePowerLeft = m_stageLeft.get();
-    double m_stagePowerRight = m_stageRight.get();
-    double m_stageVelocityLeft = m_stageEncoderLeft.getVelocity();
-    double m_stageVelocityRight = m_stageEncoderRight.getVelocity();
+    // powerLeft.setDouble(m_shooterPowerLeft);
+    // powerRight.setDouble(m_shooterPowerRight);
+    // velocityLeft.setDouble(m_shooterVelocityLeft);
+    // velocityRight.setDouble(m_shooterVelocityRight);
 
-    powerLeft.setDouble(m_shooterPowerLeft);
-    powerRight.setDouble(m_shooterPowerRight);
-    velocityLeft.setDouble(m_shooterVelocityLeft);
-    velocityRight.setDouble(m_shooterVelocityRight);
-
-    hoodPosition.setDouble(m_hoodPos);
+    hoodPosition.setDouble(m_encoderHood.getPosition());
     targetHoodSetpoint.setDouble(getHoodSetpoint());
 
 
-    stagePowerLeft.setDouble(m_stagePowerLeft);
-    stagePowerRight.setDouble(m_stagePowerRight);
-    stageVelocityLeft.setDouble(m_stageVelocityLeft);
-    stageVelocityRight.setDouble(m_stageVelocityRight);
+    // stagePowerLeft.setDouble(m_stagePowerLeft);
+    // stagePowerRight.setDouble(m_stagePowerRight);
+    // stageVelocityLeft.setDouble(m_stageVelocityLeft);
+    // stageVelocityRight.setDouble(m_stageVelocityRight);
   }
 
   public int getHoodSetpoint (){

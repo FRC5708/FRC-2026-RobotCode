@@ -12,7 +12,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 //import com.revrobotics.RelativeEncoder;
 //import edu.wpi.first.wpilibj.DigitalInput;
 
-@Logged
 public class IntakeSubsystem extends SubsystemBase {
   private SparkMax m_deploy = new SparkMax(Intake.canIDDeploy, MotorType.kBrushless);
   private SparkMax m_intake = new SparkMax(Intake.canIDIntake, MotorType.kBrushless);
