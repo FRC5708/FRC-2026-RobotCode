@@ -6,7 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import java.util.AbstractMap;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -76,6 +78,23 @@ public final class Constants {
     public static final int canIDHood = 30;
     //0.020 is one tick
     public static final double shootWindUp = .3;
+
+
+    //dummy values right now
+    
+    public static final InterpolatingDoubleTreeMap anglesTable = InterpolatingDoubleTreeMap.ofEntries(
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0)
+    );
+    public static final InterpolatingDoubleTreeMap rpmTable = InterpolatingDoubleTreeMap.ofEntries(
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0)
+    );
+
   }
 
   public static class FieldConstants {
