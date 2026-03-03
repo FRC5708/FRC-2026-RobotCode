@@ -18,6 +18,7 @@ import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.math.numbers.N6;
 
 // Generic interface for AprilTag Localization Source IO layers
+// TODO: This was written with advantagekit in mind, redo for Epilogue, we can probably get rid of the IO system entirely lowkey
 public interface CameraIO {
 
     public static class CameraIOInputs {
