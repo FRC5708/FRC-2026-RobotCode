@@ -25,6 +25,10 @@ public class Camera {
         return inputs;
     }
 
+    public boolean isConnected() {
+        return inputs.data.connected();
+    }
+
     public List<CameraIO.AprilTagPoseObservation> getPoseObservations() {
         return Collections.unmodifiableList(poseObservationCache);
     }
