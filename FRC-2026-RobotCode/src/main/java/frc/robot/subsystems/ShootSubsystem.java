@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -19,19 +20,25 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
 
-
+//TODO: Clean up shuffleboard stuff?
+@Logged
 public class ShootSubsystem extends SubsystemBase {
   private TalonFXS m_shootLeftSecondary;
   private TalonFXS m_shootRightPrime;
 
   private final VoltageOut voltageRequest = new VoltageOut(0);
   private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
+
+  private final StatusSignal<AngularVelocity> leftShooterVelocity;
+  private final StatusSignal<AngularVelocity> rightShooterVelocity;
   
   private SparkMax m_stageLeft = new SparkMax(Shooter.canIDStageLeft, MotorType.kBrushless);
   private SparkMax m_stageRight = new SparkMax(Shooter.canIDStageRight, MotorType.kBrushless);
@@ -85,6 +92,7 @@ public class ShootSubsystem extends SubsystemBase {
     
     m_shootRightPrime = new TalonFXS(Shooter.canIDShootRight);
     m_shootRightPrime.getConfigurator().apply(primeShooterMotorConfig);
+    rightShooterVelocity = m_shootRightPrime.getVelocity();
 
     TalonFXSConfiguration secondaryShooterMotorConfig = new TalonFXSConfiguration();
     secondaryShooterMotorConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
@@ -97,6 +105,7 @@ public class ShootSubsystem extends SubsystemBase {
     m_shootLeftSecondary = new TalonFXS(Shooter.canIDShootLeft);
     m_shootLeftSecondary.getConfigurator().apply(secondaryShooterMotorConfig);
     m_shootLeftSecondary.setControl(new Follower(Shooter.canIDShootRight, MotorAlignmentValue.Opposed));
+    leftShooterVelocity = m_shootLeftSecondary.getVelocity();
   }
 
   public void shoot(boolean shootGood) {
@@ -133,8 +142,8 @@ public class ShootSubsystem extends SubsystemBase {
   public void periodic() {
     double m_shooterPowerLeft = m_shootLeftSecondary.get();
     double m_shooterPowerRight = m_shootRightPrime.get();
-    double m_shooterVelocityLeft = m_shootLeftSecondary.getVelocity().getValueAsDouble();
-    double m_shooterVelocityRight = m_shootRightPrime.getVelocity().getValueAsDouble();
+    double m_shooterVelocityLeft = getLeftShooterVelocity();
+    double m_shooterVelocityRight = getRightShooterVelocity();
 
     double m_hoodPos = m_encoderHood.getPosition();
 
@@ -154,6 +163,43 @@ public class ShootSubsystem extends SubsystemBase {
     stagePowerRight.setDouble(m_stagePowerRight);
     stageVelocityLeft.setDouble(m_stageVelocityLeft);
     stageVelocityRight.setDouble(m_stageVelocityRight);
+  }
+
+  public double getLeftStagePower() {
+    return m_stageLeft.get();
+  }
+
+  public double getRightStagePower() {
+    return m_stageRight.get();
+  }
+
+  public double getLeftStageVelocity() {
+    return m_stageEncoderLeft.getVelocity();
+  }
+
+  public double getRightStageVelocity() {
+    return m_stageEncoderRight.getVelocity();
+  }
+
+  public double getLeftShooterPower() {
+    return m_shootLeftSecondary.get();
+  }
+
+  public double getRightShooterPower() {
+    return m_shootRightPrime.get();
+  }
+
+
+  public double getLeftShooterVelocity() {
+    return leftShooterVelocity.getValueAsDouble();
+  }
+
+  public double getRightShooterVelocity() {
+    return rightShooterVelocity.getValueAsDouble();
+  }
+
+  public double getHoodPosition() {
+    return m_encoderHood.getPosition();
   }
 
   // private double velocityToProperSpeed(StatusSignal<AngularVelocity> velocityStatusSignal, double properSpeed, double thresh) {

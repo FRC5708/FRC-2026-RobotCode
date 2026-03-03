@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import edu.wpi.first.epilogue.Logged;
 import frc.robot.subsystems.vision.io.*;
 
+@Logged
 public class Camera {
     private final CameraIO io;
     private final CameraIO.CameraIOInputs inputs = new CameraIO.CameraIOInputs();

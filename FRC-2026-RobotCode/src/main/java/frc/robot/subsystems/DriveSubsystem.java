@@ -19,12 +19,15 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -46,6 +49,7 @@ import frc.robot.subsystems.vision.io.CameraIOPhoton;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 
+@Logged
 public class DriveSubsystem extends SubsystemBase {
 
   private SwerveDrive swerveDrive;
@@ -165,6 +169,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Pose2d getPose() {
     return swerveDrive.getPose();
+  }
+
+  public Rotation2d getGyroRotation() {
+    return this.swerveDrive.getYaw();
+  }
+  
+  public SwerveModuleState[] getModuleStates() {
+    return this.swerveDrive.getStates();
   }
 
   public double getDistanceToPose(Pose2d pose) {

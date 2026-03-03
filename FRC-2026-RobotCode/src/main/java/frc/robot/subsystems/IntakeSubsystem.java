@@ -5,12 +5,14 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.Intake;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 //import com.revrobotics.RelativeEncoder;
 //import edu.wpi.first.wpilibj.DigitalInput;
 
+@Logged
 public class IntakeSubsystem extends SubsystemBase {
   private SparkMax m_deploy = new SparkMax(Intake.canIDDeploy, MotorType.kBrushless);
   private SparkMax m_intake = new SparkMax(Intake.canIDIntake, MotorType.kBrushless);

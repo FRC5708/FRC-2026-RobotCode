@@ -9,12 +9,13 @@ import frc.robot.Constants.Index;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
+@Logged
 public class IndexSubsystem extends SubsystemBase {
   private SparkMax m_index = new SparkMax(Index.canIDIndex, MotorType.kBrushless);
   //private RelativeEncoder m_encoderIndex = m_index.getEncoder();
