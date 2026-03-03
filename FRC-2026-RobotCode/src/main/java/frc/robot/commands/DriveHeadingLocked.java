@@ -8,7 +8,9 @@ import frc.robot.Constants.Auto.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.utils.GeometryUtils;
+import frc.robot.Constants.Shooter;;
 
 // Drives holonomic while aligning the robot with a pose. It controls rotation with PID while allowing the user full translational control
 public class DriveHeadingLocked extends Command {
@@ -17,11 +19,13 @@ public class DriveHeadingLocked extends Command {
     private final DoubleSupplier ySpeedSupplier;
     private final PIDController rotationController = new PIDController(RotationK.kP,RotationK.kI,RotationK.kD);
     private final DriveSubsystem m_drive;
-    public DriveHeadingLocked(Pose2d targetPose, DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier, DriveSubsystem drive) {
+    private final ShootSubsystem m_shooter;
+    public DriveHeadingLocked(Pose2d targetPose, DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier, DriveSubsystem drive,ShootSubsystem shoot) {
         this.targetPose = targetPose;
         this.xSpeedSupplier = xSpeedSupplier;
         this.ySpeedSupplier = ySpeedSupplier;
         m_drive = drive;
+        m_shooter = shoot;
     }
 
     @Override
@@ -39,6 +43,12 @@ public class DriveHeadingLocked extends Command {
         );
         
         m_drive.driveRobotRelative(speeds);
+
+        
+        double distanceFromHub = m_drive.getPose().getTranslation().getDistance(targetPose.getTranslation());
+        double rpm = Shooter.rpmTable.get(distanceFromHub);
+        double angle = Shooter.rpmTable.get(distanceFromHub);
+        // unfinished, need to apply numbers
     }
 }
 
