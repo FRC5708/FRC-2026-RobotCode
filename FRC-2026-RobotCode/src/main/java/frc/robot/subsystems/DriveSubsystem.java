@@ -136,10 +136,11 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    Pose2d pose = getPose();
+    //Pose2d pose = getPose();
     for (var camera : cameras) {
       camera.periodic();
       var observations = camera.getPoseObservations();
+      System.out.println(observations.size());
       for (var observation : observations) {
         swerveDrive.addVisionMeasurement(
           observation.pose().toPose2d(),
@@ -152,7 +153,7 @@ public class DriveSubsystem extends SubsystemBase {
     double m_targetDistance = getDistanceToPose(PosesOfInterest.redHub);
     targetDistance.setDouble(m_targetDistance);
     //Comment out the following one to reduce feedback
-    System.out.println(pose);
+    //System.out.println(pose);
   }
 
   public void creepModeToggle() {

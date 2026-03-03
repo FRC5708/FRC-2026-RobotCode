@@ -156,6 +156,7 @@ public class CameraIOPhoton implements CameraIO {
                 if (res.targets.size() < 2) {
                     var observation = poseEstimator.estimateLowestAmbiguityPose(res).map(this::buildPoseObservation); // Since this is the one tag pose, this is equivalent to simply pulling the IPPE Square estimate from the result directly
                     if (!observation.isEmpty()) observations.add(observation.get());
+                    continue;
                 }
                 var observation = poseEstimator.estimateCoprocMultiTagPose(res).map(this::buildPoseObservation);
                 if (!observation.isEmpty()) observations.add(observation.get());
