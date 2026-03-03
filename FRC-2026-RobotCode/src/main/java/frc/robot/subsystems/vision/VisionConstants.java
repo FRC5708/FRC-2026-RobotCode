@@ -24,7 +24,7 @@ public class VisionConstants {
             "red_camera",
             kDefaultSDseed,
             7.924, -10.886, 15.456, // x, y, z in inches
-            0.0, 0.0, 195, // roll, pitch, yaw in degrees
+            0.0, 10.0, 195, // roll, pitch, yaw in degrees
             true, 1.0 // headingFree, headingScaleFactor (Constrained PnP parameters)
         ),
 
@@ -32,7 +32,7 @@ public class VisionConstants {
             "blue_camera",
             kDefaultSDseed,
             -7.924, -10.886, 15.456, // x, y, z in inches
-            0.0, 0.0, 165, // roll, pitch, yaw in degrees
+            0.0, 10.0, 165, // roll, pitch, yaw in degrees
             true, 1.0 // headingFree, headingScaleFactor (Constrained PnP parameters)
         );
 
