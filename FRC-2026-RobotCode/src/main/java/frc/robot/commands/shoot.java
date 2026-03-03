@@ -35,6 +35,17 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    switch (m_shoot.getHoodSetpoint()) {
+      case 1:
+        m_shoot.hood(0);
+      case 2:
+        m_shoot.hood(0.0725);
+      case 3:
+        m_shoot.hood(.5);
+      default:
+        break;
+    }
+
     if (m_timer.hasElapsed(Shooter.shootWindUp)){
       m_shoot.shoot(true);
       m_shoot.stage(-1);
