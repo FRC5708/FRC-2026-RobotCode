@@ -19,6 +19,7 @@ public class Camera {
 
     public void periodic() {
         io.updateInputs(inputs);
+        poseObservationCache = io.getAllUnreadPoseObservations();
     }
 
     CameraIO.CameraIOInputs getInputs() {

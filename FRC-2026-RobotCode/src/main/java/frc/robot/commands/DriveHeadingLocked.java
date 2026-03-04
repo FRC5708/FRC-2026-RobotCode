@@ -19,13 +19,12 @@ public class DriveHeadingLocked extends Command {
     private final DoubleSupplier ySpeedSupplier;
     private final PIDController rotationController = new PIDController(RotationK.kP,RotationK.kI,RotationK.kD);
     private final DriveSubsystem m_drive;
-    private final ShootSubsystem m_shooter;
-    public DriveHeadingLocked(Pose2d targetPose, DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier, DriveSubsystem drive,ShootSubsystem shoot) {
+    public DriveHeadingLocked(Pose2d targetPose, DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier, DriveSubsystem drive) {
         this.targetPose = targetPose;
         this.xSpeedSupplier = xSpeedSupplier;
         this.ySpeedSupplier = ySpeedSupplier;
         m_drive = drive;
-        m_shooter = shoot;
+        //m_shooter = shoot;
     }
 
     @Override
@@ -35,20 +34,16 @@ public class DriveHeadingLocked extends Command {
 
     @Override
     public void execute() {
+        var control = GeometryUtils.angleToPose(m_drive.getPose(),targetPose).getRadians();
+        System.out.println(control);
         var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             xSpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
             ySpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
-            rotationController.calculate(GeometryUtils.angleToPose(m_drive.getPose(),targetPose).getRadians(),0),
+            rotationController.calculate(control,0),
             m_drive.getPose().getRotation()
         );
         
         m_drive.driveRobotRelative(speeds);
-
-        
-        double distanceFromHub = m_drive.getPose().getTranslation().getDistance(targetPose.getTranslation());
-        double rpm = Shooter.rpmTable.get(distanceFromHub);
-        double angle = Shooter.rpmTable.get(distanceFromHub);
-        // unfinished, need to apply numbers
     }
 }
 

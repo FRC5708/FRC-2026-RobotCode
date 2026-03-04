@@ -8,6 +8,7 @@ import frc.robot.Constants.Operator;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.IndexSubsystem;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
+import frc.robot.commands.DriveHeadingLocked;
 import frc.robot.commands.Intake;
 import frc.robot.commands.OnlyIndexFromStage;
 import frc.robot.commands.OnlyIndexToStage;
@@ -101,12 +103,12 @@ public class RobotContainer {
     m_driverController.leftBumper().whileTrue(new HoodSetpointChange(m_shoot, -1));
     m_driverController.a().whileTrue(new HoodUp(m_shoot, .1));
     m_driverController.b().whileTrue(new HoodDown(m_shoot, .1));
-
     
     //Creep mode + driving is with joysticks(look above)
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.start().onTrue(m_drive.zeroGyro());
+    //m_driverController.rightBumper().whileTrue(new DriveHeadingLocked(Constants.FieldConstants.PosesOfInterest.redHub,m_driverController::getLeftX, m_driverController::getLeftY, m_drive));
   }
 
   /**
