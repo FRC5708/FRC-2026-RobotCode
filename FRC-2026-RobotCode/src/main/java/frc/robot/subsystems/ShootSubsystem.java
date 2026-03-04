@@ -133,6 +133,11 @@ public class ShootSubsystem extends SubsystemBase {
       .velocityConversionFactor(1);
 
     // Set PID gains for hood position control
+    // TODO Having our best shooting positions between 0.5 and 2.0 means
+    // that it's difficult to avoid windup when the starting position is 0.
+    // Try resetting the encoder so our positions are between 2.5 and 4.0
+    // and then a more aggressive p could be used. The iMaxAccum config may
+    // be useful too. (Use m_hoodPidController.getIAccum() to view windup.)
     config.closedLoop
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .outputRange(-0.1, 0.1, ClosedLoopSlot.kSlot1)
