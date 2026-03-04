@@ -30,6 +30,7 @@ public class DriveHeadingLocked extends Command {
     @Override
     public void initialize() {
         addRequirements(m_drive);
+        addRequirements(m_shooter);
     }
 
     @Override
