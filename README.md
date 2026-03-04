@@ -1,11 +1,11 @@
 # To Do
 
 * Figure out preliminary driver controls and commands. The temporary/test controls are not for competition!
-* PID closed-loop control of shooter (TalonFXS)
-* PID closed-loop control of stage (SparkMax)
-* Calibrate shooting based on distance to HUB -- lots and lots of test shots and data collection
-* Detect indexing jam (fuel jammed against stage stalls indexer)
+* Auto adjust shoot speed and hood position based on distance to HUB
 * Configure pathplanner and verify with a simple movement auto path
+* PID closed-loop control of stage (SparkMax) (temporary open-loop working as-is isn't that bad)
+* Detect indexing jam (fuel jammed against stage stalls indexer)
+* Climb (teleop and auton have very different challenges)
 
 # Driver Controls
 
@@ -13,18 +13,16 @@
   * Left - Field relative movement (LeftX, LeftY)
   * Right - Angular orientation (RightX)
 * Hopper (Intake Position)
-  * Y held - Extend Intake
-  * X held - Retract Intake
+  * Pov right held - Extend Intake
+  * Pov left held - Retract Intake
 * Intake (Gather)
-  * ?
-  * Pov Down held - Reverses the direction of fuel to put out of the robot
-  * B held - Gather from floor
+  * Pov up held - Reverses the direction of fuel to put out of the robot
+  * Pov down held - Gather from floor
 * Shoot
-  * ?
-  * Trigger Left - Fast (high power) test shot
-  * Trigger Right - Slow (low power) test shot
-  * Bumper Left - Hood up
-  * Bumper Right - Hood down
+  * Trigger Right - Shoot from given distance
+  * Bumper Right - Adjust hood to next calibrated position (temporary!)
+  * A held - Hood up
+  * B held - Hood down
 
 # Commands Robot Will Perform
 
