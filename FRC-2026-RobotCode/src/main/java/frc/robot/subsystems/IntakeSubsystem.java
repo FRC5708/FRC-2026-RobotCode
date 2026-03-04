@@ -39,7 +39,12 @@ public class IntakeSubsystem extends SubsystemBase {
     // }
     m_deploy.set(power);
   }
+
   public void intake(double power) {
+    m_intake.set(power);
+  }
+
+  public void reverseIntake(double power) {
     m_intake.set(-power);
   }
 

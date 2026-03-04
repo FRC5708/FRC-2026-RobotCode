@@ -27,7 +27,10 @@ public class Intake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.intake(-m_power);
+    m_intake.intake(m_power);
+   // FIXME This will jam if run constantly. There needs to be a way
+    // to agitate the hopper while intaking. Maybe by running the indexer
+    // until a jam is detected, then reversing it, then running it again.
     //m_index.indexToStage(true);
   }
 

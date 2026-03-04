@@ -88,20 +88,20 @@ public class RobotContainer {
     
     //For the comp
     //Intake controls
-    m_driverController.leftTrigger().whileTrue(new Intake(m_intake, m_index, 0.55));
-    m_driverController.y().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
+    m_driverController.povDown().whileTrue(new Intake(m_intake, m_index, 0.55));
+    m_driverController.povUp().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
 
-    //Deploy the funnel controls
-    //m_driverController.a().whileTrue(new Deploy(m_intake, 1.0));
-    //m_driverController.x().whileTrue(new Deploy(m_intake, -.85));
+    //Deploy the funnel (intake) controls
+    m_driverController.povLeft().whileTrue(new Deploy(m_intake, 1.0));
+    m_driverController.povRight().whileTrue(new Deploy(m_intake, -0.7));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
 
     //Hood controls
     m_driverController.rightBumper().whileTrue(new HoodSetpointChange(m_shoot));
-    m_driverController.a().whileTrue(new HoodUp(m_shoot, .1));
-    m_driverController.b().whileTrue(new HoodDown(m_shoot, .1));
+    m_driverController.a().whileTrue(new HoodDown(m_shoot, .1));
+    m_driverController.b().whileTrue(new HoodUp(m_shoot, .1));
     
     //Creep mode + driving is with joysticks(look above)
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
