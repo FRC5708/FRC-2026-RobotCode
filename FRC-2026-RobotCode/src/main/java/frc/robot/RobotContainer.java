@@ -26,7 +26,6 @@ import frc.robot.commands.OnlyIndexToStage;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SplitStage;
-import frc.robot.commands.HoodPID;
 import frc.robot.commands.HoodSetpointChange;
 import frc.robot.commands.Stage;
 
@@ -61,7 +60,6 @@ public class RobotContainer {
     m_drive.setDefaultCommand(
            m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
                m_driverController::getRightX));
-    m_shoot.setDefaultCommand(new HoodPID(m_shoot));
     // m_intake.setDefaultCommand(new Deploy(m_intake,0.0));
     configureBindings();
   }
