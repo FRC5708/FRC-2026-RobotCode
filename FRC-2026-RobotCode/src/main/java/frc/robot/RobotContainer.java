@@ -24,6 +24,8 @@ import frc.robot.commands.OnlyIndexToStage;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SplitStage;
+import frc.robot.commands.HoodUp;
+import frc.robot.commands.HoodDown;
 import frc.robot.commands.HoodSetpointChange;
 import frc.robot.commands.Stage;
 
@@ -88,15 +90,18 @@ public class RobotContainer {
     m_driverController.y().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
 
     //Deploy the funnel controls
-    m_driverController.a().whileTrue(new Deploy(m_intake, 1.0));
-    m_driverController.x().whileTrue(new Deploy(m_intake, -.85));
+    //m_driverController.a().whileTrue(new Deploy(m_intake, 1.0));
+    //m_driverController.x().whileTrue(new Deploy(m_intake, -.85));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
 
     //Hood controls
     m_driverController.rightBumper().whileTrue(new HoodSetpointChange(m_shoot, 1));
-    m_driverController.leftBumper().whileTrue(new HoodSetpointChange(m_shoot,-1));
+    m_driverController.leftBumper().whileTrue(new HoodSetpointChange(m_shoot, -1));
+    m_driverController.a().whileTrue(new HoodUp(m_shoot, .1));
+    m_driverController.b().whileTrue(new HoodDown(m_shoot, .1));
+
     
     //Creep mode + driving is with joysticks(look above)
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));

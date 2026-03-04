@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+// Copyright 2026 Team 5708
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -21,7 +21,10 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.ResetMode;
+import com.revrobotics.PersistMode;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -30,7 +33,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
 
-//TODO: Clean up shuffleboard stuff?
 public class ShootSubsystem extends SubsystemBase {
   public int hoodSetPoint = 0;
 
@@ -50,16 +52,15 @@ public class ShootSubsystem extends SubsystemBase {
   private RelativeEncoder m_stageEncoderRight = m_stageRight.getEncoder();
 
   private SparkMax m_hood = new SparkMax(Shooter.canIDHood, MotorType.kBrushless);
-  private RelativeEncoder m_encoderHood = m_hood.getEncoder();
+  private RelativeEncoder m_hoodEncoder;
   private SparkClosedLoopController m_hoodPidController;
-
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
   private GenericEntry targetDistance = tab.add("Target Distance",50).getEntry();
   // private GenericEntry powerLeft = tab.add("Power going into Left", 0).getEntry();
-  // private GenericEntry powerRight = tab.add("Power going into Rightt", 0).getEntry();
+  private GenericEntry powerRight = tab.add("Power going into Rightt", 0).getEntry();
   // private GenericEntry velocityLeft = tab.add("Velocity Left", 0).getEntry();
-  // private GenericEntry velocityRight = tab.add("Velocity Right", 0).getEntry();
+  private GenericEntry velocityRight = tab.add("Velocity Right", 0).getEntry();
 
   private GenericEntry hoodPosition = tab.add("Hood Pos", 0).getEntry();
   private GenericEntry targetHoodSetpoint = tab.add("Hood Setpoint", 0).getEntry();
@@ -113,14 +114,28 @@ public class ShootSubsystem extends SubsystemBase {
     m_shootLeftSecondary.setControl(new Follower(Shooter.canIDShootRight, MotorAlignmentValue.Opposed));
     leftShooterVelocity = m_shootLeftSecondary.getVelocity();
 
+    //PID Controls set for the hood
+    m_hoodEncoder = m_hood.getEncoder();
     m_hoodPidController = m_hood.getClosedLoopController();
     SparkMaxConfig config = new SparkMaxConfig();
 
-    // Set PID gains
+    config
+      .smartCurrentLimit(40)
+      .idleMode(IdleMode.kBrake);
+    
+    //Sets this for the NEO encoder conversionfactor
+    config.encoder
+      .positionConversionFactor(1)
+      .velocityConversionFactor(1);
+
+    // Set PID gains for hood position control
     config.closedLoop
-    .p(0.14) //So I don't have kG or gravity so I'm temporarliy puting it in P, and adding .1 to it so it should react fast if its too fast I will make it smaller
-    .i(.2)
-    .d(0.05);
+      .p(.1)
+      .i(.2)
+      .d(0)
+      .outputRange(-.1, .1);
+
+    m_hood.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void shoot(boolean shootGood) {
@@ -142,6 +157,10 @@ public class ShootSubsystem extends SubsystemBase {
     m_hoodPidController.setSetpoint(setPoint, ControlType.kPosition);
   }
 
+  public void resetHoodEncoder(){
+    m_hoodEncoder.setPosition(0);
+  }
+
   public void changeHoodSetpoint (int delta){
     hoodSetPoint += delta;
   }
@@ -149,9 +168,9 @@ public class ShootSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // double m_shooterPowerLeft = m_shootLeftSecondary.get();
-    // double m_shooterPowerRight = m_shootRightPrime.get();
+    double m_shooterPowerRight = m_shootRightPrime.get();
     // double m_shooterVelocityLeft = getLeftShooterVelocity();
-    // double m_shooterVelocityRight = getRightShooterVelocity();
+    double m_shooterVelocityRight = getRightShooterVelocity();
 
     // double m_stagePowerLeft = m_stageLeft.get();
     // double m_stagePowerRight = m_stageRight.get();
@@ -159,11 +178,11 @@ public class ShootSubsystem extends SubsystemBase {
     // double m_stageVelocityRight = m_stageEncoderRight.getVelocity();
 
     // powerLeft.setDouble(m_shooterPowerLeft);
-    // powerRight.setDouble(m_shooterPowerRight);
+    powerRight.setDouble(m_shooterPowerRight);
     // velocityLeft.setDouble(m_shooterVelocityLeft);
-    // velocityRight.setDouble(m_shooterVelocityRight);
+    velocityRight.setDouble(m_shooterVelocityRight);
 
-    hoodPosition.setDouble(m_encoderHood.getPosition());
+    hoodPosition.setDouble(m_hoodEncoder.getPosition());
     targetHoodSetpoint.setDouble(getHoodSetpoint());
 
 
@@ -211,7 +230,7 @@ public class ShootSubsystem extends SubsystemBase {
   }
 
   public double getHoodPosition() {
-    return m_encoderHood.getPosition();
+    return m_hoodEncoder.getPosition();
   }
 
   // private double velocityToProperSpeed(StatusSignal<AngularVelocity> velocityStatusSignal, double properSpeed, double thresh) {
@@ -225,13 +244,13 @@ public class ShootSubsystem extends SubsystemBase {
   //   return returnSpeed;
   // }
 
-  //   public void hoodDown(double power) {
-//     m_hood.set(-power);
-// }
+  public void hoodDown(double power) {
+  m_hood.set(-power);
+  }
 
-//   public void hoodUp(double power){
-//     m_hood.set(power);
-//   } 
+  public void hoodUp(double power){
+    m_hood.set(power);
+  } 
 
   public void stageLeft(double speed) {
     m_stageLeft.set(-speed);
