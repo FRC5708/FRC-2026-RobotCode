@@ -140,7 +140,7 @@ public class DriveSubsystem extends SubsystemBase {
     for (var camera : cameras) {
       camera.periodic();
       var observations = camera.getPoseObservations();
-      System.out.println("Observations: " + observations.size());
+      //System.out.println("Observations: " + observations.size());
       for (var observation : observations) {
         swerveDrive.addVisionMeasurement(
           observation.pose().toPose2d(),
