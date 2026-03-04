@@ -141,9 +141,12 @@ public class ShootSubsystem extends SubsystemBase {
     config.closedLoop
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .outputRange(-0.1, 0.1, ClosedLoopSlot.kSlot1)
-      .p(0.15, ClosedLoopSlot.kSlot1)
-      .i(0.002, ClosedLoopSlot.kSlot1)
+      .p(0.3, ClosedLoopSlot.kSlot1)
+      .i(0.0, ClosedLoopSlot.kSlot1)
       .d(0.0, ClosedLoopSlot.kSlot1);
+
+    config.closedLoop.feedForward
+      .kS(.1, ClosedLoopSlot.kSlot1);
 
     m_hood.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }

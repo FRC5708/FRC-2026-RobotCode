@@ -40,13 +40,17 @@ public class Shoot extends Command {
         break;
       case 2:
         // from 6 feet out
-        m_shoot.hood(0.5);
+        m_shoot.hood(0.25);
         break;
       case 3:
-        // against the side field wall
-        m_shoot.hood(0.9);
+        // from 6 feet out
+        m_shoot.hood(1.1);
         break;
       case 4:
+        // against the side field wall
+        m_shoot.hood(1.4);
+        break;
+      case 5:
         // passing between zones
         m_shoot.hood(3.0);
       default:
