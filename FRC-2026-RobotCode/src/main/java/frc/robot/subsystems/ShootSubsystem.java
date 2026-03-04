@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -16,7 +18,9 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -27,6 +31,8 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
 
@@ -51,7 +57,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   private SparkMax m_hood = new SparkMax(Shooter.canIDHood, MotorType.kBrushless);
   private RelativeEncoder m_encoderHood = m_hood.getEncoder();
-  private SparkClosedLoopController m_hoodPidController;
+  private SparkClosedLoopController m_hoodPidController = m_hood.getClosedLoopController();
 
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
@@ -105,7 +111,6 @@ public class ShootSubsystem extends SubsystemBase {
     secondaryShooterMotorConfig.ExternalFeedback.ExternalFeedbackSensorSource = ExternalFeedbackSensorSourceValue.Commutation;
 
     secondaryShooterMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-
     secondaryShooterMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     m_shootLeftSecondary = new TalonFXS(Shooter.canIDShootLeft);
@@ -113,24 +118,37 @@ public class ShootSubsystem extends SubsystemBase {
     m_shootLeftSecondary.setControl(new Follower(Shooter.canIDShootRight, MotorAlignmentValue.Opposed));
     leftShooterVelocity = m_shootLeftSecondary.getVelocity();
 
-    m_hoodPidController = m_hood.getClosedLoopController();
     SparkMaxConfig config = new SparkMaxConfig();
 
     // Set PID gains
     config.closedLoop
     .p(0.14) //So I don't have kG or gravity so I'm temporarliy puting it in P, and adding .1 to it so it should react fast if its too fast I will make it smaller
-    .i(.2)
+    .i(.2) // Are we sure we want to use kI? 
     .d(0.05);
+
+    m_hood.configure(config,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
   }
 
   public void shoot(boolean shootGood) {
     double speed = targetDistance.getDouble(50);
-    if (shootGood){
-      m_shootRightPrime.setControl(velocityRequest.withVelocity(speed));
-    }
-    else {
-      m_shootRightPrime.set(0);
-    }
+    shoot_impl(speed * (shootGood ? 1 : 0));
+  }
+
+  // Raw shoot method, expects a speed in rotations per second
+  public void shoot_impl(double speed) {
+    m_shootRightPrime.setControl(velocityRequest.withVelocity(speed));
+  }
+
+
+  // All units in radians. The command will change the setpoint, and will continue to be scheduled until the hood is within the tolerance
+  public Command setHoodCommand(double position, double tolerance) {
+    return new FunctionalCommand(
+      () -> hood(position),
+      () -> {}, 
+      (interrupted) -> {},
+      () -> Math.abs(getHoodPosition() - position) < tolerance,
+      this
+    );
   }
 
   public void stage(double speed) {
@@ -142,7 +160,7 @@ public class ShootSubsystem extends SubsystemBase {
     m_hoodPidController.setSetpoint(setPoint, ControlType.kPosition);
   }
 
-  public void changeHoodSetpoint (int delta){
+  public void changeHoodSetpoint(int delta){
     hoodSetPoint += delta;
   }
 
