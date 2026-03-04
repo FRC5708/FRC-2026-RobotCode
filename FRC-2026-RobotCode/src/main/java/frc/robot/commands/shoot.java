@@ -30,15 +30,25 @@ public class Shoot extends Command {
 
   @Override
   public void execute() {
+    // TODO refactor the hood setpoint into m_shoot.shoot() so
+    // that the hood position is automatically adjusted for the
+    // shot distance (which controls shoot speed).
     switch (m_shoot.getHoodSetpoint()) {
       case 1:
-        m_shoot.hood(0);
+        // against the HUB
+        m_shoot.hood(0.1);
+        break;
       case 2:
-        m_shoot.hood(0.048);
+        // from 6 feet out
+        m_shoot.hood(0.5);
+        break;
       case 3:
-        m_shoot.hood(.1);
+        // against the side field wall
+        m_shoot.hood(0.9);
+        break;
       case 4:
-        m_shoot.hood(.25);
+        // passing between zones
+        m_shoot.hood(3.0);
       default:
         break;
     }

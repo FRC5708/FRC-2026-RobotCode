@@ -141,6 +141,7 @@ public class DriveSubsystem extends SubsystemBase {
       camera.periodic();
       var observations = camera.getPoseObservations();
       if (observations.size() > 0) {
+        // FIXME This generates too much log spam. It must be removed for competition.
         System.out.println("Observations: " + observations.size());
         for (var observation : observations) {
           swerveDrive.addVisionMeasurement(

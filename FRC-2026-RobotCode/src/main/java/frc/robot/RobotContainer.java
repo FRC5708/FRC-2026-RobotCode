@@ -99,8 +99,7 @@ public class RobotContainer {
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
 
     //Hood controls
-    m_driverController.rightBumper().whileTrue(new HoodSetpointChange(m_shoot, 1));
-    m_driverController.leftBumper().whileTrue(new HoodSetpointChange(m_shoot, -1));
+    m_driverController.rightBumper().whileTrue(new HoodSetpointChange(m_shoot));
     m_driverController.a().whileTrue(new HoodUp(m_shoot, .1));
     m_driverController.b().whileTrue(new HoodDown(m_shoot, .1));
     
@@ -108,7 +107,7 @@ public class RobotContainer {
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.start().onTrue(m_drive.zeroGyro());
-    //m_driverController.rightBumper().whileTrue(new DriveHeadingLocked(Constants.FieldConstants.PosesOfInterest.redHub,m_driverController::getLeftX, m_driverController::getLeftY, m_drive));
+    m_driverController.leftBumper().whileTrue(new DriveHeadingLocked(Constants.FieldConstants.PosesOfInterest.redHub,m_driverController::getLeftX, m_driverController::getLeftY, m_drive));
   }
 
   /**

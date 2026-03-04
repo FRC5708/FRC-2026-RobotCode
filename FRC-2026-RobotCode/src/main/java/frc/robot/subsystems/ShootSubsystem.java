@@ -17,6 +17,8 @@ import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -34,7 +36,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
 
 public class ShootSubsystem extends SubsystemBase {
-  public int hoodSetPoint = 0;
+  public int hoodSetPoint = 2;
 
   private TalonFXS m_shootLeftSecondary;
   private TalonFXS m_shootRightPrime;
@@ -58,12 +60,14 @@ public class ShootSubsystem extends SubsystemBase {
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
   private GenericEntry targetDistance = tab.add("Target Distance",50).getEntry();
   // private GenericEntry powerLeft = tab.add("Power going into Left", 0).getEntry();
-  private GenericEntry powerRight = tab.add("Power going into Rightt", 0).getEntry();
+  private GenericEntry powerRight = tab.add("Power going into Right", 0).getEntry();
   // private GenericEntry velocityLeft = tab.add("Velocity Left", 0).getEntry();
   private GenericEntry velocityRight = tab.add("Velocity Right", 0).getEntry();
 
-  private GenericEntry hoodPosition = tab.add("Hood Pos", 0).getEntry();
-  private GenericEntry targetHoodSetpoint = tab.add("Hood Setpoint", 0).getEntry();
+  private GenericEntry hoodPos = tab.add("Hood Pos", 0).getEntry();
+  private GenericEntry hoodPosIndex = tab.add("Hood Index", 0).getEntry();
+  private GenericEntry hoodPosTarget = tab.add("Hood Target", 0).getEntry();
+  private GenericEntry hoodPower = tab.add("Hood Power", 0).getEntry();
 
 
   // private GenericEntry stagePowerLeft = tab.add("Stage Power going into Left", 0).getEntry();
@@ -130,10 +134,11 @@ public class ShootSubsystem extends SubsystemBase {
 
     // Set PID gains for hood position control
     config.closedLoop
-      .p(.1)
-      .i(.2)
-      .d(0)
-      .outputRange(-.1, .1);
+      .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+      .outputRange(-0.1, 0.1, ClosedLoopSlot.kSlot1)
+      .p(0.15, ClosedLoopSlot.kSlot1)
+      .i(0.002, ClosedLoopSlot.kSlot1)
+      .d(0.0, ClosedLoopSlot.kSlot1);
 
     m_hood.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
@@ -154,15 +159,19 @@ public class ShootSubsystem extends SubsystemBase {
   }
 
   public void hood(double setPoint){
-    m_hoodPidController.setSetpoint(setPoint, ControlType.kPosition);
+    hoodPosTarget.setDouble(setPoint);
+    m_hoodPidController.setSetpoint(setPoint, ControlType.kPosition, ClosedLoopSlot.kSlot1);
   }
 
   public void resetHoodEncoder(){
     m_hoodEncoder.setPosition(0);
   }
 
-  public void changeHoodSetpoint (int delta){
-    hoodSetPoint += delta;
+  public void changeHoodSetpoint (){
+    ++hoodSetPoint;
+    if (hoodSetPoint > 4) {
+      hoodSetPoint = 1;
+    }
   }
 
   @Override
@@ -182,9 +191,9 @@ public class ShootSubsystem extends SubsystemBase {
     // velocityLeft.setDouble(m_shooterVelocityLeft);
     velocityRight.setDouble(m_shooterVelocityRight);
 
-    hoodPosition.setDouble(m_hoodEncoder.getPosition());
-    targetHoodSetpoint.setDouble(getHoodSetpoint());
-
+    hoodPos.setDouble(m_hoodEncoder.getPosition());
+    hoodPower.setDouble(m_hood.getAppliedOutput());
+    hoodPosIndex.setInteger(getHoodSetpoint());
 
     // stagePowerLeft.setDouble(m_stagePowerLeft);
     // stagePowerRight.setDouble(m_stagePowerRight);
@@ -229,7 +238,7 @@ public class ShootSubsystem extends SubsystemBase {
     return rightShooterVelocity.getValueAsDouble();
   }
 
-  public double getHoodPosition() {
+  public double getHoodPos() {
     return m_hoodEncoder.getPosition();
   }
 
