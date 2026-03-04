@@ -57,7 +57,6 @@ public class ShootSubsystem extends SubsystemBase {
 
   private SparkMax m_hood = new SparkMax(Shooter.canIDHood, MotorType.kBrushless);
   private RelativeEncoder m_encoderHood = m_hood.getEncoder();
-  private SparkClosedLoopController m_hoodPidController = m_hood.getClosedLoopController();
 
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
@@ -127,6 +126,8 @@ public class ShootSubsystem extends SubsystemBase {
     .d(0.05);
 
     m_hood.configure(config,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+
+    m_hoodPidController = m_hood.getClosedLoopController();
   }
 
   public void shoot(boolean shootGood) {
