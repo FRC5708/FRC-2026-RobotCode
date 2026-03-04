@@ -7,16 +7,21 @@ package frc.robot;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.epilogue.Epilogue; //VSCode is dumb, this class is generated, ignore the red squiggly line
+//VSCode is actully quite smart just it hadent been built until you build it which causes it to have a red line until is built
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the Main.java file in the project.
  */
+@Logged
 public class Robot extends TimedRobot {
+
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -38,6 +43,7 @@ public class Robot extends TimedRobot {
     /*FrontRight: 191.60172*/
     /*BackLeft: 235.98648*/
     /*BackRight: 303.13476*/
+    Epilogue.bind(this);
   }
 
   /**

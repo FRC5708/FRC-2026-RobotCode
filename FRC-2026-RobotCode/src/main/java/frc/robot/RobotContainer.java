@@ -8,24 +8,27 @@ import frc.robot.Constants.Operator;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.IndexSubsystem;
 
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
+import frc.robot.commands.DriveHeadingLocked;
 import frc.robot.commands.Intake;
 import frc.robot.commands.OnlyIndexFromStage;
 import frc.robot.commands.OnlyIndexToStage;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SplitStage;
-import frc.robot.commands.HoodDown;
 import frc.robot.commands.HoodUp;
+import frc.robot.commands.HoodDown;
+import frc.robot.commands.HoodSetpointChange;
 import frc.robot.commands.Stage;
 
 /**
@@ -34,6 +37,7 @@ import frc.robot.commands.Stage;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+@Logged
 public class RobotContainer {
   CommandXboxController m_driverController = new CommandXboxController(Operator.kDriverControllerPort);
   DriveSubsystem m_drive;
@@ -88,20 +92,22 @@ public class RobotContainer {
     m_driverController.y().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
 
     //Deploy the funnel controls
-    m_driverController.a().whileTrue(new Deploy(m_intake, 1.0));
-    m_driverController.x().whileTrue(new Deploy(m_intake, -.85));
+    //m_driverController.a().whileTrue(new Deploy(m_intake, 1.0));
+    //m_driverController.x().whileTrue(new Deploy(m_intake, -.85));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
 
     //Hood controls
-    m_driverController.rightBumper().whileTrue(new HoodDown(m_shoot,.125));
-    m_driverController.leftBumper().whileTrue(new HoodUp(m_shoot,.1));
+    m_driverController.rightBumper().whileTrue(new HoodSetpointChange(m_shoot));
+    m_driverController.a().whileTrue(new HoodUp(m_shoot, .1));
+    m_driverController.b().whileTrue(new HoodDown(m_shoot, .1));
     
     //Creep mode + driving is with joysticks(look above)
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
-    m_driverController.start().onTrue(m_drive.zeroGyroCommand());
+    m_driverController.start().onTrue(m_drive.zeroGyro());
+    m_driverController.leftBumper().whileTrue(new DriveHeadingLocked(Constants.FieldConstants.PosesOfInterest.redHub,m_driverController::getLeftX, m_driverController::getLeftY, m_drive));
   }
 
   /**

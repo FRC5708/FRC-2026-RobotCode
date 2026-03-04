@@ -14,15 +14,12 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
 public class IndexSubsystem extends SubsystemBase {
   private SparkMax m_index = new SparkMax(Index.canIDIndex, MotorType.kBrushless);
   //private RelativeEncoder m_encoderIndex = m_index.getEncoder();
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
-  private GenericEntry speed = 
-    tab.add("Speed of Index", 0.6)
-      .getEntry();
+  private GenericEntry speed = tab.add("Speed of Index", 0.6).getEntry();
 
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
   /** Creates a new Intake. */

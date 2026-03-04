@@ -4,8 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import java.util.AbstractMap;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -39,6 +44,22 @@ public final class Constants {
       backLeftPosition,
       backRightPosition
     );
+
+  }
+
+  public static class Auto {
+    public static class TranslationK {
+      public static final double kP = 5.0;
+      public static final double kI = 0.0;
+      public static final double kD = 0.0;
+    }
+
+    public static class RotationK {
+      public static final double kP = 5.0;
+      public static final double kI = 0.0;
+      public static final double kD = 0.0;
+    }
+
   }
   public static class Intake {
     public static final int canIDDeploy = 11;
@@ -57,5 +78,28 @@ public final class Constants {
     public static final int canIDHood = 30;
     //0.020 is one tick
     public static final double shootWindUp = .3;
+
+
+    //dummy values right now
+    
+    public static final InterpolatingDoubleTreeMap anglesTable = InterpolatingDoubleTreeMap.ofEntries(
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0)
+    );
+    public static final InterpolatingDoubleTreeMap rpmTable = InterpolatingDoubleTreeMap.ofEntries(
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0),
+      new AbstractMap.SimpleEntry<>(0.0, 0.0)
+    );
+
+  }
+
+  public static class FieldConstants {
+    public static class PosesOfInterest {
+      public static final Pose2d redHub = new Pose2d(Units.inchesToMeters(483.11),Units.inchesToMeters(135.09),new Rotation2d(0));
+    }
   }
 }
