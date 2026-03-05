@@ -56,9 +56,9 @@ public final class Constants {
     }
 
     public static class RotationK {
-      public static final double kP = 0.5;
+      public static final double kP = 1.3;
       public static final double kI = 0.0;
-      public static final double kD = 0.0;
+      public static final double kD = 0.07;
     }
 
   }
