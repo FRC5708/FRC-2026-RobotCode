@@ -7,49 +7,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": "startmid-east"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootL1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "spitCoral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "toL2"
+            "pathName": "leftStart"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "back from center"
+            "pathName": "leftIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "spin"
+            "pathName": "leftToShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "leftToIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "leftIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "leftToShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "leftToTStart"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "L1s",
+  "folder": null,
   "choreoAuto": false
 }

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.7022540983606556,
-        "y": 7.387551229508197
+        "x": 3.9644819277108434,
+        "y": 7.357024096385541
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7022540983606556,
-        "y": 7.387551229508197
+        "x": 4.532722891566265,
+        "y": 7.706710843373493
       },
       "isLocked": false,
-      "linkedName": "source-lena"
+      "linkedName": "leftShoot"
     },
     {
       "anchor": {
-        "x": 4.9822500000000005,
-        "y": 5.234
+        "x": 7.778330955777461,
+        "y": 6.473937232524964
       },
       "prevControl": {
-        "x": 3.9822500000000005,
-        "y": 5.234
+        "x": 7.920313253012047,
+        "y": 7.0838313253012055
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "reef2-lena"
+      "linkedName": "leftIntake"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 59.38139459109062
+    "rotation": -90.01622466386752
   },
   "reversed": false,
-  "folder": "lena",
+  "folder": "left",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 127.01067323360311
+    "rotation": 100.17551084304316
   },
   "useDefaultConstraints": true
 }

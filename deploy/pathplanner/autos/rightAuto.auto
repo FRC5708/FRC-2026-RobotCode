@@ -7,61 +7,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": "start2-to-northeast L1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootL1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "spitCoral"
+            "pathName": "rightStart"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "northeast-to-load L1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakeCoral"
+            "pathName": "rightIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "load-to-northwest L1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootL1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "spitCoral"
+            "pathName": "rightToShoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "northwest-to-load L1"
+            "pathName": "rightToIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rightIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rightToShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rightToTStart"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "L1s",
+  "folder": null,
   "choreoAuto": false
 }
