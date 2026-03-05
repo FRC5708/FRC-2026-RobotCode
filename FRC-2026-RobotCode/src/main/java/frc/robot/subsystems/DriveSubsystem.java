@@ -49,7 +49,7 @@ import frc.robot.subsystems.vision.io.CameraIOPhoton;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 
-//@Logged
+@Logged
 public class DriveSubsystem extends SubsystemBase {
 
   private SwerveDrive swerveDrive;

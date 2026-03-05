@@ -34,12 +34,12 @@ public class DriveHeadingLocked extends Command {
 
     @Override
     public void execute() {
-        var control = GeometryUtils.angleToPose(m_drive.getPose(),targetPose).getRadians();
+        var difference = GeometryUtils.angleToPose(m_drive.getPose(),targetPose).getRadians();
         //System.out.println(control);
         var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             xSpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
             ySpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
-            rotationController.calculate(control,0),
+            rotationController.calculate(difference,0),
             m_drive.getPose().getRotation()
         );
         

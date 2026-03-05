@@ -6,6 +6,7 @@ package frc.robot.utils;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public final class GeometryUtils {
     private GeometryUtils() {}
@@ -17,6 +18,7 @@ public final class GeometryUtils {
 
     /* finds angle from one pose to another pose */
     public static Rotation2d angleToPose(Pose2d startPose, Pose2d endPose){
-        return endPose.getRotation().minus(startPose.getRotation());
+        Translation2d targetVector = endPose.getTranslation().minus(startPose.getTranslation());
+        return targetVector.getAngle().minus(startPose.getRotation());
     }
 }

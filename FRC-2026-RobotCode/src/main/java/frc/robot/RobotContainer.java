@@ -107,7 +107,7 @@ public class RobotContainer {
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.start().onTrue(m_drive.zeroGyro());
-    m_driverController.leftBumper().whileTrue(new DriveHeadingLocked(Constants.FieldConstants.PosesOfInterest.redHub,m_driverController::getLeftX, m_driverController::getLeftY, m_drive));
+    m_driverController.leftBumper().whileTrue(new DriveHeadingLocked(Constants.FieldConstants.PosesOfInterest.blueHub,m_driverController::getLeftX, m_driverController::getLeftY, m_drive));
   }
 
   /**
