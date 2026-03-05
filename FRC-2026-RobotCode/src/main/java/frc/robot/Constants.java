@@ -84,17 +84,17 @@ public final class Constants {
 
     //dummy values right now
     
-    public static final InterpolatingDoubleTreeMap anglesTable = InterpolatingDoubleTreeMap.ofEntries(
-      new AbstractMap.SimpleEntry<>(0.0, 0.0),
-      new AbstractMap.SimpleEntry<>(0.0, 0.0),
-      new AbstractMap.SimpleEntry<>(0.0, 0.0),
-      new AbstractMap.SimpleEntry<>(0.0, 0.0)
+    public static final InterpolatingDoubleTreeMap hoodPosTable = InterpolatingDoubleTreeMap.ofEntries(
+      new AbstractMap.SimpleEntry<>(0.25, 0.25),
+      new AbstractMap.SimpleEntry<>(2.0, 1.1),
+      new AbstractMap.SimpleEntry<>(2.38, 1.4),
+      new AbstractMap.SimpleEntry<>(2.53, 1.4)
     );
-    public static final InterpolatingDoubleTreeMap rpmTable = InterpolatingDoubleTreeMap.ofEntries(
-      new AbstractMap.SimpleEntry<>(0.0, 0.0),
-      new AbstractMap.SimpleEntry<>(0.0, 0.0),
-      new AbstractMap.SimpleEntry<>(0.0, 0.0),
-      new AbstractMap.SimpleEntry<>(0.0, 0.0)
+    public static final InterpolatingDoubleTreeMap shootPowerTable = InterpolatingDoubleTreeMap.ofEntries(
+      new AbstractMap.SimpleEntry<>(0.0, 50.0),
+      new AbstractMap.SimpleEntry<>(2.0, 50.0),
+      new AbstractMap.SimpleEntry<>(2.38, 50.0),
+      new AbstractMap.SimpleEntry<>(2.53, 55.5)
     );
 
   }
