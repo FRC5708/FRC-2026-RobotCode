@@ -28,6 +28,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -38,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Drive;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.Operator;
 import frc.robot.Constants.Auto.RotationK;
 import frc.robot.Constants.Auto.TranslationK;
@@ -132,6 +134,12 @@ public class DriveSubsystem extends SubsystemBase {
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
   }
+
+  // TODO: jank asf, remove
+  public double distanceFromHub() {
+    return getPose().getTranslation().minus(FieldConstants.PosesOfInterest.blueHub.getTranslation()).getNorm() + Units.feetToMeters(2);
+  }
+
 
   @Override
   public void periodic() {
