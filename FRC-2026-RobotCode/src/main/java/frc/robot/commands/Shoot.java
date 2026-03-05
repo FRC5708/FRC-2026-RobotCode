@@ -33,35 +33,44 @@ public class Shoot extends Command {
     // TODO refactor the hood setpoint into m_shoot.shoot() so
     // that the hood position is automatically adjusted for the
     // shot distance (which controls shoot speed).
+    double hoodPos;
+    double speed;
+    double hoodAdjust = m_shoot.getHoodAdjust();
+    double speedAdjust = m_shoot.getShootAdjust();
+  
     switch (m_shoot.getDistanceChoice()) {
       case 0:
         // aganist the HUB
-        m_shoot.hood(0.25);
-        m_shoot.shoot(50);
-
+        hoodPos = 0.25;
+        speed = 50;
         break;
       case 6:
         // from 6 feet out
-        m_shoot.hood(1.1);
-        m_shoot.shoot(50);
+        hoodPos = 1.1;
+        speed = 50;
         break;
       case 7:
         // against the side field wall and 7ft
-        m_shoot.hood(1.4);
-        m_shoot.shoot(50);
+        hoodPos = 1.4;
+        speed = 50;
         break;
       case 10:
         // against the side field wall and 7ft
-        m_shoot.hood(1.4);
-        m_shoot.shoot(55.5);
+        hoodPos = 1.4;
+        speed = 55.5;
         break;
       case 15:
         // passing between zones
-        m_shoot.hood(3.0);
-        m_shoot.shoot(75);
+        hoodPos = 3.0;
+        speed = 75;
       default:
+        hoodPos = 0;
+        speed = 0;
         break;
     }
+
+    m_shoot.hood(hoodPos * hoodAdjust);
+    m_shoot.shoot(speed * speedAdjust);
 
     if (m_timer.hasElapsed(Shooter.shootWindUp)){
       m_shoot.stage(-1);

@@ -72,6 +72,9 @@ public class ShootSubsystem extends SubsystemBase {
   private GenericEntry hoodPower = tab.add("Hood Power", 0).getEntry();
 
   private SendableChooser <Integer> distance = new SendableChooser <Integer> ();
+  private GenericEntry hoodPosAdjust = tab.add("Hood Pos Adjust", 1).getEntry();
+  private GenericEntry shootAdjust = tab.add("Shoot Adjust", 1).getEntry();
+
 
   
 
@@ -191,6 +194,14 @@ public class ShootSubsystem extends SubsystemBase {
 
   public int getDistanceChoice() {
     return distance.getSelected();
+  }
+
+  public double getHoodAdjust() {
+    return hoodPosAdjust.getDouble(1);
+  }
+
+  public double getShootAdjust() {
+    return shootAdjust.getDouble(1);
   }
 
   @Override
