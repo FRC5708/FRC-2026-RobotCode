@@ -15,6 +15,10 @@ import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CreepMode;
@@ -107,7 +111,22 @@ public class RobotContainer {
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.start().onTrue(m_drive.zeroGyro());
-    m_driverController.leftBumper().whileTrue(new DriveHeadingLocked(Constants.FieldConstants.PosesOfInterest.blueHub,m_driverController::getLeftX, m_driverController::getLeftY, m_drive));
+    //lowkirkuinely cooked, refactor
+    m_driverController.leftBumper().whileTrue(new DriveHeadingLocked(
+      new Pose2d(
+        DriverStation.getAlliance().isPresent()
+          ? DriverStation.getAlliance().map(
+            (Alliance alliance) -> alliance == Alliance.Blue
+              ? FieldConstants.Hub.topCenterPoint.toTranslation2d()
+              : FieldConstants.Hub.redTopCenterPoint.toTranslation2d()
+          ).get() 
+          : FieldConstants.Hub.topCenterPoint.toTranslation2d(),
+        new Rotation2d()
+      ),
+      m_driverController::getLeftX,
+      m_driverController::getLeftY,
+      m_drive)
+    );
   }
 
   /**

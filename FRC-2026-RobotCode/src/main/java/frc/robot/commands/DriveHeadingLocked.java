@@ -10,9 +10,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.utils.GeometryUtils;
-import frc.robot.Constants.Shooter;;
+import frc.robot.Constants.Shooter;
 
 // Drives holonomic while aligning the robot with a pose. It controls rotation with PID while allowing the user full translational control
+/** @deprecated */
 public class DriveHeadingLocked extends Command {
     private final Pose2d targetPose;
     private final DoubleSupplier xSpeedSupplier;
@@ -25,11 +26,11 @@ public class DriveHeadingLocked extends Command {
         this.ySpeedSupplier = ySpeedSupplier;
         m_drive = drive;
         //m_shooter = shoot;
+        addRequirements(m_drive);
     }
 
     @Override
     public void initialize() {
-        addRequirements(m_drive);
     }
 
     @Override

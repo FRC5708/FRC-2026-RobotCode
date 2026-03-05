@@ -18,6 +18,7 @@ import org.photonvision.EstimatedRobotPose;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import frc.robot.FieldConstants;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionConstants.PhotonCamConfig;
 import edu.wpi.first.math.Vector;
@@ -54,7 +55,7 @@ public class CameraIOPhoton implements CameraIO {
         camera = new PhotonCamera(config.cameraNickname);
         this.seedPoseSupplier = seedPoseSupplier;
         poseEstimator = new PhotonPoseEstimator(
-            VisionConstants.kFieldLayout,
+            FieldConstants.kAprilTagFieldLayout,
             config.robotToCamera
         );
         cpnpParams = (config.cpnpParams == null) ? Optional.empty() : Optional.of(config.cpnpParams);

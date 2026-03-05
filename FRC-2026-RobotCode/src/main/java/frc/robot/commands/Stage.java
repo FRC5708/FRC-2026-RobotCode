@@ -18,6 +18,7 @@ public class Stage extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shoot = shoot;
     m_power = power;
+    addRequirements(m_shoot);
   }
 
   // Called when the command is initially scheduled.

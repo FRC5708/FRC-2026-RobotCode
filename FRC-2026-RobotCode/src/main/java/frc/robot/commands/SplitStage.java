@@ -18,6 +18,7 @@ public class SplitStage extends Command {
     m_shoot = shoot;
     m_power = power;
     m_left = left;
+    addRequirements(m_shoot);
   }
 
   // Called when the command is initially scheduled.

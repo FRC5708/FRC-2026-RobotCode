@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.RPM;
+
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -171,6 +173,10 @@ public class ShootSubsystem extends SubsystemBase {
       m_shootRightPrime.setControl(velocityRequest.withVelocity(speed));
   }
 
+  public void shootRPM(double rpm) {
+    m_shootRightPrime.setControl(velocityRequest.withVelocity(RPM.of(rpm)));
+  }
+
   public void stage(double speed) {
     m_stageLeft.set(-speed);
     m_stageRight.set(-speed);
@@ -267,6 +273,10 @@ public class ShootSubsystem extends SubsystemBase {
 
   public double getRightShooterVelocity() {
     return rightShooterVelocity.getValueAsDouble();
+  }
+
+  public AngularVelocity getRightShooterVelocityUnitSafe() {
+    return rightShooterVelocity.getValue();
   }
 
   public double getHoodPos() {
