@@ -98,11 +98,4 @@ public final class Constants {
     );
 
   }
-
-  public static class FieldConstants {
-    public static class PosesOfInterest {
-      public static final Pose2d redHub = new Pose2d(Units.inchesToMeters(483.11),Units.inchesToMeters(135.09),new Rotation2d(0));
-      public static final Pose2d blueHub = VisionConstants.kFieldLayout.getTagPose(26).get().toPose2d(); // TODO: Fix ts
-    }
-  }
 }

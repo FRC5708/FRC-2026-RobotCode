@@ -39,11 +39,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Drive;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.Operator;
 import frc.robot.Constants.Auto.RotationK;
 import frc.robot.Constants.Auto.TranslationK;
-import frc.robot.Constants.FieldConstants.PosesOfInterest;
 import frc.robot.subsystems.vision.Camera;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionUtils;
@@ -135,11 +133,6 @@ public class DriveSubsystem extends SubsystemBase {
     return swerveDrive;
   }
 
-  // TODO: jank asf, remove
-  public double distanceFromHub() {
-    return getPose().getTranslation().minus(FieldConstants.PosesOfInterest.blueHub.getTranslation()).getNorm() + Units.feetToMeters(2);
-  }
-
 
   @Override
   public void periodic() {
@@ -161,8 +154,6 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
     m_field.setRobotPose(getPose());
-    double m_targetDistance = getDistanceToPose(PosesOfInterest.redHub);
-    targetDistance.setDouble(m_targetDistance);
     //Comment out the following one to reduce feedback
     //System.out.println(pose);
   }
@@ -201,6 +192,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return this.swerveDrive.getRobotVelocity();
+  }
+
+  public ChassisSpeeds getFieldRelativeSpeeds() {
+    return this.swerveDrive.getFieldVelocity();
   }
 
   public void driveRobotRelative(ChassisSpeeds velocity) {
