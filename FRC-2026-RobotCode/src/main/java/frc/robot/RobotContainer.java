@@ -66,7 +66,6 @@ public class RobotContainer {
 
   @SuppressWarnings("deprecation")
   private void configureBindings() {
-    
     //For testing/debugging commands
     //m_driverController.y().whileTrue(new Stage(m_shoot, 1));
     //m_driverController.x().whileTrue(new SplitStage(m_shoot, .5, false));

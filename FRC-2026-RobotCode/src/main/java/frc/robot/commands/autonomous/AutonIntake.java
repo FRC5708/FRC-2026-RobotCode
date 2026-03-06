@@ -3,19 +3,23 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.autonomous;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IndexSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class DeployIntake extends Command {
+public class AutonIntake extends Command {
   private final IntakeSubsystem m_intake; 
+  private final IndexSubsystem m_index;
   private double m_power;
-  /** Creates a new intake. */
-  public DeployIntake(IntakeSubsystem intake, double power) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  /** Creates a new Intake. */
+  public AutonIntake(IntakeSubsystem intake, IndexSubsystem index, double power) {
+    // Use addRequirements
     m_intake = intake;
+    m_index = index;
     m_power = power;
-    addRequirements(m_intake);
+    addRequirements(m_intake,m_index);
   }
 
   // Called when the command is initially scheduled.
@@ -25,13 +29,18 @@ public class DeployIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.deploy(m_power);
+    m_intake.intake(m_power);
+   // FIXME This will jam if run constantly. There needs to be a way
+    // to agitate the hopper while intaking. Maybe by running the indexer
+    // until a jam is detected, then reversing it, then running it again.
+    //m_index.indexToStage(true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.deploy(0);
+    m_intake.intake(0);
+    m_index.indexToStage(false);
   }
 
   // Returns true when the command should end.

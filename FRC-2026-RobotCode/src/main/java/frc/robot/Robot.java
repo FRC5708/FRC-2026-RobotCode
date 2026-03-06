@@ -7,7 +7,7 @@ package frc.robot;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
-import edu.wpi.first.epilogue.Logged;
+//import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -15,7 +15,7 @@ import edu.wpi.first.epilogue.Epilogue; //VSCode is dumb, this class is generate
 //VSCode is actully quite smart just it hadent been built until you build it which causes it to have a red line until is built
 
 
-@Logged
+//@Logged
 public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
       // If this triggers it means for some reason is didn't read the swerve files right
       e.printStackTrace();
     }
-    Epilogue.bind(this);
+    //Epilogue.bind(this);
   }
 
   /**
