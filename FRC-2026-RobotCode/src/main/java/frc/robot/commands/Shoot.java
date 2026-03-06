@@ -20,6 +20,7 @@ public class Shoot extends Command {
     m_shoot = shoot;
     m_index = index;
     m_intake = intake;
+    addRequirements(m_shoot,m_index,m_intake);
   }
 
   @Override

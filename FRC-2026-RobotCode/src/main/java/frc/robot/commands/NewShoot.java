@@ -54,11 +54,11 @@ public class NewShoot extends Command {
         m_drive = drive;
         this.xSpeedSupplier = xSpeedSupplier;
         this.ySpeedSupplier = ySpeedSupplier;
+        addRequirements(m_shoot,m_drive,m_intake,m_index);
     }
 
     @Override
     public void initialize() {
-        
     }
 
     @Override
@@ -67,7 +67,7 @@ public class NewShoot extends Command {
         solution = BallisticsCalculator.calculateVectorSOTFSolution(
             m_drive.getPose().getTranslation(),
             target,
-            m_drive.getFieldRelativeSpeeds()
+            m_drive.getFieldRelativeSpeeds() // TODO: might need to be reversed becuas the shooter is on the back?? IDK
         );
         switch (state) {
             case TRANSITIONING:
@@ -81,6 +81,7 @@ public class NewShoot extends Command {
                 if (inThreshold()) {
                     state = CommandState.FIRING;
                 }
+                break;
             case FIRING:
                 m_shoot.hood(Units.radiansToRotations(solution.hoodAngleRads()));
                 m_shoot.stage(.4);
@@ -91,6 +92,7 @@ public class NewShoot extends Command {
                 if (!inThreshold()) {
                     state = CommandState.TRANSITIONING;
                 }
+                break;
         }
 
     }
@@ -114,5 +116,19 @@ public class NewShoot extends Command {
         );
         
         m_drive.driveRobotRelative(speeds);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        m_shoot.shoot(0);
+        m_shoot.stage(0);
+        m_index.indexToStage(false);
+        m_intake.intake(0);
+        m_shoot.hoodDown(0);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 }
