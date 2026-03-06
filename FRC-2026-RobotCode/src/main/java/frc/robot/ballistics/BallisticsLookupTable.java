@@ -10,23 +10,19 @@ public class BallisticsLookupTable {
     public static final InterpolatingDoubleTreeMap distanceToExitSpeedMap = new InterpolatingDoubleTreeMap(); //meters to meters per second
     public static final InterpolatingDoubleTreeMap exitSpeedToRPMMap = new InterpolatingDoubleTreeMap(); // MPS to RPM, converts ideal exit speed (m/s) to actual flywheel RPM, to compensate for flywheel dynamics (slippage, momentum loss, etc)
 
-    // converts a linear velocity back into RPM, assuming no dynamics
-    public static double calculateIdealRPM(double mps) {
-        return Units.radiansPerSecondToRotationsPerMinute(mps/Shooter.flywheelRadiusMeters);
-    }
-
     static {
         // Dummy
         distanceToHoodAngleMap.put(0.0,0.0);
         distanceToHoodAngleMap.put(1.0,1.0); 
 
         // Dummy
-        distanceToExitSpeedMap.put(0.0,0.0);
-        distanceToExitSpeedMap.put(1.0,1.0);
+        distanceToExitSpeedMap.put(2.0,16.0);
+        distanceToExitSpeedMap.put(2.38,16.0);
+        distanceToExitSpeedMap.put(2.53,17.7);
 
         // Dummy, assumes perfect mechanics for now
         exitSpeedToRPMMap.put(0.0,0.0);
-        exitSpeedToRPMMap.put(100.0,calculateIdealRPM(100));
+        exitSpeedToRPMMap.put(100.0,BallisticsCommon.calculateIdealRPM(100));
 
     }
 }

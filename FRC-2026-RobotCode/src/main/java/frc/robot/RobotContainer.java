@@ -14,6 +14,8 @@ import frc.robot.subsystems.IndexSubsystem;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -68,6 +70,8 @@ public class RobotContainer {
                m_driverController::getRightX));
     // m_intake.setDefaultCommand(new Deploy(m_intake,0.0));
     configureBindings();
+
+    NamedCommands.registerCommand("deploy intake", null);
   }
 
   /**
