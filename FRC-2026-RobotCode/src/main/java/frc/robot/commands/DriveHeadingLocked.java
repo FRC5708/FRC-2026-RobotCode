@@ -26,11 +26,11 @@ public class DriveHeadingLocked extends Command {
         this.ySpeedSupplier = ySpeedSupplier;
         m_drive = drive;
         //m_shooter = shoot;
+        addRequirements(m_drive);
     }
 
     @Override
     public void initialize() {
-        addRequirements(m_drive);
     }
 
     @Override

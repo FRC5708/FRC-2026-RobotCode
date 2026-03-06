@@ -15,6 +15,7 @@ public class Deploy extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
     m_power = power;
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.

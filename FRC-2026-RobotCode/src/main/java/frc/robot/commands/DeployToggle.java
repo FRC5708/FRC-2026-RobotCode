@@ -14,6 +14,7 @@ public class DeployToggle extends Command {
   public DeployToggle(IntakeSubsystem  intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.

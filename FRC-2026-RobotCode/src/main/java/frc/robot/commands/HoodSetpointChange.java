@@ -14,6 +14,7 @@ public class HoodSetpointChange extends Command {
   public HoodSetpointChange(ShootSubsystem hood) {
     // Use addRequirements
     m_shooterHood = hood;
+    addRequirements(m_shooterHood);
   }
 
   // Called when the command is initially scheduled.

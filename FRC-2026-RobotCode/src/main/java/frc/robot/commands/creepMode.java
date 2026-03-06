@@ -10,7 +10,8 @@ import frc.robot.subsystems.DriveSubsystem;
 public class CreepMode extends Command {
   private DriveSubsystem m_drive;
   public CreepMode(DriveSubsystem drive) {
-  m_drive = drive;
+    m_drive = drive;
+    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.

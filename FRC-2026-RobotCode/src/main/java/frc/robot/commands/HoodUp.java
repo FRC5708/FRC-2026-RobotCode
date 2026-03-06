@@ -13,6 +13,7 @@ public class HoodUp extends Command {
   public HoodUp(ShootSubsystem hood, double power) {
     m_shooterHood = hood;
     m_power = power;
+    addRequirements(m_shooterHood);
   }
 
   @Override

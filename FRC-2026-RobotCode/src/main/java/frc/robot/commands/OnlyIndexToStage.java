@@ -14,6 +14,7 @@ public class OnlyIndexToStage extends Command {
   public OnlyIndexToStage(IndexSubsystem index) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_index = index;
+    addRequirements(m_index);
   }
 
   // Called when the command is initially scheduled.

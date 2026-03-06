@@ -18,6 +18,7 @@ public class ReverseIntake extends Command {
     m_intake = intake;
     m_index = index;
     m_power = power;
+    addRequirements(m_intake,m_index);
   }
 
   // Called when the command is initially scheduled.
