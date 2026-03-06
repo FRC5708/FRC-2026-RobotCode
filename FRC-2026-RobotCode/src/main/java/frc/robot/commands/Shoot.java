@@ -20,7 +20,6 @@ public class Shoot extends Command {
     m_shoot = shoot;
     m_index = index;
     m_intake = intake;
-    addRequirements(m_shoot,m_index,m_intake);
   }
 
   @Override
@@ -31,9 +30,6 @@ public class Shoot extends Command {
 
   @Override
   public void execute() {
-    // TODO refactor the hood setpoint into m_shoot.shoot() so
-    // that the hood position is automatically adjusted for the
-    // shot distance (which controls shoot speed).
     double hoodPos;
     double speed;
     double hoodAdjust = m_shoot.getHoodAdjust();
@@ -44,6 +40,11 @@ public class Shoot extends Command {
         // aganist the HUB
         hoodPos = 0.25;
         speed = 50;
+        break;
+      case 5:
+        // from 6 feet out
+        hoodPos = 1.1;
+        speed = 45;
         break;
       case 6:
         // from 6 feet out

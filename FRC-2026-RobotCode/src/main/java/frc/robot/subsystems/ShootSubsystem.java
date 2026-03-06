@@ -10,7 +10,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
+//import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -47,7 +47,7 @@ public class ShootSubsystem extends SubsystemBase {
   private TalonFXS m_shootLeftSecondary;
   private TalonFXS m_shootRightPrime;
 
-  private final VoltageOut voltageRequest = new VoltageOut(0);
+  //private final VoltageOut voltageRequest = new VoltageOut(0);
   private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
 
   private final StatusSignal<AngularVelocity> leftShooterVelocity;
@@ -64,10 +64,7 @@ public class ShootSubsystem extends SubsystemBase {
   private SparkClosedLoopController m_hoodPidController;
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
-  //private GenericEntry targetDistance = tab.add("Target Distance",50).getEntry();
-  // private GenericEntry powerLeft = tab.add("Power going into Left", 0).getEntry();
   private GenericEntry powerRight = tab.add("Power going into Right", 0).getEntry();
-  // private GenericEntry velocityLeft = tab.add("Velocity Left", 0).getEntry();
   private GenericEntry velocityRight = tab.add("Velocity Right", 0).getEntry();
 
   private GenericEntry hoodPos = tab.add("Hood Pos", 0).getEntry();
@@ -80,19 +77,12 @@ public class ShootSubsystem extends SubsystemBase {
   private GenericEntry shootAdjust = tab.add("Shoot Adjust", 1).getEntry();
 
 
-  
-
-
-  // private GenericEntry stagePowerLeft = tab.add("Stage Power going into Left", 0).getEntry();
-  // private GenericEntry stagePowerRight = tab.add("Stage Power going into Right", 0).getEntry();
-  // private GenericEntry stageVelocityLeft = tab.add("Stage Velocity Left", 0).getEntry();
-  // private GenericEntry stageVelocityRight = tab.add("Stage Velocity Right", 0).getEntry();
-    
 
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
   /** Creates a new Intake. */
   public ShootSubsystem() {
-    distance.addOption("Hub", 0);
+    distance.addOption("Hub", 0); 
+    distance.addOption("5 feet", 5);
     distance.addOption("6 feet", 6);
     distance.addOption("7 feet", 7);
     distance.addOption("Trench", 10);
@@ -200,7 +190,20 @@ public class ShootSubsystem extends SubsystemBase {
     }
   }
 
-  public int getDistanceChoice() {
+  @Override
+  public void periodic() {
+    double m_shooterPowerRight = m_shootRightPrime.get();
+    double m_shooterVelocityRight = getRightShooterVelocity();
+
+    powerRight.setDouble(m_shooterPowerRight);
+    velocityRight.setDouble(m_shooterVelocityRight);
+
+    hoodPos.setDouble(m_hoodEncoder.getPosition());
+    hoodPower.setDouble(m_hood.getAppliedOutput());
+    hoodPosIndex.setInteger(getHoodSetpoint());
+  }
+
+    public int getDistanceChoice() {
     return distance.getSelected();
   }
 
@@ -210,34 +213,6 @@ public class ShootSubsystem extends SubsystemBase {
 
   public double getShootAdjust() {
     return shootAdjust.getDouble(1);
-  }
-
-  @Override
-  public void periodic() {
-    //System.out.println(distance.getSelected());
-    // double m_shooterPowerLeft = m_shootLeftSecondary.get();
-    double m_shooterPowerRight = m_shootRightPrime.get();
-    // double m_shooterVelocityLeft = getLeftShooterVelocity();
-    double m_shooterVelocityRight = getRightShooterVelocity();
-
-    // double m_stagePowerLeft = m_stageLeft.get();
-    // double m_stagePowerRight = m_stageRight.get();
-    // double m_stageVelocityLeft = m_stageEncoderLeft.getVelocity();
-    // double m_stageVelocityRight = m_stageEncoderRight.getVelocity();
-
-    // powerLeft.setDouble(m_shooterPowerLeft);
-    powerRight.setDouble(m_shooterPowerRight);
-    // velocityLeft.setDouble(m_shooterVelocityLeft);
-    velocityRight.setDouble(m_shooterVelocityRight);
-
-    hoodPos.setDouble(m_hoodEncoder.getPosition());
-    hoodPower.setDouble(m_hood.getAppliedOutput());
-    hoodPosIndex.setInteger(getHoodSetpoint());
-
-    // stagePowerLeft.setDouble(m_stagePowerLeft);
-    // stagePowerRight.setDouble(m_stagePowerRight);
-    // stageVelocityLeft.setDouble(m_stageVelocityLeft);
-    // stageVelocityRight.setDouble(m_stageVelocityRight);
   }
 
   public int getHoodSetpoint (){
@@ -284,17 +259,6 @@ public class ShootSubsystem extends SubsystemBase {
   public double getHoodPos() {
     return m_hoodEncoder.getPosition();
   }
-
-  // private double velocityToProperSpeed(StatusSignal<AngularVelocity> velocityStatusSignal, double properSpeed, double thresh) {
-  //   double velocity = velocityStatusSignal.getValueAsDouble();
-    
-  //   //velocity /= 1300; // Hopefully converts from RPM to percent
-  //   double returnSpeed = properSpeed; 
-  //   if (velocity < thresh && properSpeed > thresh) {
-  //       returnSpeed += properSpeed-velocity;
-  //   }
-  //   return returnSpeed;
-  // }
 
   public void hoodDown(double power) {
   m_hood.set(-power);

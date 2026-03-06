@@ -8,7 +8,6 @@ import frc.robot.Constants.Operator;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
-import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.IndexSubsystem;
 
 import java.io.IOException;
@@ -22,20 +21,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
 import frc.robot.commands.DriveHeadingLocked;
 import frc.robot.commands.Intake;
-import frc.robot.commands.OnlyIndexFromStage;
-import frc.robot.commands.OnlyIndexToStage;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.SplitStage;
 import frc.robot.commands.HoodUp;
 import frc.robot.commands.HoodDown;
-import frc.robot.commands.HoodSetpointChange;
-import frc.robot.commands.Stage;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -62,27 +55,16 @@ public class RobotContainer {
     m_shoot = new ShootSubsystem();
     m_index = new IndexSubsystem();
 
-    // Configure the trigger bindings
-    //NamedCommands.registerCommand("Creep Mode", new creepMode(m_drive));
-  // The robot's subsystems and commands are defined here...
+
     m_drive.setDefaultCommand(
            m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
                m_driverController::getRightX));
-    // m_intake.setDefaultCommand(new Deploy(m_intake,0.0));
     configureBindings();
 
     NamedCommands.registerCommand("deploy intake", null);
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
+  @SuppressWarnings("deprecation")
   private void configureBindings() {
     
     //For testing/debugging commands
@@ -96,20 +78,19 @@ public class RobotContainer {
     
     //For the comp
     //Intake controls
-    m_driverController.povDown().whileTrue(new Intake(m_intake, m_index, 0.55));
+    m_driverController.leftTrigger().whileTrue(new Intake(m_intake, m_index, 0.55));
     m_driverController.povUp().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
 
     //Deploy the funnel (intake) controls
-    m_driverController.povLeft().whileTrue(new Deploy(m_intake, 1.0));
-    m_driverController.povRight().whileTrue(new Deploy(m_intake, -0.7));
+    m_driverController.a().whileTrue(new Deploy(m_intake, 1.0));
+    m_driverController.x().whileTrue(new Deploy(m_intake, -0.7));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
 
     //Hood controls
-    m_driverController.rightBumper().whileTrue(new HoodSetpointChange(m_shoot));
-    m_driverController.a().whileTrue(new HoodDown(m_shoot, .1));
-    m_driverController.b().whileTrue(new HoodUp(m_shoot, .1));
+    m_driverController.b().whileTrue(new HoodDown(m_shoot, .1));
+    m_driverController.povDown().whileTrue(new HoodUp(m_shoot, .1));
     
     //Creep mode + driving is with joysticks(look above)
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));

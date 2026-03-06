@@ -38,6 +38,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.FieldConstants;
 import frc.robot.Constants.Drive;
 import frc.robot.Constants.Operator;
 import frc.robot.Constants.Auto.RotationK;
@@ -172,6 +173,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Pose2d getPose() {
     return swerveDrive.getPose();
+  }
+
+  // in meters, remove after testing
+  public double getDistanceToBlueHub() {
+    return this.getPose().getTranslation().minus(FieldConstants.Hub.innerCenterPoint.toTranslation2d()).getNorm();
   }
 
   public Rotation2d getGyroRotation() {
