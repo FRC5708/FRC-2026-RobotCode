@@ -18,7 +18,9 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -27,13 +29,13 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.ResetMode;
-import com.revrobotics.PersistMode;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
 
@@ -60,7 +62,7 @@ public class ShootSubsystem extends SubsystemBase {
   private SparkClosedLoopController m_hoodPidController;
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
-  private GenericEntry targetDistance = tab.add("Target Distance",50).getEntry();
+  //private GenericEntry targetDistance = tab.add("Target Distance",50).getEntry();
   // private GenericEntry powerLeft = tab.add("Power going into Left", 0).getEntry();
   private GenericEntry powerRight = tab.add("Power going into Right", 0).getEntry();
   // private GenericEntry velocityLeft = tab.add("Velocity Left", 0).getEntry();
@@ -71,9 +73,13 @@ public class ShootSubsystem extends SubsystemBase {
   private GenericEntry hoodPosTarget = tab.add("Hood Target", 0).getEntry();
   private GenericEntry hoodPower = tab.add("Hood Power", 0).getEntry();
 
+  private SendableChooser <Integer> distance = new SendableChooser <Integer> ();
+
+  
+
 
   // private GenericEntry stagePowerLeft = tab.add("Stage Power going into Left", 0).getEntry();
-  // private GenericEntry stagePowerRight = tab.add("Stage Power going into Rightt", 0).getEntry();
+  // private GenericEntry stagePowerRight = tab.add("Stage Power going into Right", 0).getEntry();
   // private GenericEntry stageVelocityLeft = tab.add("Stage Velocity Left", 0).getEntry();
   // private GenericEntry stageVelocityRight = tab.add("Stage Velocity Right", 0).getEntry();
     
@@ -81,6 +87,13 @@ public class ShootSubsystem extends SubsystemBase {
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
   /** Creates a new Intake. */
   public ShootSubsystem() {
+    distance.addOption("Hub", 0);
+    distance.addOption("6 feet", 6);
+    distance.addOption("7 feet", 7);
+    distance.addOption("Trench", 10);
+    distance.addOption("CZ", 15);
+    SmartDashboard.putData("Target Distence", distance);
+
     TalonFXSConfiguration primeShooterMotorConfig = new TalonFXSConfiguration();
     primeShooterMotorConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
     primeShooterMotorConfig.ExternalFeedback.ExternalFeedbackSensorSource = ExternalFeedbackSensorSourceValue.Commutation;
@@ -153,14 +166,8 @@ public class ShootSubsystem extends SubsystemBase {
     m_hood.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  public void shoot(boolean shootGood) {
-    double speed = targetDistance.getDouble(50);
-    if (shootGood){
+  public void shoot(double speed) {
       m_shootRightPrime.setControl(velocityRequest.withVelocity(speed));
-    }
-    else {
-      m_shootRightPrime.set(0);
-    }
   }
 
   public void shootRPM(double rpm) {
@@ -181,15 +188,20 @@ public class ShootSubsystem extends SubsystemBase {
     m_hoodEncoder.setPosition(0);
   }
 
-  public void changeHoodSetpoint (){
+  public void changeHoodSetpoint(){
     ++hoodSetPoint;
-    if (hoodSetPoint > 4) {
+    if (hoodSetPoint > 5) {
       hoodSetPoint = 1;
     }
   }
 
+  public int getDistanceChoice() {
+    return distance.getSelected();
+  }
+
   @Override
   public void periodic() {
+    //System.out.println(distance.getSelected());
     // double m_shooterPowerLeft = m_shootLeftSecondary.get();
     double m_shooterPowerRight = m_shootRightPrime.get();
     // double m_shooterVelocityLeft = getLeftShooterVelocity();
