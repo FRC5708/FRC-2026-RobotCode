@@ -31,13 +31,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "rightIntake"
+            "pathName": "rightIntake2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "rightToShoot"
+            "pathName": "rightToShoot2"
           }
         },
         {
