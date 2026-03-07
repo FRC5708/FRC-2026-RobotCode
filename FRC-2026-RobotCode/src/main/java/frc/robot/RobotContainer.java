@@ -13,6 +13,8 @@ import frc.robot.subsystems.IndexSubsystem;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
+import com.fasterxml.jackson.databind.util.Named;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.epilogue.Logged;
@@ -20,6 +22,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
@@ -27,6 +32,10 @@ import frc.robot.commands.DriveHeadingLocked;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.autonomous.DeployIntake;
+import frc.robot.commands.autonomous.RetractIntake;
+import frc.robot.commands.autonomous.ShooterStart;
+import frc.robot.commands.autonomous.ShooterStop;
 import frc.robot.commands.HoodUp;
 import frc.robot.commands.HoodDown;
 
@@ -43,6 +52,7 @@ public class RobotContainer {
   IntakeSubsystem m_intake;
   ShootSubsystem m_shoot;
   IndexSubsystem m_index;
+  SendableChooser<Command> autoChooser;
 
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -61,7 +71,13 @@ public class RobotContainer {
                m_driverController::getRightX));
     configureBindings();
 
-    NamedCommands.registerCommand("deploy intake", null);
+    NamedCommands.registerCommand("deploy intake", new DeployIntake(m_intake, 1.0));
+    NamedCommands.registerCommand("retract intake", new RetractIntake(m_intake, m_index, -0.7));
+    NamedCommands.registerCommand("start shooter", new ShooterStart(m_shoot, m_index, m_intake));
+    NamedCommands.registerCommand("stop shooter", new ShooterStop(m_shoot, m_index, m_intake));
+
+    autoChooser = AutoBuilder.buildAutoChooser("Shoot");
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   @SuppressWarnings("deprecation")
