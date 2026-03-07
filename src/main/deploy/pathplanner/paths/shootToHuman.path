@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Human",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -98.88065915052012

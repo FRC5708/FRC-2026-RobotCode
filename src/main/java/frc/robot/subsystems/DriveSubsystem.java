@@ -49,6 +49,9 @@ import frc.robot.subsystems.vision.VisionUtils;
 import frc.robot.subsystems.vision.io.CameraIOPhoton;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 @Logged
 public class DriveSubsystem extends SubsystemBase {
@@ -62,9 +65,21 @@ public class DriveSubsystem extends SubsystemBase {
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
   private GenericEntry targetDistance = tab.add("Distance from Pose",0).getEntry();
+  public Pose2d hubPose =
+      new Pose2d(
+          DriverStation.getAlliance().isPresent()
+            ? DriverStation.getAlliance().map(
+              (Alliance alliance) -> alliance == Alliance.Blue
+                ? FieldConstants.Hub.topCenterPoint.toTranslation2d()
+                : FieldConstants.Hub.redTopCenterPoint.toTranslation2d()
+            ).get() 
+            : FieldConstants.Hub.topCenterPoint.toTranslation2d(),
+          new Rotation2d());
 
   public DriveSubsystem() throws IOException, ParseException {
     File swerveJsons = new File(Filesystem.getDeployDirectory(), "swerve");
+  
+  
 
     // All other subsystem initialization
     // Load the RobotConfig from the GUI settings. You should probably
@@ -135,10 +150,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //Pose2d pose = getPose();
+    Pose2d pose = getPose();
     for (var camera : cameras) {
       camera.periodic();
       var observations = camera.getPoseObservations();
@@ -155,6 +171,7 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
     m_field.setRobotPose(getPose());
+    SmartDashboard.putNumber("Distance To Hub", (getPose().getTranslation().getDistance(hubPose.getTranslation())) * 3.28);
     //Comment out the following one to reduce feedback
     //System.out.println(pose);
   }

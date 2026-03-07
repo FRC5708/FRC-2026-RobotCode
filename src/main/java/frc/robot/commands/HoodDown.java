@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class HoodDown extends Command {
-  private final ShootSubsystem m_shooterHood; 
+  private final ShootSubsystem m_shoot; 
   private double m_power;
   private final Timer m_timer = new Timer();
 
   public HoodDown(ShootSubsystem hood, double power) {
-    m_shooterHood = hood;
+    m_shoot = hood;
     m_power = power;
-    addRequirements(m_shooterHood);
+    addRequirements(m_shoot);
   }
 
   @Override
@@ -26,7 +26,7 @@ public class HoodDown extends Command {
 
   @Override
   public void execute() {
-    m_shooterHood.hoodDown(m_power);
+    m_shoot.hoodDown(m_power);
   }
 
   @Override
@@ -36,9 +36,9 @@ public class HoodDown extends Command {
       // be at the lowest position so the hood encoder can be reset to
       // zero. It would be better to detect the motor stall, but this
       // code is simpler.
-      m_shooterHood.resetHoodEncoder();
+      m_shoot.resetHoodEncoder();
     }
-    m_shooterHood.hoodDown(0);
+    m_shoot.hoodDown(0);
     m_timer.stop();
   }
 

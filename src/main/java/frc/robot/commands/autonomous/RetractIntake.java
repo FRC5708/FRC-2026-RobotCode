@@ -9,18 +9,18 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IndexSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+
+/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class RetractIntake extends Command {
   private final IntakeSubsystem m_intake; 
-  private final IndexSubsystem m_index;
   private double m_power;
   private double m_startTime;
-  /** Creates a new Intake. */
-  public RetractIntake(IntakeSubsystem intake, IndexSubsystem index, double power) {
-    // Use addRequirements
+  /** Creates a new intake. */
+  public RetractIntake(IntakeSubsystem intake, double power) {
+    // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
-    m_index = index;
     m_power = power;
-    addRequirements(m_intake,m_index);
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
@@ -32,15 +32,13 @@ public class RetractIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.reverseIntake(m_power);
-    m_index.indexFromStage(true);
+    m_intake.deploy(m_power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.reverseIntake(0);
-    m_index.indexFromStage(false);
+    m_intake.deploy(0);
   }
 
   // Returns true when the command should end.

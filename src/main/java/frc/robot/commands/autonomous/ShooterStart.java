@@ -49,7 +49,7 @@ public class ShooterStart extends Command {
     if (m_timer.hasElapsed(Shooter.shootWindUp)){
       m_shoot.stage(-1);
       m_index.indexToStage(true);
-      m_intake.intake(.2);
+      //m_intake.intake(.2);
     }
     else {
       m_shoot.stage(.4);
@@ -69,6 +69,6 @@ public class ShooterStart extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_timer.hasElapsed(5.0));
   }
 }

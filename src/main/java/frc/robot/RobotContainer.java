@@ -76,7 +76,7 @@ public class RobotContainer {
     configureBindings();
 
     NamedCommands.registerCommand("DeployIntake", new DeployIntake(m_intake, 1.0));
-    NamedCommands.registerCommand("RetractIntake", new RetractIntake(m_intake, m_index, -0.7));
+    NamedCommands.registerCommand("RetractIntake", new RetractIntake(m_intake,-0.7));
     NamedCommands.registerCommand("ShooterStart", new ShooterStart(m_shoot, m_index, m_intake));
     NamedCommands.registerCommand("ShooterStop", new ShooterStop(m_shoot, m_index, m_intake));
     NamedCommands.registerCommand("StartIntake", new StartIntake(m_intake, m_index, 0.55));
@@ -134,13 +134,16 @@ public class RobotContainer {
       m_drive)
     );
   }
-
+  
+  public Command getAutonomousCommand() {
+      return autoChooser.getSelected();
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   // public DriveSubsystem getDriveSubsystem() {
-  //   return m_drive;
-  // }
+  //    return m_drive;
+  //  }
 }
