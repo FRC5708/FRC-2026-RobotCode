@@ -2,20 +2,8 @@
   "robotWidth": 0.889,
   "robotLength": 0.889,
   "holonomicMode": true,
-  "pathFolders": [
-    "Center",
-    "lena",
-    "North",
-    "South",
-    "Tests"
-  ],
-  "autoFolders": [
-    "Defence",
-    "L1s",
-    "L4 to one L1s",
-    "Tests",
-    "lena's-autos"
-  ],
+  "pathFolders": [],
+  "autoFolders": [],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
