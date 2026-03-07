@@ -7,13 +7,13 @@ import frc.robot.subsystems.ShootSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class HoodUp extends Command {
-  private final ShootSubsystem m_shooterHood; 
+  private final ShootSubsystem m_shoot; 
   private double m_power;
 
   public HoodUp(ShootSubsystem hood, double power) {
-    m_shooterHood = hood;
+    m_shoot = hood;
     m_power = power;
-    addRequirements(m_shooterHood);
+    addRequirements(m_shoot);
   }
 
   @Override
@@ -21,12 +21,12 @@ public class HoodUp extends Command {
 
   @Override
   public void execute() {
-    m_shooterHood.hoodUp(m_power);
+    m_shoot.hoodUp(m_power);
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_shooterHood.hoodUp(0);
+    m_shoot.hoodUp(0);
   }
 
   @Override

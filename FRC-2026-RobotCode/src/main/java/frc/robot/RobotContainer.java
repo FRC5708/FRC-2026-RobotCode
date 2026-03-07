@@ -69,6 +69,8 @@ public class RobotContainer {
     m_drive.setDefaultCommand(
            m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
                m_driverController::getRightX));
+    m_shoot.setDefaultCommand(new HoodDown(m_shoot, .05));
+
     configureBindings();
 
     NamedCommands.registerCommand("deploy intake", new DeployIntake(m_intake, 1.0));
