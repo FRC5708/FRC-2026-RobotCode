@@ -43,6 +43,7 @@ import frc.robot.Constants.Shooter;
 @Logged
 public class ShootSubsystem extends SubsystemBase {
   public int hoodSetPoint = 2;
+  public int trenchDistance = 10;
 
   private TalonFXS m_shootLeftSecondary;
   private TalonFXS m_shootRightPrime;
@@ -85,7 +86,7 @@ public class ShootSubsystem extends SubsystemBase {
     distance.addOption("5 feet", 5);
     distance.addOption("6 feet", 6);
     distance.addOption("7 feet", 7);
-    distance.addOption("Trench", 10);
+    distance.setDefaultOption("Trench", trenchDistance);
     distance.addOption("CZ", 15);
     SmartDashboard.putData("Target Distence", distance);
 
@@ -203,8 +204,13 @@ public class ShootSubsystem extends SubsystemBase {
     hoodPosIndex.setInteger(getHoodSetpoint());
   }
 
-    public int getDistanceChoice() {
-    return distance.getSelected();
+  public int getDistanceChoice() {
+    try {
+      return distance.getSelected();
+    }
+    catch (Exception e) {
+      return trenchDistance;
+    }
   }
 
   public double getHoodAdjust() {
