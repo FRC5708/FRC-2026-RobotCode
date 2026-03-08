@@ -82,7 +82,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("StartIntake", new StartIntake(m_intake, m_index, 0.55));
     NamedCommands.registerCommand("StopIntake", new StopIntake(m_intake, m_index, 0));
 
-    autoChooser = AutoBuilder.buildAutoChooser("Shoot");
+    autoChooser = AutoBuilder.buildAutoChooser("rightShoot");
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
@@ -104,6 +104,7 @@ public class RobotContainer {
 
     //Deploy the funnel (intake) controls
     m_driverController.a().whileTrue(new Deploy(m_intake, 1.0));
+
     m_driverController.x().whileTrue(new Deploy(m_intake, -0.7));
 
     //Shoot controls

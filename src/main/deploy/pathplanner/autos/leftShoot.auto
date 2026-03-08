@@ -9,11 +9,17 @@
           "data": {
             "name": "ShooterStart"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "leftToTStart"
+          }
         }
       ]
     }
   },
-  "resetOdom": false,
-  "folder": null,
+  "resetOdom": true,
+  "folder": "Shoots",
   "choreoAuto": false
 }

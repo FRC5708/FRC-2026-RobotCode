@@ -35,8 +35,26 @@ public class ShooterStop extends Command {
     // TODO refactor the hood setpoint into m_shoot.shoot() so
     // that the hood position is automatically adjusted for the
     // shot distance (which controls shoot speed).
-    m_shoot.shoot(0);
-    m_shoot.stage(0);
+    double hoodPos;
+    double speed;
+    double hoodAdjust = m_shoot.getHoodAdjust();
+    double speedAdjust = m_shoot.getShootAdjust();
+  
+    hoodPos = 0.25;
+        speed = 50;
+
+    m_shoot.hood(hoodPos * hoodAdjust);
+    m_shoot.shoot(speed * speedAdjust);
+
+    if (m_timer.hasElapsed(Shooter.shootWindUp)){
+      m_shoot.stage(-1);
+      m_index.indexToStage(true);
+      //m_intake.intake(.2);
+    }
+    else {
+      m_shoot.stage(.4);
+      m_index.indexFromStage(true);
+    }
   }
 
   @Override
@@ -51,6 +69,6 @@ public class ShooterStop extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_timer.hasElapsed(5.0));
   }
 }

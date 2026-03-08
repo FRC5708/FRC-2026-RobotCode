@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "leftStartToMess"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "leftMessy"
+            "pathName": "leftStartMess"
           }
         },
         {
@@ -26,6 +20,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Messes",
   "choreoAuto": false
 }

@@ -11,21 +11,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "StartIntake"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "leftIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopIntake"
           }
         },
         {
@@ -38,42 +26,6 @@
           "type": "named",
           "data": {
             "name": "ShooterStart"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "leftToIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DeployIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StartIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "leftIntake2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "leftToShoot2"
           }
         },
         {
@@ -92,6 +44,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Autos",
   "choreoAuto": false
 }

@@ -3,47 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.456228915662651,
-        "y": 0.8222530120481917
+        "x": 0.4938659058487873,
+        "y": 0.6774179743223976
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.578758915834522,
-        "y": 0.6127246790299581
+        "x": 1.4642653352353778,
+        "y": 0.9232524964336675
       },
       "isLocked": false,
-      "linkedName": "rightStart"
+      "linkedName": "human"
     },
     {
       "anchor": {
-        "x": 8.386447931526389,
-        "y": 1.0397004279600572
+        "x": 3.9743651925820247,
+        "y": 0.6386019971469341
       },
       "prevControl": {
-        "x": 7.364293865905848,
-        "y": 0.7938659058487881
+        "x": 2.9004564907275316,
+        "y": 0.6644793152639102
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "rightMess"
+      "linkedName": "rightShoot"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "DeployIntake",
-      "waypointRelativePos": 0.3024691358024716,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "DeployIntake"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -54,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 158.4590240814615
+    "rotation": -98.88065915052012
   },
   "reversed": false,
-  "folder": "Mess",
+  "folder": "Human",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.42294033956723
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

@@ -62,6 +62,7 @@ public class DriveSubsystem extends SubsystemBase {
   ArrayList<Camera> cameras = new ArrayList<>();
   Field2d m_field = new Field2d();
   double creepMode;
+  int allianceFlip;
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
   private GenericEntry targetDistance = tab.add("Distance from Pose",0).getEntry();
@@ -114,12 +115,7 @@ public class DriveSubsystem extends SubsystemBase {
           // alliancecontroller
           // This will flip the path being followed to the red side of the field.
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-          var alliance = DriverStation.getAlliance();
-          if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-          }
-          return false;
+          return isRed();
         },
         this // Reference to this subsystem to set requirements
     );
@@ -131,10 +127,12 @@ public class DriveSubsystem extends SubsystemBase {
       // Make the robot move
       double x = -MathUtil.applyDeadband(translationX.getAsDouble(), Operator.driveDeadband);
       double y = -MathUtil.applyDeadband(translationY.getAsDouble(), Operator.driveDeadband);;
+      if (isRed()){
+        x = -x;
+        y = -y;
+      }
       double r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
       r = Math.pow(r,3);
-      x = x*r;
-      y = y*r;
       double angle = -MathUtil.applyDeadband(angularRotationX.getAsDouble(), Operator.driveDeadband);
       angle = Math.pow(angle, 3);
       swerveDrive.drive(new Translation2d(y * swerveDrive.getMaximumChassisVelocity() / creepMode,
@@ -144,6 +142,14 @@ public class DriveSubsystem extends SubsystemBase {
           false);
     });
   };
+
+  public boolean isRed() {
+    var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        }
 
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
@@ -171,7 +177,7 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
     m_field.setRobotPose(getPose());
-    SmartDashboard.putNumber("Distance To Hub", (getPose().getTranslation().getDistance(hubPose.getTranslation())) * 3.28);
+    SmartDashboard.putNumber("Distance To Hub", getPose().getTranslation().getDistance(hubPose.getTranslation()));
     //Comment out the following one to reduce feedback
     //System.out.println(pose);
   }

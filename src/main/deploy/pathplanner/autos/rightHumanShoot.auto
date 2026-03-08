@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "rightStart"
+            "pathName": "rightStartToHuman"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "rightIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "rightToShoot"
+            "pathName": "humanToShoot"
           }
         },
         {
@@ -35,15 +35,15 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "rightToTStart"
+            "name": "ShooterStart"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Autos",
+  "folder": "Shoots",
   "choreoAuto": false
 }

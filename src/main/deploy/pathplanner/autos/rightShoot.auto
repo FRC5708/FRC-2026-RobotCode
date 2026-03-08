@@ -5,21 +5,21 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "rightStartMess"
+            "name": "ShooterStart"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "rightMessToTStart"
+            "pathName": "shootToHuman"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
-  "folder": "Messes",
+  "resetOdom": false,
+  "folder": "Shoots",
   "choreoAuto": false
 }

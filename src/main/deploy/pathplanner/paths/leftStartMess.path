@@ -20,12 +20,28 @@
         "y": 6.952667617689015
       },
       "prevControl": {
-        "x": 7.441925820256776,
-        "y": 7.17262482168331
+        "x": 8.463149558793262,
+        "y": 7.244133801303134
+      },
+      "nextControl": {
+        "x": 8.192368045649072,
+        "y": 6.215164051355207
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.386447931526389,
+        "y": 1.0397004279600572
+      },
+      "prevControl": {
+        "x": 8.360570613409415,
+        "y": 1.9583452211126975
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "leftMess"
+      "linkedName": "rightMess"
     }
   ],
   "rotationTargets": [],
@@ -34,12 +50,34 @@
   "eventMarkers": [
     {
       "name": "DeployIntake",
-      "waypointRelativePos": 0.39933523266856713,
+      "waypointRelativePos": 0.15289648622981866,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
           "name": "DeployIntake"
+        }
+      }
+    },
+    {
+      "name": "StartIntake",
+      "waypointRelativePos": 1.16334283000949,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "StartIntake"
+        }
+      }
+    },
+    {
+      "name": "StopIntake",
+      "waypointRelativePos": 2.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "StopIntake"
         }
       }
     }
@@ -54,7 +92,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 158.42869280874544
+    "rotation": 158.4590240814615
   },
   "reversed": false,
   "folder": "Mess",
