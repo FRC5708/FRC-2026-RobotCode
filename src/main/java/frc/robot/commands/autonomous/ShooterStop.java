@@ -1,7 +1,6 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -10,6 +9,7 @@ import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.IndexSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+// Doesn't stop shooter becasuse we dont need it to. Insted it has power set to shoot when against the hub
 
 public class ShooterStop extends Command {
   private final ShootSubsystem m_shoot; 
@@ -41,7 +41,7 @@ public class ShooterStop extends Command {
     double speedAdjust = m_shoot.getShootAdjust();
   
     hoodPos = 0.25;
-        speed = 50;
+    speed = 50;
 
     m_shoot.hood(hoodPos * hoodAdjust);
     m_shoot.shoot(speed * speedAdjust);

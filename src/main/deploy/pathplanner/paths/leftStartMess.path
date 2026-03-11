@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.453095577746077,
-        "y": 7.250256776034237
+        "x": 4.142567760342367,
+        "y": 7.237318116975749
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.212753209700427,
-        "y": 7.651355206847361
+        "x": 5.902225392296717,
+        "y": 7.638416547788873
       },
       "isLocked": false,
       "linkedName": "leftStart"
@@ -98,7 +98,7 @@
   "folder": "Mess",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -89.61097609331797
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

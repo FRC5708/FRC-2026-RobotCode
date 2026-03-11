@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.453095577746077,
-        "y": 7.250256776034237
+        "x": 4.142567760342367,
+        "y": 7.237318116975749
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.453095577746078,
-        "y": 7.250256776034237
+        "x": 6.160998573466475,
+        "y": 7.4702139800285305
       },
       "isLocked": false,
       "linkedName": "leftStart"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 8.127674750356633,
-        "y": 6.499814550641941
+        "y": 6.810342368045649
       },
       "prevControl": {
-        "x": 8.088858773181167,
-        "y": 7.41845934379458
+        "x": 7.739514978601996,
+        "y": 7.819557774607703
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "DeployIntake",
-      "waypointRelativePos": 0.3651471984805326,
+      "waypointRelativePos": 0.23789173789173876,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -60,7 +60,7 @@
   "folder": "Left",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -89.61097609331797
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
