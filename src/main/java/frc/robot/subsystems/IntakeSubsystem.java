@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.Intake;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -16,12 +17,14 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 //import edu.wpi.first.wpilibj.DigitalInput;
 
+@Logged
 public class IntakeSubsystem extends SubsystemBase {
   private SparkMax m_deploy = new SparkMax(Intake.canIDDeploy, MotorType.kBrushless);
   private SparkMax m_intake = new SparkMax(Intake.canIDIntake, MotorType.kBrushless);
-  private RelativeEncoder m_intake_encoder = m_intake.getEncoder();
+  private RelativeEncoder m_deploy_encoder = m_deploy.getEncoder();
   public static final double homingDebounceTime = 0.25;
-  public static final double homingVelocityThreshold = 0.1;
+  // current value of homing velo is 7 but 5 works kinda, when pulleys are replaced to 33 or 34 tooth then you can lower this value again.
+  public static final double homingVelocityThreshold = 7 * 60;
   private Debouncer homingDebouncer;
   private boolean homed;
   //private RelativeEncoder m_deploy_encoder = m_deploy.getEncoder();
@@ -61,6 +64,10 @@ public class IntakeSubsystem extends SubsystemBase {
     m_intake.set(-power);
   }
 
+  public double getDeployCurrent() {
+    return m_deploy.getOutputCurrent();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -74,13 +81,13 @@ public class IntakeSubsystem extends SubsystemBase {
             () -> {
                 homingDebouncer = new Debouncer(homingDebounceTime);
                 homingDebouncer.calculate(false);
-                intake(power);
+                deploy(power);
             },
             () -> {
-                homed = homingDebouncer.calculate(Math.abs(m_intake_encoder.getVelocity()) <= homingVelocityThreshold);
+                homed = homingDebouncer.calculate(Math.abs(m_deploy_encoder.getVelocity()) <= homingVelocityThreshold);
             }
         )
         .until(() -> homed)
-        .andThen(() -> intake(0));
+        .andThen(() -> deploy(0));
     }
 }
