@@ -66,6 +66,7 @@ public class Shoot extends Command {
         // passing between zones
         hoodPos = 3.0;
         speed = 75;
+        break;
       default:
         hoodPos = 0;
         speed = 0;

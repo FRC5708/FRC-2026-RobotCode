@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.Intake;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -18,6 +21,10 @@ public class IntakeSubsystem extends SubsystemBase {
   //private RelativeEncoder m_deploy_encoder = m_deploy.getEncoder();
   ///private DigitalInput forwardCheck = new DigitalInput(0);
   //private DigitalInput backwardCheck = new DigitalInput(1);
+
+  private ShuffleboardTab tab = Shuffleboard.getTab("Testing Variables");
+  private GenericEntry deployCurrent = tab.add("Deploy Current", 0).getEntry();
+  private GenericEntry deployVoltage = tab.add("Deploy Voltage", 0).getEntry();
 
   private boolean in = true;
   /** Creates a new Intake. */
@@ -51,5 +58,7 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    deployCurrent.setDouble(m_deploy.getOutputCurrent());
+    deployVoltage.setDouble(m_deploy.get());
   }
 }

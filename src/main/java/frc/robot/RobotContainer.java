@@ -103,9 +103,9 @@ public class RobotContainer {
     m_driverController.povUp().whileTrue(new ReverseIntake(m_intake, m_index, 0.1));
 
     //Deploy the funnel (intake) controls
-    m_driverController.a().whileTrue(new Deploy(m_intake, 1.0));
+    m_driverController.a().whileTrue(new Deploy(m_intake, .5));
 
-    m_driverController.x().whileTrue(new Deploy(m_intake, -0.7));
+    m_driverController.x().whileTrue(new Deploy(m_intake, -.55));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
