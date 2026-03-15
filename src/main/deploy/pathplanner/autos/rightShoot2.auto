@@ -1,0 +1,97 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterStart"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterStop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rightToIntake2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DeployIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StartIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rightIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rightIntakeToShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterStart"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterStop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterStart"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Shoots",
+  "choreoAuto": false
+}
