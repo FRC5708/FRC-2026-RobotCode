@@ -40,7 +40,7 @@ public class Shoot extends Command {
       case 0:
         // aganist the HUB
         hoodPos = 0.25;
-        speed = 50;
+        speed = 45;
         break;
       case 5:
         // from 6 feet out

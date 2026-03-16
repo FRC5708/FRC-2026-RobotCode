@@ -32,6 +32,7 @@ public class ShooterStart extends Command {
 
   @Override
   public void execute() {
+  
     // TODO refactor the hood setpoint into m_shoot.shoot() so
     // that the hood position is automatically adjusted for the
     // shot distance (which controls shoot speed).
@@ -41,7 +42,7 @@ public class ShooterStart extends Command {
     double speedAdjust = m_shoot.getShootAdjust();
   
     hoodPos = 1.4;
-    speed = 50;
+    speed = 55.5;
 
     m_shoot.hood(hoodPos * hoodAdjust);
     m_shoot.shoot(speed * speedAdjust);
@@ -69,6 +70,6 @@ public class ShooterStart extends Command {
 
   @Override
   public boolean isFinished() {
-    return (m_timer.hasElapsed(5.0));
+    return (m_timer.hasElapsed(4.0));
   }
 }

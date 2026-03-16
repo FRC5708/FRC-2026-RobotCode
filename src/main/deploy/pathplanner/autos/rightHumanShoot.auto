@@ -33,12 +33,6 @@
           "data": {
             "name": "ShooterStart"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShooterStart"
-          }
         }
       ]
     }

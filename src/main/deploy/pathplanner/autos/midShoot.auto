@@ -7,7 +7,55 @@
         {
           "type": "named",
           "data": {
-            "name": "ShooterStop"
+            "name": "HubShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HubShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StartIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "midToPod"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "inhalePod"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "podInhaleToShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HubShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HubShoot"
           }
         },
         {
