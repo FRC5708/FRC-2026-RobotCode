@@ -160,13 +160,11 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    Pose2d pose = getPose();
+    //Pose2d pose = getPose();
     for (var camera : cameras) {
       camera.periodic();
       var observations = camera.getPoseObservations();
       if (observations.size() > 0) {
-        // FIXME This generates too much log spam. It must be removed for competition.
-        //System.out.println("Observations: " + observations.size());
         for (var observation : observations) {
           swerveDrive.addVisionMeasurement(
             observation.pose().toPose2d(),
@@ -177,9 +175,14 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
     m_field.setRobotPose(getPose());
-    SmartDashboard.putNumber("Distance To Hub", getPose().getTranslation().getDistance(hubPose.getTranslation()));
+    //SmartDashboard.putNumber("Distance To Hub", getPose().getTranslation().getDistance(hubPose.getTranslation()));
     //Comment out the following one to reduce feedback
     //System.out.println(pose);
+  }
+
+  @Override
+  public void simulationPeriodic() {
+
   }
 
   public void creepModeToggle() {
