@@ -79,7 +79,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("RetractIntake", new RetractIntake(m_intake,-0.7));
     NamedCommands.registerCommand("ShooterStart", new ShooterStart(m_shoot, m_index, m_intake));
     NamedCommands.registerCommand("HubShoot", new HubShoot(m_shoot, m_index, m_intake));
-    NamedCommands.registerCommand("StartIntake", new StartIntake(m_intake, m_index, 0.55));
+    NamedCommands.registerCommand("StartIntake", new StartIntake(m_intake, m_index, 1.0));
     NamedCommands.registerCommand("StopIntake", new StopIntake(m_intake, m_index, 0));
 
     autoChooser = AutoBuilder.buildAutoChooser("rightShoot");
