@@ -8,6 +8,9 @@ import frc.robot.Constants.Operator;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.vision.PhotonCameraFactory;
+import frc.robot.subsystems.vision.VisionSubsystem;
+import frc.robot.subsystems.vision.VisionConstants.PhotonCamConfig;
 import frc.robot.subsystems.IndexSubsystem;
 
 import java.io.IOException;
@@ -51,6 +54,8 @@ import frc.robot.commands.HoodDown;
 public class RobotContainer {
   CommandXboxController m_driverController = new CommandXboxController(Operator.kDriverControllerPort);
   DriveSubsystem m_drive;
+  VisionSubsystem m_vision;
+  PhotonCameraFactory m_cameraFactory;
   IntakeSubsystem m_intake;
   ShootSubsystem m_shoot;
   IndexSubsystem m_index;
@@ -66,6 +71,13 @@ public class RobotContainer {
     m_drive = new DriveSubsystem();
     m_shoot = new ShootSubsystem();
     m_index = new IndexSubsystem();
+    m_cameraFactory = new PhotonCameraFactory(m_drive::getPose3d);
+    m_vision = new VisionSubsystem();
+    m_vision.addResultConsumers(m_drive::addTagObservation);
+    m_vision.addCameras(
+      m_cameraFactory.buildCameraFromConfig(PhotonCamConfig.BLUE_CAMERA),
+      m_cameraFactory.buildCameraFromConfig(PhotonCamConfig.RED_CAMERA)
+    );
 
 
     m_drive.setDefaultCommand(
