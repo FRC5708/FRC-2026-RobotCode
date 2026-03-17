@@ -114,7 +114,7 @@ public class ShootSubsystem extends SubsystemBase {
     
     m_shootRightPrime = new TalonFXS(Shooter.canIDShootRight);
     m_shootRightPrime.getConfigurator().apply(primeShooterMotorConfig);
-    rightShooterVelocity = m_shootRightPrime.getVelocity();
+    rightShooterVelocity = m_shootRightPrime.getVelocity(true);
 
     TalonFXSConfiguration secondaryShooterMotorConfig = new TalonFXSConfiguration();
     secondaryShooterMotorConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;

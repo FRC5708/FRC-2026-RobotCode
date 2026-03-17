@@ -9,8 +9,16 @@ public class BallisticsCommon {
         return Units.rotationsPerMinuteToRadiansPerSecond(flywheelRPM) * Shooter.flywheelRadiusMeters;
     }
 
+    public static double flywheelRPStoMPS(double flywheelRPS) {
+        return Units.rotationsPerMinuteToRadiansPerSecond(flywheelRPS * 60) * Shooter.flywheelRadiusMeters;
+    }
+
     // converts a linear velocity back into RPM, assuming no dynamics
     public static double calculateIdealRPM(double mps) {
         return Units.radiansPerSecondToRotationsPerMinute(mps/Shooter.flywheelRadiusMeters);
+    }
+
+    public static double motorRotsToHoodRads(double motorRots) {
+        return Units.degreesToRadians(motorRots * 10);
     }
 }
