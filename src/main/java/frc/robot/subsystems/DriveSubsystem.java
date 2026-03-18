@@ -46,6 +46,7 @@ import frc.robot.Constants.Auto.TranslationK;
 import frc.robot.subsystems.vision.Camera;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionUtils;
+import frc.robot.subsystems.vision.io.CameraIO;
 import frc.robot.subsystems.vision.io.CameraIOPhoton;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -59,7 +60,6 @@ public class DriveSubsystem extends SubsystemBase {
   private SwerveDrive swerveDrive;
 
   SwerveDriveOdometry m_odometry;
-  ArrayList<Camera> cameras = new ArrayList<>();
   Field2d m_field = new Field2d();
   double creepMode;
   int allianceFlip;
@@ -86,9 +86,6 @@ public class DriveSubsystem extends SubsystemBase {
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     RobotConfig config = RobotConfig.fromGUISettings();
-
-    cameras.add(new Camera(new CameraIOPhoton(VisionConstants.PhotonCamConfig.RED_CAMERA,() -> new Pose3d(getPose()),() -> getPose().getRotation())));
-    cameras.add(new Camera(new CameraIOPhoton(VisionConstants.PhotonCamConfig.BLUE_CAMERA,() -> new Pose3d(getPose()),() -> getPose().getRotation())));
 
     // Makes the swerve drive with Json files
     swerveDrive = new SwerveParser(swerveJsons).createSwerveDrive(Drive.maxSpeed);
@@ -159,25 +156,22 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    //Pose2d pose = getPose();
-    for (var camera : cameras) {
-      camera.periodic();
-      var observations = camera.getPoseObservations();
-      if (observations.size() > 0) {
-        for (var observation : observations) {
-          swerveDrive.addVisionMeasurement(
-            observation.pose().toPose2d(),
-            observation.timestampSeconds(),
-            VisionUtils.collapse3DstddevsTo2d(observation.stddevs())
-          );
-        }
-      }
-    }
     m_field.setRobotPose(getPose());
     //SmartDashboard.putNumber("Distance To Hub", getPose().getTranslation().getDistance(hubPose.getTranslation()));
     //Comment out the following one to reduce feedback
     //System.out.println(pose);
+  }
+
+  public void addTagObservation(CameraIO.AprilTagPoseObservation observation) {
+    swerveDrive.addVisionMeasurement(
+      observation.pose().toPose2d(),
+      observation.timestampSeconds(),
+      VisionUtils.collapse3DstddevsTo2d(observation.stddevs())
+    );
+  }
+
+  public Pose3d getPose3d() {
+    return new Pose3d(getPose());
   }
 
   @Override

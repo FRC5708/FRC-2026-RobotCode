@@ -40,7 +40,6 @@ public class CameraIOPhoton implements CameraIO {
     private final String sourceName;
     private final PhotonCamera camera;
     private final PhotonPoseEstimator poseEstimator;
-    private final Supplier<Rotation2d> headingSupplier;
     private final Vector<N4> defaultSingleTagStdDevs;
     private final Vector<N4> defaultMultiTagStdDevs;
     private final Optional<Matrix<N3, N3>> cameraMatrix;
@@ -48,9 +47,8 @@ public class CameraIOPhoton implements CameraIO {
     private final Supplier<Pose3d> seedPoseSupplier;
     private final Optional<ConstrainedSolvepnpParams> cpnpParams;
     private PhotonPipelineResult latestResult = new PhotonPipelineResult();
-    private final Queue<Double> captureTimestamps = new ArrayDeque<>(20);
 
-    public CameraIOPhoton(PhotonCamConfig config, Supplier<Pose3d> seedPoseSupplier, Supplier<Rotation2d> headingSupplier) {
+    public CameraIOPhoton(PhotonCamConfig config, Supplier<Pose3d> seedPoseSupplier) {
         sourceName = config.cameraNickname;
         camera = new PhotonCamera(config.cameraNickname);
         this.seedPoseSupplier = seedPoseSupplier;
@@ -64,7 +62,6 @@ public class CameraIOPhoton implements CameraIO {
         defaultSingleTagStdDevs = SDVectorArray.get(1);
         cameraMatrix = camera.getCameraMatrix();
         distCoeffs = camera.getDistCoeffs().map(Vector<N8>::new);
-        this.headingSupplier = headingSupplier;
     }
 
     private Vector<N4> calculateStdDevs(EstimatedRobotPose est) {
@@ -116,42 +113,13 @@ public class CameraIOPhoton implements CameraIO {
         );
     }
 
-
-    @Override
-    public void updateInputs(CameraIOInputs inputs) {
-        /*
-        var it = captureTimestamps.iterator();
-        int tDeltaCount = 0;
-        double cumulativetDelta = 0.0;
-        double current;
-        double next;
-        while (true) {
-            current = it.next();
-            if (!it.hasNext()) {
-                break;
-            }
-            next = it.next();
-            cumulativetDelta += (next - current);
-            tDeltaCount++;
-        }
-        double avgFPS = tDeltaCount > 0 ? (cumulativetDelta / tDeltaCount) : 0.0;
-        */
-        inputs.data = new CameraIOData(
-            camera.isConnected(),
-            latestResult.getTargets().size(),
-            0, //temp disabled for now
-            latestResult.metadata.getLatencyMillis()
-        );
-    }
-
     @Override
     public List<AprilTagPoseObservation> getAllUnreadPoseObservations() {
-        poseEstimator.addHeadingData(Timer.getFPGATimestamp(), headingSupplier.get());
+        poseEstimator.addHeadingData(Timer.getFPGATimestamp(), seedPoseSupplier.get().getRotation());
         List<PhotonPipelineResult> pipelineResults = camera.getAllUnreadResults();
         List<AprilTagPoseObservation> observations = new ArrayList<>();
         
         for (var res : pipelineResults) {
-            captureTimestamps.offer(res.getTimestampSeconds());
             latestResult = res;
             if (res.hasTargets()) {
                 if (res.targets.size() < 2) {
@@ -168,14 +136,13 @@ public class CameraIOPhoton implements CameraIO {
 
     @Override
     public List<AprilTagPoseObservation> getAllUnreadPoseObservations_ConstrainedPNP() {
-        poseEstimator.addHeadingData(Timer.getFPGATimestamp(), headingSupplier.get());
+        poseEstimator.addHeadingData(Timer.getFPGATimestamp(), seedPoseSupplier.get().getRotation());
         List<PhotonPipelineResult> pipelineResults = camera.getAllUnreadResults();
         List<AprilTagPoseObservation> observations = new ArrayList<>();
 
         if (cameraMatrix.isEmpty() || distCoeffs.isEmpty()) DriverStation.reportError("[" + sourceName + "]: Attempted to calculate constrained SolvePNP on an uncalibrated camera!", false);
         if (cpnpParams.isEmpty()) DriverStation.reportError("[" + sourceName + "]: Attempted to calculate constrained SolvePNP without Constrained PnP parameters!", false);
         for (var res : pipelineResults) {
-            captureTimestamps.offer(res.getTimestampSeconds());
             latestResult = res;
             if (res.hasTargets()) {
                 var observation = poseEstimator.estimateConstrainedSolvepnpPose(
@@ -194,11 +161,8 @@ public class CameraIOPhoton implements CameraIO {
 
     @Override
     public List<AprilTagPoseObservation> getLatestConstrainedPnPObservation() {
-          poseEstimator.addHeadingData(Timer.getFPGATimestamp(), headingSupplier.get());
+          poseEstimator.addHeadingData(Timer.getFPGATimestamp(), seedPoseSupplier.get().getRotation());
         List<PhotonPipelineResult> pipelineResults = camera.getAllUnreadResults();
-        for (var res : pipelineResults) {
-            captureTimestamps.offer(res.getTimestampSeconds());
-        }
         List<AprilTagPoseObservation> observations = new ArrayList<>();
 
         if (cameraMatrix.isEmpty() || distCoeffs.isEmpty()) DriverStation.reportError("[" + sourceName + "]: Attempted to calculate constrained SolvePNP on an uncalibrated camera!", false);
@@ -224,7 +188,6 @@ public class CameraIOPhoton implements CameraIO {
         List<AprilTagPoseObservation> observations = new ArrayList<>();
 
         for (var res : pipelineResults) {
-            captureTimestamps.offer(res.getTimestampSeconds());
             latestResult = res;
             if (res.hasTargets()) {
                 if (res.targets.size() < 2) {
