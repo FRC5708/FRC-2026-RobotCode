@@ -5,29 +5,67 @@
 package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants.Shooter;
+import frc.robot.subsystems.IndexSubsystem;
+import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class CoolShoot extends Command {
-  /** Creates a new CoolShoot. */
-  public CoolShoot() {
-    // Use addRequirements() here to declare subsystem dependencies.
+public class FreakyShooterStart extends Command {
+  private final ShootSubsystem m_shoot; 
+  private final IndexSubsystem m_index;
+  private final IntakeSubsystem m_intake;
+  private final Timer m_timer = new Timer();
+
+  public FreakyShooterStart(ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake) {
+    m_shoot = shoot;
+    m_index = index;
+    m_intake = intake;
+    addRequirements(m_shoot,m_index,m_intake);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_timer.reset();
+    m_timer.start(); 
+  }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  
+    // TODO refactor the hood setpoint into m_shoot.shoot() so
+    // that the hood position is automatically adjusted for the
+    // shot distance (which controls shoot speed).
+    double hoodPos;
+    double speed;
+    double hoodAdjust = m_shoot.getHoodAdjust();
+    double speedAdjust = m_shoot.getShootAdjust();
+  
+    hoodPos = 1.4;
+    speed = 55.5;
 
-  // Called once the command ends or is interrupted.
+    m_shoot.hood(hoodPos * hoodAdjust);
+    m_shoot.shoot(speed * speedAdjust);
+
+    if (m_timer.hasElapsed(Shooter.shootWindUp)){
+      m_shoot.stage(-1);
+      m_index.indexToStage(true);
+      //m_intake.intake(.2);
+    }
+    else {
+      m_shoot.stage(.4);
+      m_index.indexFromStage(true);
+    }
+  }
+
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

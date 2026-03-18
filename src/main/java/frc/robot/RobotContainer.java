@@ -35,6 +35,8 @@ import frc.robot.commands.NewShoot;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.autonomous.DeployIntake;
+import frc.robot.commands.autonomous.FreakyShooterStart;
+import frc.robot.commands.autonomous.FreakyShooterStop;
 import frc.robot.commands.autonomous.RetractIntake;
 import frc.robot.commands.autonomous.ShooterStart;
 import frc.robot.commands.autonomous.HubShoot;
@@ -89,6 +91,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("DeployIntake", new DeployIntake(m_intake, 1.0));
     NamedCommands.registerCommand("RetractIntake", new RetractIntake(m_intake,-0.7));
     NamedCommands.registerCommand("ShooterStart", new ShooterStart(m_shoot, m_index, m_intake));
+    NamedCommands.registerCommand("FreakyShooterStart", new FreakyShooterStart(m_shoot, m_index, m_intake));
+    NamedCommands.registerCommand("FreakyShooterStop", new FreakyShooterStop(m_shoot, m_index, m_intake));
     NamedCommands.registerCommand("HubShoot", new HubShoot(m_shoot, m_index, m_intake));
     NamedCommands.registerCommand("StartIntake", new StartIntake(m_intake, m_index, 1.0));
     NamedCommands.registerCommand("StopIntake", new StopIntake(m_intake, m_index, 0));
