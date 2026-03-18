@@ -73,17 +73,13 @@ public class Shoot extends Command {
         break;
     }
 
-    hoodPos = 1.2;
-    speed = 57;
-
     m_shoot.hood(hoodPos * hoodAdjust);
     m_shoot.shoot(speed * speedAdjust);
 
     if (m_timer.hasElapsed(Shooter.shootWindUp)){
       m_shoot.stage(-1);
       m_index.indexToStage(true);
-      // temporarily removed due to contact with hot dog rollers
-      //m_intake.intake(.2);
+      m_intake.intake(.2);
     }
     else {
       m_shoot.stage(.4);

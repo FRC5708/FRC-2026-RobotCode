@@ -97,8 +97,8 @@ public class ShootSubsystem extends SubsystemBase {
     distance.addOption("5 feet", 5);
     distance.addOption("6 feet", 6);
     distance.addOption("7 feet", 7);
-    distance.setDefaultOption("Trench", trenchDistance);
-    distance.addOption("CZ", 15);
+    distance.addOption("Trench", trenchDistance);
+    distance.setDefaultOption("CZ", 15);
     SmartDashboard.putData("Target Distence", distance);
 
     TalonFXSConfiguration primeShooterMotorConfig = new TalonFXSConfiguration();

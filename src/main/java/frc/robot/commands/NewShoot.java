@@ -25,7 +25,7 @@ import frc.robot.utils.GeometryUtils;
 
 //TODO: remove timed delays, replace with empirical measurement of encoders
 //This command uses an internal FSM for control
-// Lowkirkuinely ts FSM logic would probably be better as a superstructure class than a command, or could be replaced by a bool instead of a state enum
+//Lowkirkuinely ts FSM logic would probably be better as a superstructure class than a command, or could be replaced by a bool instead of a state enum
 public class NewShoot extends Command {
     private static enum CommandState {
         TRANSITIONING, // The robot is transitioning into the firing state, hood angle is transitioning, robot is rotating, indexing into stage. When all measurements are within the threshold, transitions into firing
