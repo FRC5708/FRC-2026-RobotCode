@@ -39,6 +39,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
+import frc.robot.FieldConstants.LeftBump;
 
 @Logged
 public class ShootSubsystem extends SubsystemBase {
@@ -193,6 +194,8 @@ public class ShootSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    rightShooterVelocity.refresh();
+    leftShooterVelocity.refresh();
     double m_shooterPowerRight = m_shootRightPrime.get();
     double m_shooterVelocityRight = getRightShooterVelocity();
 

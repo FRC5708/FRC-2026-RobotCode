@@ -37,6 +37,10 @@ public class IndexSubsystem extends SubsystemBase {
     }
   }
 
+  public void run(double power) {
+    m_index.set(power);
+  }
+
   public void indexFromStage (boolean On){
     if (On){
       double power = speed.getDouble(0.6);
