@@ -37,8 +37,8 @@ public class IndexSubsystem extends SubsystemBase {
     }
   }
 
-  public void run(double power) {
-    m_index.set(power);
+  public void run(double dutyCycle) {
+    m_index.set(dutyCycle);
   }
 
   public void indexFromStage (boolean On){

@@ -48,6 +48,20 @@ public class BallisticsCalculator {
         return buildSolution(trueShotExitSpeeds, shotVector);
     }
 
+    // Calculates a SOTF solution from vector forces, accounting for lag
+    public static ShotSolution calculateVectorSOTFSolution(Translation2d shooterPosition, Translation2d targetPosition, ChassisSpeeds shooterSpeed, double delaySeconds) {
+        return calculateVectorSOTFSolution(
+            predictActualPosition(shooterPosition, shooterSpeed, delaySeconds),
+            targetPosition,
+            shooterSpeed
+        );
+    }
+
+    private static Translation2d predictActualPosition(Translation2d shooterPosition, ChassisSpeeds shooterSpeed, double delaySeconds) {
+        Translation2d speedsVector = new Translation2d(shooterSpeed.vxMetersPerSecond,shooterSpeed.vyMetersPerSecond);
+        return shooterPosition.plus(speedsVector.times(delaySeconds));
+    }
+
     private static ShotSolution buildSolution(ShotExitSpeeds exitSpeeds, Translation2d shotVector) {
         return new ShotSolution(
             exitSpeeds.angle(), 

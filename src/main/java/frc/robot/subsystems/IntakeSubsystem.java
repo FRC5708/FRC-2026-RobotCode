@@ -48,7 +48,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void toggleIn() {
     in = !in;
   }
-  public void deploy(double power) {
+  public void deploy(double dutyCycle) {
 
     // if (in && !backwardCheck.get()) {
     //   //m_deploy.set(-power);
@@ -57,15 +57,15 @@ public class IntakeSubsystem extends SubsystemBase {
     // else if (!in && !forwardCheck.get()) {
     //   //m_deploy.set(power);
     // }
-    m_deploy.set(power);
+    m_deploy.set(dutyCycle);
   }
 
-  public void intake(double power) {
-    m_intake.set(power);
+  public void intake(double dutyCycle) {
+    m_intake.set(dutyCycle);
   }
 
-  public void reverseIntake(double power) {
-    m_intake.set(-power);
+  public void reverseIntake(double dutyCycle) {
+    m_intake.set(-dutyCycle);
   }
 
   public double getDeployCurrent() {
