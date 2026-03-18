@@ -20,6 +20,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -30,6 +31,7 @@ import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
 import frc.robot.commands.DriveHeadingLocked;
 import frc.robot.commands.Intake;
+import frc.robot.commands.NewShoot;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.autonomous.DeployIntake;
@@ -55,6 +57,7 @@ public class RobotContainer {
   ShootSubsystem m_shoot;
   IndexSubsystem m_index;
   SendableChooser<Command> autoChooser;
+  Translation2d hubPosition;
 
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -66,6 +69,14 @@ public class RobotContainer {
     m_drive = new DriveSubsystem();
     m_shoot = new ShootSubsystem();
     m_index = new IndexSubsystem();
+
+    hubPosition = DriverStation.getAlliance().isPresent()
+          ? DriverStation.getAlliance().map(
+            (Alliance alliance) -> alliance == Alliance.Blue
+              ? FieldConstants.Hub.topCenterPoint.toTranslation2d()
+              : FieldConstants.Hub.redTopCenterPoint.toTranslation2d()
+          ).get() 
+          : FieldConstants.Hub.topCenterPoint.toTranslation2d();
 
 
     m_drive.setDefaultCommand(
@@ -135,6 +146,8 @@ public class RobotContainer {
       m_driverController::getLeftY,
       m_drive)
     );
+    m_driverController.rightBumper().whileTrue(new NewShoot(hubPosition, m_driverController::getLeftX,
+      m_driverController::getLeftY, m_shoot, m_index, m_intake, m_drive));
   }
   
   public Command getAutonomousCommand() {
