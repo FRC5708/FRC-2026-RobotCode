@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rightStart"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rightIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rightToShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CoolShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "leftToTStart"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Cool",
+  "choreoAuto": false
+}
