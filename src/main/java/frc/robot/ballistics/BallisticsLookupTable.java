@@ -7,9 +7,12 @@ import frc.robot.Constants.Shooter;
 
 public class BallisticsLookupTable {
     public static final InterpolatingDoubleTreeMap distanceToHoodAngleMap = new InterpolatingDoubleTreeMap(); //meters to radians
-    public static final InterpolatingDoubleTreeMap distanceToExitSpeedMap = new InterpolatingDoubleTreeMap(); //meters to meters per second
+    public static final InterpolatingDoubleTreeMap distanceToFlywheelSpeedMap = new InterpolatingDoubleTreeMap(); //meters to RPM
+    // TODO: Remove
     public static final InterpolatingDoubleTreeMap exitSpeedToRPMMap = new InterpolatingDoubleTreeMap(); // MPS to RPM, converts ideal exit speed (m/s) to actual flywheel RPM, to compensate for flywheel dynamics (slippage, momentum loss, etc)
-
+    
+    public static final InterpolatingDoubleTreeMap distanceToTOFMap = new InterpolatingDoubleTreeMap(); // meters to seconds
+    public static final InterpolatingDoubleTreeMap velocityToDistanceMap = new InterpolatingDoubleTreeMap(); // essentially a reverse of the TOF map. m/s to m
     static {
         // Dummy
         distanceToHoodAngleMap.put(Units.feetToMeters(1 + 4), BallisticsCommon.motorRotsToShootRads(0.45));
@@ -25,16 +28,17 @@ public class BallisticsLookupTable {
         distanceToHoodAngleMap.put(Units.feetToMeters(11 + 4), BallisticsCommon.motorRotsToShootRads(1.8));
 
         // Dummy
-        distanceToExitSpeedMap.put(Units.feetToMeters(1 + 4),BallisticsCommon.flywheelRPStoMPS(50));
-        distanceToExitSpeedMap.put(Units.feetToMeters(6 + 4),BallisticsCommon.flywheelRPStoMPS(50));
-        distanceToExitSpeedMap.put(Units.feetToMeters(7 + 4),BallisticsCommon.flywheelRPStoMPS(55));
-        distanceToExitSpeedMap.put(Units.feetToMeters(8 + 4),BallisticsCommon.flywheelRPStoMPS(57));
-        distanceToExitSpeedMap.put(Units.feetToMeters(11 + 4),BallisticsCommon.flywheelRPStoMPS(57));
+        distanceToFlywheelSpeedMap.put(Units.feetToMeters(1 + 4),(double)(50 * 60));
+        distanceToFlywheelSpeedMap.put(Units.feetToMeters(6 + 4),(double)(50 * 60));
+        distanceToFlywheelSpeedMap.put(Units.feetToMeters(7 + 4),(double)(55 * 60));
+        distanceToFlywheelSpeedMap.put(Units.feetToMeters(8 + 4),(double)(57 * 60));
+        distanceToFlywheelSpeedMap.put(Units.feetToMeters(11 + 4),(double)(57 * 60));
 
 
         // Dummy, assumes perfect mechanics for now
         exitSpeedToRPMMap.put(0.0,0.0);
         exitSpeedToRPMMap.put(100.0,BallisticsCommon.calculateIdealRPM(100));
+
 
     }
 }
