@@ -177,7 +177,7 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
     m_field.setRobotPose(getPose());
-    SmartDashboard.putNumber("Distance To Hub", getPose().getTranslation().getDistance(hubPose.getTranslation()));
+    SmartDashboard.putNumber("Distance To Hub", getPose().getTranslation().getDistance(hubPose.getTranslation()) * 3.28084);
     //Comment out the following one to reduce feedback
     //System.out.println(pose);
   }
