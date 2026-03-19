@@ -73,6 +73,9 @@ public class Shoot extends Command {
         break;
     }
 
+    hoodPos = 1.2;
+    speed = 57;
+
     m_shoot.hood(hoodPos * hoodAdjust);
     m_shoot.shoot(speed * speedAdjust);
 

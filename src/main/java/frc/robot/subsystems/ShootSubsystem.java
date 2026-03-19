@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.Rotations;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
@@ -31,7 +34,11 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.units.AngleUnit;
+import edu.wpi.first.units.AngularVelocityUnit;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -39,6 +46,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
+import frc.robot.FieldConstants.LeftBump;
+import frc.robot.ballistics.BallisticsCommon;
 
 @Logged
 public class ShootSubsystem extends SubsystemBase {
@@ -78,10 +87,12 @@ public class ShootSubsystem extends SubsystemBase {
   private GenericEntry shootAdjust = tab.add("Shoot Adjust", 1).getEntry();
 
 
-
+  //TODO: The code is massively bloated, trim down after bellevue
+  // TODO: Too much data is being logged, remove old methods, streamline API, and add NotLogged annotations
   //private SparkMax m_hood = new SparkMax(30, MotorType.kBrushless);
   /** Creates a new Intake. */
   public ShootSubsystem() {
+    // This entire sendableChooser is deprecated, remove
     distance.addOption("Hub", 0); 
     distance.addOption("5 feet", 5);
     distance.addOption("6 feet", 6);
@@ -114,7 +125,7 @@ public class ShootSubsystem extends SubsystemBase {
     
     m_shootRightPrime = new TalonFXS(Shooter.canIDShootRight);
     m_shootRightPrime.getConfigurator().apply(primeShooterMotorConfig);
-    rightShooterVelocity = m_shootRightPrime.getVelocity();
+    rightShooterVelocity = m_shootRightPrime.getVelocity(true);
 
     TalonFXSConfiguration secondaryShooterMotorConfig = new TalonFXSConfiguration();
     secondaryShooterMotorConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
@@ -162,28 +173,44 @@ public class ShootSubsystem extends SubsystemBase {
     m_hood.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
+  @Deprecated
   public void shoot(double speed) {
       m_shootRightPrime.setControl(velocityRequest.withVelocity(speed));
   }
 
+  @Deprecated
   public void shootRPM(double rpm) {
     m_shootRightPrime.setControl(velocityRequest.withVelocity(RPM.of(rpm)));
   }
 
-  public void stage(double speed) {
-    m_stageLeft.set(-speed);
-    m_stageRight.set(-speed);
+  public void shoot(AngularVelocity velocity) {
+    m_shootRightPrime.setControl(velocityRequest.withVelocity(velocity));
   }
 
+  public void shoot(double magnitude, AngularVelocityUnit unit) {
+    shoot(unit.of(magnitude));
+  }
+
+  public void stage(double dutyCycle) {
+    m_stageLeft.set(-dutyCycle);
+    m_stageRight.set(-dutyCycle);
+  }
+
+  @Deprecated
   public void hood(double setPoint){
-    hoodPosTarget.setDouble(setPoint);
-    m_hoodPidController.setSetpoint(setPoint, ControlType.kPosition, ClosedLoopSlot.kSlot1);
+    hood_impl(setPoint);
+  }
+
+  private void hood_impl(double setpointRotations) {
+    hoodPosTarget.setDouble(setpointRotations);
+    m_hoodPidController.setSetpoint(setpointRotations, ControlType.kPosition, ClosedLoopSlot.kSlot1);
   }
 
   public void resetHoodEncoder(){
     m_hoodEncoder.setPosition(0);
   }
 
+  @Deprecated
   public void changeHoodSetpoint(){
     ++hoodSetPoint;
     if (hoodSetPoint > 5) {
@@ -193,6 +220,8 @@ public class ShootSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    rightShooterVelocity.refresh();
+    leftShooterVelocity.refresh();
     double m_shooterPowerRight = m_shootRightPrime.get();
     double m_shooterVelocityRight = getRightShooterVelocity();
 
@@ -213,30 +242,37 @@ public class ShootSubsystem extends SubsystemBase {
     }
   }
 
+  @Deprecated
   public double getHoodAdjust() {
     return hoodPosAdjust.getDouble(1);
   }
 
+  @Deprecated
   public double getShootAdjust() {
     return shootAdjust.getDouble(1);
   }
 
+  @Deprecated
   public int getHoodSetpoint (){
     return hoodSetPoint;
   }
 
+  @Deprecated
   public double getLeftStagePower() {
     return m_stageLeft.get();
   }
 
+  @Deprecated
   public double getRightStagePower() {
     return m_stageRight.get();
   }
 
+  @Deprecated
   public double getLeftStageVelocity() {
     return m_stageEncoderLeft.getVelocity();
   }
 
+  @Deprecated
   public double getRightStageVelocity() {
     return m_stageEncoderRight.getVelocity();
   }
@@ -262,23 +298,44 @@ public class ShootSubsystem extends SubsystemBase {
     return rightShooterVelocity.getValue();
   }
 
-  public double getHoodPos() {
+  // Returns the reading of the hood motor encoder, in rotations, not accounting for gearing
+  public double getHoodEncoderPos() {
     return m_hoodEncoder.getPosition();
   }
 
-  public void hoodDown(double power) {
-  m_hood.set(-power);
+  // Accounts for hood gearing
+  public Angle getRealHoodAngle() {
+    // The gearing ratio is 1 rotation on the encoder = 10 degrees on the hood
+    return Radians.of(BallisticsCommon.motorRotsToHoodRads(getHoodEncoderPos()));
   }
 
-  public void hoodUp(double power){
-    m_hood.set(power);
+  // Returns the exit angle of the shot, which is the complement of the hood angle
+  public Angle getShootAngle() {
+    return Radians.of(BallisticsCommon.motorRotsToShootRads(getHoodEncoderPos()));
+  }
+
+  // This sets the exit shot angle of the turret. this is essentially the complement of the hood angle
+  public void setShootAngle(Angle shootAngle) {
+    hood_impl(0.25 - shootAngle.in(Rotations));
+  }
+
+  public void setShootAngle(double magnitude, AngleUnit unit) {
+    setShootAngle(unit.of(magnitude));
+  }
+
+  public void hoodDown(double dutyCycle) {
+    m_hood.set(-dutyCycle);
+  }
+
+  public void hoodUp(double dutyCycle){
+    m_hood.set(dutyCycle);
   } 
 
-  public void stageLeft(double speed) {
-    m_stageLeft.set(-speed);
+  public void stageLeft(double dutyCycle) {
+    m_stageLeft.set(-dutyCycle);
   }
 
-  public void stageRight(double speed) {
-    m_stageRight.set(-speed);
+  public void stageRight(double dutyCycle) {
+    m_stageRight.set(-dutyCycle);
   }
 }

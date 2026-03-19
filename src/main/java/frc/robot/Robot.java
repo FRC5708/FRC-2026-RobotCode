@@ -7,15 +7,17 @@ package frc.robot;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
-//import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utils.VirtualSubsystem;
 import edu.wpi.first.epilogue.Epilogue; //VSCode is dumb, this class is generated, ignore the red squiggly line
 //VSCode is actully quite smart just it hadent been built until you build it which causes it to have a red line until is built
 
 
-//@Logged
+@Logged
 public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
@@ -35,7 +37,7 @@ public class Robot extends TimedRobot {
       // If this triggers it means for some reason is didn't read the swerve files right
       e.printStackTrace();
     }
-    //Epilogue.bind(this);
+    Epilogue.bind(this);
   }
 
   /**
@@ -47,6 +49,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // Runs the periodic methods of all virtual subsystems
+    VirtualSubsystem.periodicAll();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -107,5 +111,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    VirtualSubsystem.simulationPeriodicAll();
+  }
 }

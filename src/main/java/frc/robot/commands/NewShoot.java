@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Radians;
 
 import java.util.function.DoubleSupplier;
 
@@ -13,6 +14,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Auto.RotationK;
 import frc.robot.ballistics.BallisticsCalculator;
+import frc.robot.ballistics.BallisticsCommon;
+import frc.robot.ballistics.BallisticsLookupTable;
 import frc.robot.ballistics.ShotSolution;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexSubsystem;
@@ -36,9 +39,9 @@ public class NewShoot extends Command {
     private final DriveSubsystem m_drive;
 
     //TODO: Tune these, Move to constants file
-    private static final double robotRotationThreshRads = 0.1;
-    private static final double hoodAngleThreshRads = 0.1;
-    private static final double flywheelSpeedThreshRPM = 300;
+    private static final double robotRotationThreshRads = Units.degreesToRadians(5); //TODO: Maybe make dynamic???
+    private static final double hoodAngleThreshRads = Units.degreesToRadians(1);
+    private static final double flywheelSpeedThreshRPM = 30;
 
     private final Translation2d target;
 
@@ -69,25 +72,26 @@ public class NewShoot extends Command {
             target,
             m_drive.getFieldRelativeSpeeds() // TODO: might need to be reversed becuas the shooter is on the back?? IDK
         );
+        //solution = BallisticsCalculator.calculateStationarySolution(m_drive.getPose().getTranslation(), target);
         switch (state) {
             case TRANSITIONING:
                 //TODO: Fix units
-                m_shoot.hood(Units.radiansToRotations(solution.hoodAngleRads()));
-                m_shoot.stage(-1);
-                m_shoot.shootRPM(solution.flywheelSpeedRPM());
+                // Note, setShootAngle sets the exit angle of the ball leaving the shooter, which is the complement of the hood angle
+                m_shoot.setShootAngle(solution.shootAngleRads(),Radians);
+                m_shoot.stage(0.4);
+                m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
                 m_index.run(0.6);
                 //m_intake.intake(.2);
                 executeAutoalign(solution.robotAngleRads());
-                m_index.indexToStage(true);
                 if (inThreshold()) {
                     state = CommandState.FIRING;
                 }
                 break;
             case FIRING:
-                m_shoot.hood(Units.radiansToRotations(solution.hoodAngleRads()));
-                m_shoot.stage(.4);
-                m_index.indexFromStage(true);
-                m_shoot.shootRPM(solution.flywheelSpeedRPM());
+                m_shoot.setShootAngle(solution.shootAngleRads(),Radians);
+                m_shoot.stage(-1);
+                m_index.run(-0.6);
+                m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
                 m_intake.intake(.2);
                 executeAutoalign(solution.robotAngleRads());
                 if (!inThreshold()) {
@@ -99,8 +103,8 @@ public class NewShoot extends Command {
     }
 
     private boolean inThreshold() {
-        return 
-            Math.abs(Units.rotationsToRadians(m_shoot.getHoodPos()) - solution.hoodAngleRads()) < hoodAngleThreshRads &&
+        return
+            Math.abs(m_shoot.getShootAngle().in(Radians) - solution.shootAngleRads()) < hoodAngleThreshRads &&
             Math.abs(solution.robotAngleRads().getRadians() - m_drive.getPose().getRotation().getRadians()) < robotRotationThreshRads &&
             Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
     }
@@ -121,9 +125,9 @@ public class NewShoot extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_shoot.shoot(0);
+        m_shoot.shoot(0,RPM);
         m_shoot.stage(0);
-        m_index.indexToStage(false);
+        m_index.run(0);
         m_intake.intake(0);
         m_shoot.hoodDown(0);
     }
