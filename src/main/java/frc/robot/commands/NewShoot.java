@@ -71,13 +71,24 @@ public class NewShoot extends Command {
         );
         switch (state) {
             case TRANSITIONING:
+<<<<<<< Updated upstream
                 //TODO: Fix units
                 m_shoot.hood(Units.radiansToRotations(solution.hoodAngleRads()));
                 m_shoot.stage(-1);
                 m_shoot.shootRPM(solution.flywheelSpeedRPM());
                 m_index.indexToStage(true);
                 m_intake.intake(.2);
+=======
+                //TOsDO: Fix units
+                // Note, setShootAngle sets the exit angle of the ball leaving the shooter, which is the complement of the hood angle
+                m_shoot.setShootAngle(solution.shootAngleRads(),Radians);
+                m_shoot.stage(0.4);
+                m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
+                m_index.run(0.6);
+                //m_intake.intake(.2);
+>>>>>>> Stashed changes
                 executeAutoalign(solution.robotAngleRads());
+                m_index.indexToStage(true);
                 if (inThreshold()) {
                     state = CommandState.FIRING;
                 }
