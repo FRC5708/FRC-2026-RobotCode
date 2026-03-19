@@ -10,7 +10,6 @@ import frc.robot.subsystems.vision.io.*;
 @Logged
 public class Camera {
     private final CameraIO io;
-    private final CameraIO.CameraIOInputs inputs = new CameraIO.CameraIOInputs();
     private List<CameraIO.AprilTagPoseObservation> poseObservationCache = new ArrayList<>();
 
     public Camera(CameraIO io) {
@@ -18,16 +17,7 @@ public class Camera {
     }
 
     public void periodic() {
-        io.updateInputs(inputs);
         poseObservationCache = io.getAllUnreadPoseObservations();
-    }
-
-    CameraIO.CameraIOInputs getInputs() {
-        return inputs;
-    }
-
-    public boolean isConnected() {
-        return inputs.data.connected();
     }
 
     public List<CameraIO.AprilTagPoseObservation> getPoseObservations() {

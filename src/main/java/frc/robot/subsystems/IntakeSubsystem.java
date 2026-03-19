@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private RelativeEncoder m_deploy_encoder = m_deploy.getEncoder();
   public static final double homingDebounceTime = 0.25;
   // current value of homing velo is 7 but 5 works kinda, when pulleys are replaced to 33 or 34 tooth then you can lower this value again.
-  public static final double homingVelocityThreshold = 7 * 60;
+  public static final double homingVelocityThreshold = 7;
   private Debouncer homingDebouncer;
   private boolean homed;
   //private RelativeEncoder m_deploy_encoder = m_deploy.getEncoder();
@@ -40,11 +40,15 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
   }
 
+  public double getDeployPower() {
+    return m_deploy.getAppliedOutput();
+  }
+
 
   public void toggleIn() {
     in = !in;
   }
-  public void deploy(double power) {
+  public void deploy(double dutyCycle) {
 
     // if (in && !backwardCheck.get()) {
     //   //m_deploy.set(-power);
@@ -53,15 +57,15 @@ public class IntakeSubsystem extends SubsystemBase {
     // else if (!in && !forwardCheck.get()) {
     //   //m_deploy.set(power);
     // }
-    m_deploy.set(power);
+    m_deploy.set(dutyCycle);
   }
 
-  public void intake(double power) {
-    m_intake.set(power);
+  public void intake(double dutyCycle) {
+    m_intake.set(dutyCycle);
   }
 
-  public void reverseIntake(double power) {
-    m_intake.set(-power);
+  public void reverseIntake(double dutyCycle) {
+    m_intake.set(-dutyCycle);
   }
 
   public double getDeployCurrent() {
@@ -76,7 +80,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   //ts is actually so cooked ong. Yes i am too lazy to change the varuiable names
-   public Command runIntake(double power) {
+   public Command runDeploy(double power) {
         return startRun(
             () -> {
                 homingDebouncer = new Debouncer(homingDebounceTime);

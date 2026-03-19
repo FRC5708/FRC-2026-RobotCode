@@ -19,16 +19,8 @@ import edu.wpi.first.math.numbers.N6;
 
 // Generic interface for AprilTag Localization Source IO layers
 // TODO: This was written with advantagekit in mind, redo for Epilogue, we can probably get rid of the IO system entirely lowkey
+// TODO: Also we don't need abstraction anymore, since we're running everything through photonvision
 public interface CameraIO {
-
-    public static class CameraIOInputs {
-        public CameraIOData data = new CameraIOData(
-            false, // connected
-            0,
-            0.0,
-            0.0
-        );
-    }
 
     public static record CameraIOData(
         boolean connected,
@@ -71,8 +63,6 @@ public interface CameraIO {
         out.add(singletagStdDevs);
         return out;
     }
-
-    public abstract void updateInputs(CameraIOInputs inputs);
 
     public abstract String getName();
 
