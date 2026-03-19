@@ -75,9 +75,10 @@ public class NewShoot extends Command {
                 m_shoot.hood(Units.radiansToRotations(solution.hoodAngleRads()));
                 m_shoot.stage(-1);
                 m_shoot.shootRPM(solution.flywheelSpeedRPM());
-                m_index.indexToStage(true);
-                m_intake.intake(.2);
+                m_index.run(0.6);
+                //m_intake.intake(.2);
                 executeAutoalign(solution.robotAngleRads());
+                m_index.indexToStage(true);
                 if (inThreshold()) {
                     state = CommandState.FIRING;
                 }
