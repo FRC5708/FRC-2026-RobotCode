@@ -135,23 +135,23 @@ public class RobotContainer {
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.start().onTrue(m_drive.zeroGyro());
     //lowkirkuinely cooked, refactor
-    m_driverController.leftBumper().whileTrue(new DriveHeadingLocked(
-      new Pose2d(
-        DriverStation.getAlliance().isPresent()
-          ? DriverStation.getAlliance().map(
-            (Alliance alliance) -> alliance == Alliance.Blue
-              ? FieldConstants.Hub.topCenterPoint.toTranslation2d()
-              : FieldConstants.Hub.redTopCenterPoint.toTranslation2d()
-          ).get() 
-          : FieldConstants.Hub.topCenterPoint.toTranslation2d(),
-        new Rotation2d()
-      ),
+    m_driverController.leftBumper().whileTrue(new ShootAutoDistance(
+      DriverStation.getAlliance().isPresent()
+        ? DriverStation.getAlliance().map(
+          (Alliance alliance) -> alliance == Alliance.Blue
+            ? FieldConstants.Hub.topCenterPoint.toTranslation2d()
+            : FieldConstants.Hub.redTopCenterPoint.toTranslation2d()
+        ).get() 
+        : FieldConstants.Hub.topCenterPoint.toTranslation2d(), 
       m_driverController::getLeftX,
       m_driverController::getLeftY,
+      m_shoot,
+      m_index,
+      m_intake,
       m_drive)
     );
-    m_driverController.rightBumper().whileTrue(new ShootAutoDistance(hubPosition, m_driverController::getLeftX,
-      m_driverController::getLeftY, m_shoot, m_index, m_intake, m_drive));
+    // m_driverController.rightBumper().whileTrue(new ShootAutoDistance(hubPosition, m_driverController::getLeftX,
+    //   m_driverController::getLeftY, m_shoot, m_index, m_intake, m_drive));
   }
   
   public Command getAutonomousCommand() {

@@ -69,6 +69,6 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     deployCurrent.setDouble(m_deploy.getOutputCurrent());
     deployVoltage.setDouble(m_deploy.get());
-    deployVelocity.setDouble(m_deploy_encoder.getDeployVelocity());
+    deployVelocity.setDouble(getDeployVelocity());
   }
 }
