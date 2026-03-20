@@ -56,9 +56,10 @@ public final class Constants {
     public static final int canIDDeploy = 11;
     public static final int canIDIntake = 12;
 
-    public static final double deployWindUp = 2.5;
-    //Change this number if it isn't stopping fast enough for your taste
-    public static final double  velocityThreshold = 6;
+    public static final double maxStallTime = 1;
+    //Change this number if it isn't stopping fast enough for your taste(lower equals lower velocity to cut at)
+    public static final double velocityThreshold = 6;
+    public static final double wayTooFuckingLong = 5;
   }
 
   public static class Index {

@@ -15,39 +15,45 @@ public class Deploy extends Command {
   private final IntakeSubsystem m_intake;
   private final double m_power;
   private boolean velocityTripped;
-  private final Timer m_timer = new Timer();
+  private final Timer m_totalTime = new Timer();
+  private final Timer m_stallTimer = new Timer();
   public Deploy(IntakeSubsystem  intake, double power) {
     m_power = power;
     m_intake = intake;
-    velocityTripped = false;
     addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_timer.reset();
-    m_timer.start(); 
+    m_totalTime.reset();
+    m_stallTimer.reset();
+    m_totalTime.start();
+    m_stallTimer.start();
+    velocityTripped = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_timer.hasElapsed(Intake.deployWindUp)){
-      if (m_intake.getDeployVelocity() <= Intake.velocityThreshold){
-        velocityTripped = true;
-      }
-    }
-    else if (m_timer.hasElapsed(10)){
+    m_intake.deploy(m_power);
+
+    if (m_totalTime.hasElapsed(Intake.wayTooFuckingLong)){
       velocityTripped = true;
     }
-    m_intake.deploy(m_power);
+    else if (m_intake.getDeployVelocity() >= Intake.velocityThreshold){
+      m_stallTimer.reset();
+    }
+    else if (m_stallTimer.hasElapsed(Intake.maxStallTime)){
+      velocityTripped = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_timer.stop();
+    m_totalTime.stop();
+    m_stallTimer.stop();
     m_intake.deploy(0);
   }
 
