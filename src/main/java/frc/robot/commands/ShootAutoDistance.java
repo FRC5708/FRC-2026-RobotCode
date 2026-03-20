@@ -8,7 +8,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.controller.PIDController;
 //import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-//import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 //import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -113,25 +113,25 @@ public class ShootAutoDistance extends Command {
     }
 
     private boolean inThreshold() {
-        return true;
-            //Math.abs(m_shoot.getShootAngle().in(Radians) - solution.shootAngleRads()) < hoodAngleThreshRads &&
+        return
+            Math.abs(m_shoot.getShootAngle().in(Radians) - solution.shootAngleRads()) < hoodAngleThreshRads &&
             //Math.abs(solution.robotAngleRads().getRadians() - m_drive.getPose().getRotation().getRadians()) < robotRotationThreshRads &&
-            //Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
+            Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
     }
 
-    // private void executeAutoalign(Rotation2d angle) {
-    //     var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-    //         xSpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
-    //         ySpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
-    //         rotationController.calculate(
-    //             m_drive.getPose().getRotation().getRadians(),
-    //             angle.getRadians()
-    //         ),
-    //         m_drive.getPose().getRotation()
-    //     );
+    private void executeAutoalign(Rotation2d angle) {
+        var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+            xSpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
+            ySpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
+            rotationController.calculate(
+                m_drive.getPose().getRotation().getRadians(),
+                angle.getRadians()
+            ),
+            m_drive.getPose().getRotation()
+        );
         
-    //     m_drive.driveRobotRelative(speeds);
-    // }
+        m_drive.driveRobotRelative(speeds);
+    }
 
     @Override
     public void end(boolean interrupted) {
