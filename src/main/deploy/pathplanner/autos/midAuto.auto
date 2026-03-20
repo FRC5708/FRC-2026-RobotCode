@@ -5,9 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "midToPod"
+            "name": "HubShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HubShoot"
           }
         },
         {
@@ -17,27 +23,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "DeployIntake"
+            "pathName": "midToPod"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "inhalePod"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopIntake"
           }
         },
         {
@@ -49,13 +43,31 @@
         {
           "type": "named",
           "data": {
-            "name": "ShooterStart"
+            "name": "StopIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HubShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HubShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "midStart"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Shoots",
+  "folder": "Autos",
   "choreoAuto": false
 }

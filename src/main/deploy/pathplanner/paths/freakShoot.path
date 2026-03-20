@@ -3,78 +3,83 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.090813124108416,
-        "y": 0.8068045649072757
+        "x": 3.9743651925820247,
+        "y": 0.6386019971469341
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.213343124280287,
-        "y": 0.5972762318890421
+        "x": 2.325325301204819,
+        "y": 0.6911204819277136
       },
       "isLocked": false,
-      "linkedName": "rightStart"
+      "linkedName": "rightShoot"
     },
     {
       "anchor": {
-        "x": 8.386447931526389,
-        "y": 1.0397004279600572
+        "x": 1.7461566265060235,
+        "y": 4.056855421686747
       },
       "prevControl": {
-        "x": 8.490589659467517,
-        "y": 0.6057765615386871
+        "x": 1.7570843373493963,
+        "y": 2.6908915662650594
       },
       "nextControl": {
-        "x": 8.231184022824536,
-        "y": 1.6866333808844511
+        "x": 1.7352289156626508,
+        "y": 5.422819277108435
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.386447931526389,
-        "y": 6.952667617689015
+        "x": 3.9644819277108434,
+        "y": 7.357024096385541
       },
       "prevControl": {
-        "x": 8.412325249643366,
-        "y": 3.3039657631954342
+        "x": 2.2597590361445783,
+        "y": 7.204036144578313
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "leftMess"
+      "linkedName": "leftShoot"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.63,
+        "y": 4.0
+      },
+      "rotationOffset": 180.0,
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 2.0,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [
     {
-      "name": "DeployIntake",
-      "waypointRelativePos": 0.24406457739790788,
+      "name": "FreakyShooterStart",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "DeployIntake"
+          "name": "FreakyShooterStart"
         }
       }
     },
     {
-      "name": "StartIntake",
-      "waypointRelativePos": 1.1785375118708468,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "StartIntake"
-        }
-      }
-    },
-    {
-      "name": "StopIntake",
+      "name": "FreakyShooterStop",
       "waypointRelativePos": 2.0,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "FreakyShooterStop"
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -87,13 +92,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -146.88865803962796
+    "rotation": 103.44861505168646
   },
   "reversed": false,
-  "folder": "Mess",
+  "folder": "Cool",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.42294033956723
+    "rotation": -98.88065915052012
   },
   "useDefaultConstraints": true
 }

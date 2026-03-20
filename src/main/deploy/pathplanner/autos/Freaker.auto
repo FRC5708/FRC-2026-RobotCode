@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "leftStart"
+            "pathName": "rightStart"
           }
         },
         {
@@ -19,13 +19,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "leftIntake"
+            "pathName": "rightIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "leftToShoot"
+            "pathName": "rightToShoot"
           }
         },
         {
@@ -35,15 +35,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "ShooterStart"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShooterStart"
+            "pathName": "freakShoot"
           }
         },
         {
@@ -56,6 +50,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Autos",
+  "folder": "Cool",
   "choreoAuto": false
 }

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.964481927710843,
-        "y": 7.357024096385541
+        "x": 4.944764621968615,
+        "y": 7.483152639087019
       },
       "isLocked": false,
       "linkedName": "leftShoot"
@@ -20,8 +20,8 @@
         "y": 7.357024096385541
       },
       "prevControl": {
-        "x": 5.816614457831325,
-        "y": 7.357024096385541
+        "x": 6.044550641940085,
+        "y": 7.366704707560627
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "Left",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 97.89724498914987
+    "rotation": 103.44861505168646
   },
   "useDefaultConstraints": true
 }

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.316607214076297,
-        "y": 0.9554032599381959
+        "x": 7.532496433666189,
+        "y": 0.6644793152639101
       },
       "isLocked": false,
       "linkedName": "rightMess"
@@ -20,8 +20,8 @@
         "y": 0.8003975903614469
       },
       "prevControl": {
-        "x": 6.453649252251164,
-        "y": 0.8059437087655272
+        "x": 8.023823820052746,
+        "y": 0.6905655031781428
       },
       "nextControl": null,
       "isLocked": false,
@@ -60,7 +60,7 @@
   "folder": "Mess",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 158.4590240814615
+    "rotation": 150.25511870305755
   },
   "useDefaultConstraints": true
 }

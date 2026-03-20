@@ -7,19 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ShooterStop"
+            "name": "ShooterStart"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "midStart"
+            "name": "ShooterStart"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": "Shoots",
   "choreoAuto": false
 }

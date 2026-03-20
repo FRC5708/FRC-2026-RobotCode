@@ -11,13 +11,13 @@ import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 // Doesn't stop shooter becasuse we dont need it to. Insted it has power set to shoot when against the hub
 
-public class ShooterStop extends Command {
+public class HubShoot extends Command {
   private final ShootSubsystem m_shoot; 
   private final IndexSubsystem m_index;
   private final IntakeSubsystem m_intake;
   private final Timer m_timer = new Timer();
 
-  public ShooterStop(ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake) {
+  public HubShoot(ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake) {
     m_shoot = shoot;
     m_index = index;
     m_intake = intake;
@@ -41,7 +41,7 @@ public class ShooterStop extends Command {
     double speedAdjust = m_shoot.getShootAdjust();
   
     hoodPos = 0.25;
-    speed = 50;
+    speed = 45;
 
     m_shoot.hood(hoodPos * hoodAdjust);
     m_shoot.shoot(speed * speedAdjust);
@@ -69,6 +69,6 @@ public class ShooterStop extends Command {
 
   @Override
   public boolean isFinished() {
-    return (m_timer.hasElapsed(5.0));
+    return (m_timer.hasElapsed(3.0));
   }
 }

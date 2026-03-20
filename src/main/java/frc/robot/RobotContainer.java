@@ -13,10 +13,14 @@ import frc.robot.subsystems.IndexSubsystem;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -25,14 +29,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
+import frc.robot.commands.DriveHeadingLocked;
 import frc.robot.commands.Intake;
-import frc.robot.commands.ShootAutoDistance;
+import frc.robot.commands.NewShoot;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.autonomous.DeployIntake;
+import frc.robot.commands.autonomous.FreakyShooterStart;
+import frc.robot.commands.autonomous.FreakyShooterStop;
 import frc.robot.commands.autonomous.RetractIntake;
 import frc.robot.commands.autonomous.ShooterStart;
-import frc.robot.commands.autonomous.ShooterStop;
+import frc.robot.commands.autonomous.HubShoot;
 import frc.robot.commands.autonomous.StartIntake;
 import frc.robot.commands.autonomous.StopIntake;
 import frc.robot.commands.HoodUp;
@@ -52,6 +59,7 @@ public class RobotContainer {
   ShootSubsystem m_shoot;
   IndexSubsystem m_index;
   SendableChooser<Command> autoChooser;
+  Translation2d hubPosition;
 
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -64,6 +72,14 @@ public class RobotContainer {
     m_shoot = new ShootSubsystem();
     m_index = new IndexSubsystem();
 
+    hubPosition = DriverStation.getAlliance().isPresent()
+          ? DriverStation.getAlliance().map(
+            (Alliance alliance) -> alliance == Alliance.Blue
+              ? FieldConstants.Hub.topCenterPoint.toTranslation2d()
+              : FieldConstants.Hub.redTopCenterPoint.toTranslation2d()
+          ).get() 
+          : FieldConstants.Hub.topCenterPoint.toTranslation2d();
+
 
     m_drive.setDefaultCommand(
            m_drive.driveCommand(m_driverController::getLeftX, m_driverController::getLeftY,
@@ -75,14 +91,17 @@ public class RobotContainer {
     NamedCommands.registerCommand("DeployIntake", new DeployIntake(m_intake, 1.0));
     NamedCommands.registerCommand("RetractIntake", new RetractIntake(m_intake,-0.7));
     NamedCommands.registerCommand("ShooterStart", new ShooterStart(m_shoot, m_index, m_intake));
-    NamedCommands.registerCommand("ShooterStop", new ShooterStop(m_shoot, m_index, m_intake));
-    NamedCommands.registerCommand("StartIntake", new StartIntake(m_intake, m_index, 0.55));
+    NamedCommands.registerCommand("FreakyShooterStart", new FreakyShooterStart(m_shoot, m_index, m_intake));
+    NamedCommands.registerCommand("FreakyShooterStop", new FreakyShooterStop(m_shoot, m_index, m_intake));
+    NamedCommands.registerCommand("HubShoot", new HubShoot(m_shoot, m_index, m_intake));
+    NamedCommands.registerCommand("StartIntake", new StartIntake(m_intake, m_index, 1.0));
     NamedCommands.registerCommand("StopIntake", new StopIntake(m_intake, m_index, 0));
 
     autoChooser = AutoBuilder.buildAutoChooser("rightShoot");
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
+  @SuppressWarnings("deprecation")
   private void configureBindings() {
     //For testing/debugging commands
     //m_driverController.y().whileTrue(new Stage(m_shoot, 1));
@@ -100,9 +119,9 @@ public class RobotContainer {
 
     //Deploy the funnel (intake) controls
     //May want to change it back .4 and .45
-    m_driverController.a().onTrue(new Deploy(m_intake, 0.8));
+    m_driverController.a().whileTrue(m_intake.runIntake(.8));
 
-    m_driverController.x().onTrue(new Deploy(m_intake, -0.7));
+    m_driverController.x().whileTrue(m_intake.runIntake(-0.7));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
@@ -116,21 +135,23 @@ public class RobotContainer {
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.start().onTrue(m_drive.zeroGyro());
     //lowkirkuinely cooked, refactor
-    m_driverController.leftBumper().whileTrue(new ShootAutoDistance(
-      DriverStation.getAlliance().isPresent()
-        ? DriverStation.getAlliance().map(
-          (Alliance alliance) -> alliance == Alliance.Blue
-            ? FieldConstants.Hub.topCenterPoint.toTranslation2d()
-            : FieldConstants.Hub.redTopCenterPoint.toTranslation2d()
-        ).get() 
-        : FieldConstants.Hub.topCenterPoint.toTranslation2d(), 
+    m_driverController.leftBumper().whileTrue(new DriveHeadingLocked(
+      new Pose2d(
+        DriverStation.getAlliance().isPresent()
+          ? DriverStation.getAlliance().map(
+            (Alliance alliance) -> alliance == Alliance.Blue
+              ? FieldConstants.Hub.topCenterPoint.toTranslation2d()
+              : FieldConstants.Hub.redTopCenterPoint.toTranslation2d()
+          ).get() 
+          : FieldConstants.Hub.topCenterPoint.toTranslation2d(),
+        new Rotation2d()
+      ),
       m_driverController::getLeftX,
       m_driverController::getLeftY,
-      m_shoot,
-      m_index,
-      m_intake,
       m_drive)
     );
+    m_driverController.rightBumper().whileTrue(new NewShoot(hubPosition, m_driverController::getLeftX,
+      m_driverController::getLeftY, m_shoot, m_index, m_intake, m_drive));
   }
   
   public Command getAutonomousCommand() {

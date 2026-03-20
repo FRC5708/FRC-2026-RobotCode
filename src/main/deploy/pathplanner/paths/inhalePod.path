@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.141,
-        "y": 6.008
+        "x": 1.1666761768901568,
+        "y": 5.982268188302426
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.141,
-        "y": 6.008
+        "x": 0.7785164051355205,
+        "y": 6.021084165477889
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "pod"
     },
     {
       "anchor": {
-        "x": 0.4162339514978599,
-        "y": 6.008
+        "x": 0.610313837375178,
+        "y": 5.982268188302426
       },
       "prevControl": {
-        "x": -0.5837660485021401,
-        "y": 6.008
+        "x": 0.9031385066570308,
+        "y": 5.979023537488864
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "podInhale"
     }
   ],
   "rotationTargets": [],

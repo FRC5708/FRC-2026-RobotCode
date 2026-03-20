@@ -11,13 +11,13 @@ import frc.robot.subsystems.IndexSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class ShooterStart extends Command {
+public class FreakyShooterStart extends Command {
   private final ShootSubsystem m_shoot; 
   private final IndexSubsystem m_index;
   private final IntakeSubsystem m_intake;
   private final Timer m_timer = new Timer();
 
-  public ShooterStart(ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake) {
+  public FreakyShooterStart(ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake) {
     m_shoot = shoot;
     m_index = index;
     m_intake = intake;
@@ -60,16 +60,12 @@ public class ShooterStart extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    m_shoot.shoot(0);
-    m_shoot.stage(0);
-    m_index.indexToStage(false);
-    m_intake.intake(0);
-    m_shoot.hoodDown(0);
-    m_timer.stop();
+    
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_timer.hasElapsed(4.0));
+    return true;
   }
 }
