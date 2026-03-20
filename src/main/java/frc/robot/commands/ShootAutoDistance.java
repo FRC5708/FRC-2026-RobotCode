@@ -21,6 +21,13 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.commands.DriveHeadingLocked;
+import frc.robot.Constants.Operator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 //import frc.robot.utils.GeometryUtils;
 
 //TODO: remove timed delays, replace with empirical measurement of encoders
@@ -43,14 +50,13 @@ public class ShootAutoDistance extends Command {
     private static final double hoodAngleThreshRads = Units.degreesToRadians(1);
     private static final double flywheelSpeedThreshRPM = 30;
 
-    private final Translation2d target;
+    private Translation2d target;
 
     private final DoubleSupplier xSpeedSupplier;
     private final DoubleSupplier ySpeedSupplier;
     private final PIDController rotationController = new PIDController(RotationK.kP,RotationK.kI,RotationK.kD);
 
-    public ShootAutoDistance(Translation2d target, DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier, ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake, DriveSubsystem drive) {
-        this.target = target;
+    public ShootAutoDistance(DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier, ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake, DriveSubsystem drive) {
         m_shoot = shoot;
         m_index = index;
         m_intake = intake;
@@ -62,6 +68,13 @@ public class ShootAutoDistance extends Command {
 
     @Override
     public void initialize() {
+        target = DriverStation.getAlliance().isPresent()
+        ? DriverStation.getAlliance().map(
+          (Alliance alliance) -> alliance == Alliance.Blue
+            ? FieldConstants.Hub.topCenterPoint.toTranslation2d()
+            : FieldConstants.Hub.redTopCenterPoint.toTranslation2d()
+        ).get()
+        : FieldConstants.Hub.topCenterPoint.toTranslation2d();
     }
 
     @Override

@@ -52,7 +52,7 @@ public class DropKick extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_timer.hasElapsed(0.5));
+    return (m_timer.hasElapsed(0.25));
   }
 }
 
