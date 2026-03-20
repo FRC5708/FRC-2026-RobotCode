@@ -87,10 +87,10 @@ public class ShootAutoDistance extends Command {
                 //TODO: Fix units
                 // Note, setShootAngle sets the exit angle of the ball leaving the shooter, which is the complement of the hood angle
                 m_shoot.hood(solution.shootAngleRads());
-                m_shoot.stage(0.4);
+                m_shoot.stage(-1);
                 m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
-                m_index.run(0.6);
-                //m_intake.intake(.2);
+                m_index.indexFromStage(true);
+                m_intake.intake(.1);
                 //executeAutoalign(solution.robotAngleRads());
                 if (inThreshold()) {
                     state = CommandState.FIRING;
@@ -98,8 +98,8 @@ public class ShootAutoDistance extends Command {
                 break;
             case FIRING:
                 m_shoot.hood(solution.shootAngleRads());
-                m_shoot.stage(-1);
-                m_index.run(-0.6);
+                m_shoot.stage(.4);
+                m_index.indexToStage(true);
                 m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
                 m_intake.intake(.2);
                 //executeAutoalign(solution.robotAngleRads());
@@ -113,10 +113,10 @@ public class ShootAutoDistance extends Command {
     }
 
     private boolean inThreshold() {
-        return
-            Math.abs(m_shoot.getShootAngle().in(Radians) - solution.shootAngleRads()) < hoodAngleThreshRads &&
+        return true;
+            //Math.abs(m_shoot.getShootAngle().in(Radians) - solution.shootAngleRads()) < hoodAngleThreshRads &&
             //Math.abs(solution.robotAngleRads().getRadians() - m_drive.getPose().getRotation().getRadians()) < robotRotationThreshRads &&
-            Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
+            //Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
     }
 
     private void executeAutoalign(Rotation2d angle) {
@@ -137,7 +137,7 @@ public class ShootAutoDistance extends Command {
     public void end(boolean interrupted) {
         m_shoot.shoot(0,RPM);
         m_shoot.stage(0);
-        m_index.run(0);
+        m_index.indexToStage(false);
         m_intake.intake(0);
         m_shoot.hoodDown(0);
     }

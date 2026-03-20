@@ -121,9 +121,9 @@ public class RobotContainer {
 
     //Deploy the funnel (intake) controls
     //May want to change it back .4 and .45
-    m_driverController.a().onTrue(new Deploy(m_intake, .8));
+    m_driverController.a().onTrue(new Deploy(m_intake, m_index, .8));
 
-    m_driverController.x().onTrue(new Deploy(m_intake, -.7));
+    m_driverController.x().onTrue(new Deploy(m_intake, m_index, -.7));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));

@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IndexSubsystem;
 import frc.robot.Constants.Intake;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -13,13 +14,15 @@ import edu.wpi.first.wpilibj.Timer;
 public class Deploy extends Command {
   /** Creates a new DeployToggle. */
   private final IntakeSubsystem m_intake;
+  private final IndexSubsystem m_index;
   private final double m_power;
   private boolean velocityTripped;
   private final Timer m_totalTime = new Timer();
   private final Timer m_stallTimer = new Timer();
-  public Deploy(IntakeSubsystem  intake, double power) {
+  public Deploy(IntakeSubsystem  intake, IndexSubsystem  index, double power) {
     m_power = power;
     m_intake = intake;
+    m_index = index;
     addRequirements(m_intake);
   }
 
@@ -37,6 +40,7 @@ public class Deploy extends Command {
   @Override
   public void execute() {
     m_intake.deploy(m_power);
+    m_index.indexToStage(true);
 
     if (m_totalTime.hasElapsed(Intake.wayTooFuckingLong)){
       velocityTripped = true;
@@ -55,6 +59,7 @@ public class Deploy extends Command {
     m_totalTime.stop();
     m_stallTimer.stop();
     m_intake.deploy(0);
+    m_index.indexToStage(false);
   }
 
   // Returns true when the command should end.
