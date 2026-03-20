@@ -31,7 +31,7 @@ import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
 import frc.robot.commands.DriveHeadingLocked;
 import frc.robot.commands.Intake;
-import frc.robot.commands.NewShoot;
+import frc.robot.commands.ShootAutoDistance;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.autonomous.DeployIntake;
@@ -119,9 +119,9 @@ public class RobotContainer {
 
     //Deploy the funnel (intake) controls
     //May want to change it back .4 and .45
-    m_driverController.a().whileTrue(m_intake.runIntake(.8));
+    m_driverController.a().onTrue(new Deploy(m_intake, .8));
 
-    m_driverController.x().whileTrue(m_intake.runIntake(-0.7));
+    m_driverController.x().onTrue(new Deploy(m_intake, -.7));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
@@ -150,7 +150,7 @@ public class RobotContainer {
       m_driverController::getLeftY,
       m_drive)
     );
-    m_driverController.rightBumper().whileTrue(new NewShoot(hubPosition, m_driverController::getLeftX,
+    m_driverController.rightBumper().whileTrue(new ShootAutoDistance(hubPosition, m_driverController::getLeftX,
       m_driverController::getLeftY, m_shoot, m_index, m_intake, m_drive));
   }
   
