@@ -69,6 +69,6 @@ public class HubShoot extends Command {
 
   @Override
   public boolean isFinished() {
-    return (m_timer.hasElapsed(3.0));
+    return (m_timer.hasElapsed(3.25));
   }
 }

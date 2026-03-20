@@ -74,7 +74,7 @@ public final class Constants {
     public static final int canIDHood = 30;
     
     //0.020 is one tick
-    public static final double shootWindUp = .6;
+    public static final double shootWindUp = .3;
     public static final double flywheelRadiusMeters = Units.inchesToMeters(2); // Dummy value
 
 
