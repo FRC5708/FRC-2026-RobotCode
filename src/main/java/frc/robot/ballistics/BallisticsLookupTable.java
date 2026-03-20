@@ -12,17 +12,17 @@ public class BallisticsLookupTable {
 
     static {
         // Dummy
-        distanceToHoodAngleMap.put(Units.feetToMeters(1 + 4), BallisticsCommon.motorRotsToShootRads(0.45));
-        distanceToHoodAngleMap.put(Units.feetToMeters(2 + 4), BallisticsCommon.motorRotsToShootRads(0.55));
-        distanceToHoodAngleMap.put(Units.feetToMeters(3 + 4), BallisticsCommon.motorRotsToShootRads(0.65));
-        distanceToHoodAngleMap.put(Units.feetToMeters(4 + 4), BallisticsCommon.motorRotsToShootRads(0.78));
-        distanceToHoodAngleMap.put(Units.feetToMeters(5 + 4), BallisticsCommon.motorRotsToShootRads(1.1));
-        distanceToHoodAngleMap.put(Units.feetToMeters(6 + 4), BallisticsCommon.motorRotsToShootRads(1.22));
-        distanceToHoodAngleMap.put(Units.feetToMeters(7 + 4), BallisticsCommon.motorRotsToShootRads(1.4));
-        distanceToHoodAngleMap.put(Units.feetToMeters(8 + 4), BallisticsCommon.motorRotsToShootRads(1.5));
-        distanceToHoodAngleMap.put(Units.feetToMeters(9 + 4), BallisticsCommon.motorRotsToShootRads(1.6));
-        distanceToHoodAngleMap.put(Units.feetToMeters(10 + 4), BallisticsCommon.motorRotsToShootRads(1.7));
-        distanceToHoodAngleMap.put(Units.feetToMeters(11 + 4), BallisticsCommon.motorRotsToShootRads(1.8));
+        distanceToHoodAngleMap.put(Units.feetToMeters(1 + 4), (0.45));
+        distanceToHoodAngleMap.put(Units.feetToMeters(2 + 4), (0.55));
+        distanceToHoodAngleMap.put(Units.feetToMeters(3 + 4), (0.65));
+        distanceToHoodAngleMap.put(Units.feetToMeters(4 + 4), (0.78));
+        distanceToHoodAngleMap.put(Units.feetToMeters(5 + 4), (1.1));
+        distanceToHoodAngleMap.put(Units.feetToMeters(6 + 4), (1.22));
+        distanceToHoodAngleMap.put(Units.feetToMeters(7 + 4), (1.4));
+        distanceToHoodAngleMap.put(Units.feetToMeters(8 + 4), (1.5));
+        distanceToHoodAngleMap.put(Units.feetToMeters(9 + 4), (1.6));
+        distanceToHoodAngleMap.put(Units.feetToMeters(10 + 4), (1.7));
+        distanceToHoodAngleMap.put(Units.feetToMeters(11 + 4), (1.8));
 
         // Dummy
         distanceToExitSpeedMap.put(Units.feetToMeters(1 + 4),BallisticsCommon.flywheelRPStoMPS(50));

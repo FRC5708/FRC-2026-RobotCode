@@ -44,6 +44,7 @@ import frc.robot.commands.autonomous.StartIntake;
 import frc.robot.commands.autonomous.StopIntake;
 import frc.robot.commands.HoodUp;
 import frc.robot.commands.HoodDown;
+import frc.robot.commands.autonomous.DropKick;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -95,6 +96,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("FreakyShooterStop", new FreakyShooterStop(m_shoot, m_index, m_intake));
     NamedCommands.registerCommand("HubShoot", new HubShoot(m_shoot, m_index, m_intake));
     NamedCommands.registerCommand("StartIntake", new StartIntake(m_intake, m_index, 1.0));
+    NamedCommands.registerCommand("DropKick", new DropKick(m_intake, m_index, -1.0));
     NamedCommands.registerCommand("StopIntake", new StopIntake(m_intake, m_index, 0));
 
     autoChooser = AutoBuilder.buildAutoChooser("rightShoot");

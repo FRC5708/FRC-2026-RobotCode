@@ -67,17 +67,12 @@ public class ShootAutoDistance extends Command {
     @Override
     public void execute() {
         // TODO: compensate for lag in ballistics calculations
-        solution = BallisticsCalculator.calculateVectorSOTFSolution(
-            m_drive.getPose().getTranslation(),
-            target,
-            m_drive.getFieldRelativeSpeeds() // TODO: might need to be reversed becuas the shooter is on the back?? IDK
-        );
-        //solution = BallisticsCalculator.calculateStationarySolution(m_drive.getPose().getTranslation(), target);
+        solution = BallisticsCalculator.calculateStationarySolution(m_drive.getPose().getTranslation(), target);
         switch (state) {
             case TRANSITIONING:
                 //TODO: Fix units
                 // Note, setShootAngle sets the exit angle of the ball leaving the shooter, which is the complement of the hood angle
-                m_shoot.setShootAngle(solution.shootAngleRads(),Radians);
+                m_shoot.hood(solution.shootAngleRads());
                 m_shoot.stage(0.4);
                 m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
                 m_index.run(0.6);
@@ -88,12 +83,13 @@ public class ShootAutoDistance extends Command {
                 }
                 break;
             case FIRING:
-                m_shoot.setShootAngle(solution.shootAngleRads(),Radians);
+                m_shoot.hood(solution.shootAngleRads());
                 m_shoot.stage(-1);
                 m_index.run(-0.6);
                 m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
                 m_intake.intake(.2);
                 //executeAutoalign(solution.robotAngleRads());
+                System.out.println(solution.shootAngleRads());
                 if (!inThreshold()) {
                     state = CommandState.TRANSITIONING;
                 }
@@ -103,10 +99,10 @@ public class ShootAutoDistance extends Command {
     }
 
     private boolean inThreshold() {
-        return
-            Math.abs(m_shoot.getShootAngle().in(Radians) - solution.shootAngleRads()) < hoodAngleThreshRads &&
-            Math.abs(solution.robotAngleRads().getRadians() - m_drive.getPose().getRotation().getRadians()) < robotRotationThreshRads &&
-            Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
+        return true;
+            //Math.abs(m_shoot.getShootAngle().in(Radians) - solution.shootAngleRads()) < hoodAngleThreshRads &&
+            //Math.abs(solution.robotAngleRads().getRadians() - m_drive.getPose().getRotation().getRadians()) < robotRotationThreshRads &&
+            //Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
     }
 
     // private void executeAutoalign(Rotation2d angle) {
