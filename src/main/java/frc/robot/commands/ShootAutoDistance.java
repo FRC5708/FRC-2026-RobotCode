@@ -24,13 +24,8 @@ import frc.robot.subsystems.ShootSubsystem;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.commands.DriveHeadingLocked;
-<<<<<<< Updated upstream
 import frc.robot.FieldConstants;
 import frc.robot.Constants;
-=======
-import frc.robot.Constants;
-import frc.robot.FieldConstants;
->>>>>>> Stashed changes
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
