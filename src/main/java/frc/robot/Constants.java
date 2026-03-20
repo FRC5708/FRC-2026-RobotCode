@@ -55,6 +55,10 @@ public final class Constants {
   public static class Intake {
     public static final int canIDDeploy = 11;
     public static final int canIDIntake = 12;
+
+    public static final double deployWindUp = 2.5;
+    //Change this number if it isn't stopping fast enough for your taste
+    public static final double  velocityThreshold = 6;
   }
 
   public static class Index {

@@ -6,27 +6,27 @@ import static edu.wpi.first.units.Units.Radians;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
+//import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+//import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Auto.RotationK;
 import frc.robot.ballistics.BallisticsCalculator;
-import frc.robot.ballistics.BallisticsCommon;
-import frc.robot.ballistics.BallisticsLookupTable;
+//import frc.robot.ballistics.BallisticsCommon;
+//import frc.robot.ballistics.BallisticsLookupTable;
 import frc.robot.ballistics.ShotSolution;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
-import frc.robot.utils.GeometryUtils;
+//import frc.robot.utils.GeometryUtils;
 
 //TODO: remove timed delays, replace with empirical measurement of encoders
 //This command uses an internal FSM for control
 //Lowkirkuinely ts FSM logic would probably be better as a superstructure class than a command, or could be replaced by a bool instead of a state enum
-public class NewShoot extends Command {
+public class ShootAutoDistance extends Command {
     private static enum CommandState {
         TRANSITIONING, // The robot is transitioning into the firing state, hood angle is transitioning, robot is rotating, indexing into stage. When all measurements are within the threshold, transitions into firing
         FIRING // The robot is firing, all subsystems are still targeting their respective setpoints, stager is indexing into shooter
@@ -49,7 +49,7 @@ public class NewShoot extends Command {
     private final DoubleSupplier ySpeedSupplier;
     private final PIDController rotationController = new PIDController(RotationK.kP,RotationK.kI,RotationK.kD);
 
-    public NewShoot(Translation2d target, DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier, ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake, DriveSubsystem drive) {
+    public ShootAutoDistance(Translation2d target, DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier, ShootSubsystem shoot, IndexSubsystem index, IntakeSubsystem intake, DriveSubsystem drive) {
         this.target = target;
         m_shoot = shoot;
         m_index = index;
@@ -57,7 +57,7 @@ public class NewShoot extends Command {
         m_drive = drive;
         this.xSpeedSupplier = xSpeedSupplier;
         this.ySpeedSupplier = ySpeedSupplier;
-        addRequirements(m_shoot,m_drive,m_intake,m_index);
+        addRequirements(m_shoot,m_intake,m_index);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class NewShoot extends Command {
                 m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
                 m_index.run(0.6);
                 //m_intake.intake(.2);
-                executeAutoalign(solution.robotAngleRads());
+                //executeAutoalign(solution.robotAngleRads());
                 if (inThreshold()) {
                     state = CommandState.FIRING;
                 }
@@ -93,7 +93,7 @@ public class NewShoot extends Command {
                 m_index.run(-0.6);
                 m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
                 m_intake.intake(.2);
-                executeAutoalign(solution.robotAngleRads());
+                //executeAutoalign(solution.robotAngleRads());
                 if (!inThreshold()) {
                     state = CommandState.TRANSITIONING;
                 }
@@ -109,19 +109,19 @@ public class NewShoot extends Command {
             Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
     }
 
-    private void executeAutoalign(Rotation2d angle) {
-        var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-            xSpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
-            ySpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
-            rotationController.calculate(
-                m_drive.getPose().getRotation().getRadians(),
-                angle.getRadians()
-            ),
-            m_drive.getPose().getRotation()
-        );
+    // private void executeAutoalign(Rotation2d angle) {
+    //     var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+    //         xSpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
+    //         ySpeedSupplier.getAsDouble() * m_drive.getSwerveDrive().getMaximumChassisVelocity(),
+    //         rotationController.calculate(
+    //             m_drive.getPose().getRotation().getRadians(),
+    //             angle.getRadians()
+    //         ),
+    //         m_drive.getPose().getRotation()
+    //     );
         
-        m_drive.driveRobotRelative(speeds);
-    }
+    //     m_drive.driveRobotRelative(speeds);
+    // }
 
     @Override
     public void end(boolean interrupted) {

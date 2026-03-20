@@ -13,13 +13,10 @@ import frc.robot.subsystems.IndexSubsystem;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,9 +25,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.CreepMode;
 import frc.robot.commands.Deploy;
-import frc.robot.commands.DriveHeadingLocked;
 import frc.robot.commands.Intake;
-import frc.robot.commands.NewShoot;
+import frc.robot.commands.ShootAutoDistance;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.autonomous.DeployIntake;
@@ -87,7 +83,6 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
-  @SuppressWarnings("deprecation")
   private void configureBindings() {
     //For testing/debugging commands
     //m_driverController.y().whileTrue(new Stage(m_shoot, 1));
@@ -105,9 +100,9 @@ public class RobotContainer {
 
     //Deploy the funnel (intake) controls
     //May want to change it back .4 and .45
-    m_driverController.a().whileTrue(m_intake.runDeploy(0.8));
+    m_driverController.a().whileTrue(new Deploy(m_intake, 0.8));
 
-    m_driverController.x().whileTrue(m_intake.runDeploy(-0.7));
+    m_driverController.x().whileTrue(new Deploy(m_intake, -0.7));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
@@ -121,7 +116,7 @@ public class RobotContainer {
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.start().onTrue(m_drive.zeroGyro());
     //lowkirkuinely cooked, refactor
-    m_driverController.leftBumper().whileTrue(new NewShoot(
+    m_driverController.leftBumper().whileTrue(new ShootAutoDistance(
       DriverStation.getAlliance().isPresent()
         ? DriverStation.getAlliance().map(
           (Alliance alliance) -> alliance == Alliance.Blue

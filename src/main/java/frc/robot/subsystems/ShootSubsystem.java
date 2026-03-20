@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Degrees;
+//import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Rotations;
@@ -34,7 +34,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.AngleUnit;
 import edu.wpi.first.units.AngularVelocityUnit;
@@ -46,7 +45,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
-import frc.robot.FieldConstants.LeftBump;
 import frc.robot.ballistics.BallisticsCommon;
 
 @Logged
@@ -173,12 +171,10 @@ public class ShootSubsystem extends SubsystemBase {
     m_hood.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  @Deprecated
   public void shoot(double speed) {
       m_shootRightPrime.setControl(velocityRequest.withVelocity(speed));
   }
 
-  @Deprecated
   public void shootRPM(double rpm) {
     m_shootRightPrime.setControl(velocityRequest.withVelocity(RPM.of(rpm)));
   }
@@ -196,7 +192,6 @@ public class ShootSubsystem extends SubsystemBase {
     m_stageRight.set(-dutyCycle);
   }
 
-  @Deprecated
   public void hood(double setPoint){
     hood_impl(setPoint);
   }
@@ -210,13 +205,13 @@ public class ShootSubsystem extends SubsystemBase {
     m_hoodEncoder.setPosition(0);
   }
 
-  @Deprecated
-  public void changeHoodSetpoint(){
-    ++hoodSetPoint;
-    if (hoodSetPoint > 5) {
-      hoodSetPoint = 1;
-    }
-  }
+  // @Deprecated
+  // public void changeHoodSetpoint(){
+  //   ++hoodSetPoint;
+  //   if (hoodSetPoint > 5) {
+  //     hoodSetPoint = 1;
+  //   }
+  //}
 
   @Override
   public void periodic() {
@@ -242,17 +237,15 @@ public class ShootSubsystem extends SubsystemBase {
     }
   }
 
-  @Deprecated
+
   public double getHoodAdjust() {
     return hoodPosAdjust.getDouble(1);
   }
 
-  @Deprecated
   public double getShootAdjust() {
     return shootAdjust.getDouble(1);
   }
 
-  @Deprecated
   public int getHoodSetpoint (){
     return hoodSetPoint;
   }
