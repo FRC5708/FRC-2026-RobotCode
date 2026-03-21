@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 6.67455421686747,
-        "y": 6.94177108433735
+        "x": 7.416048502139798,
+        "y": 7.133808844507846
       },
       "prevControl": {
-        "x": 7.611700590979023,
-        "y": 6.260322082499138
+        "x": 8.486892780390063,
+        "y": 6.691193209497737
       },
       "nextControl": {
-        "x": 5.817789507444912,
-        "y": 7.564770300014525
+        "x": 6.445649072753208,
+        "y": 7.53490727532097
       },
       "isLocked": false,
       "linkedName": null
@@ -47,7 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1.2847682119205284,
-      "rotationDegrees": 0.40839307181652934
+      "rotationDegrees": 91.51142534727471
     }
   ],
   "constraintZones": [],
@@ -75,7 +75,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 107.35402463626131
+    "rotation": 107.35402463626133
   },
   "reversed": false,
   "folder": "Left",
