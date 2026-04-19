@@ -96,6 +96,7 @@ public class ShootSubsystem extends SubsystemBase {
     distance.addOption("6 feet", 6);
     distance.addOption("7 feet", 7);
     distance.addOption("Trench", trenchDistance);
+    distance.addOption("Soft", 16);
     distance.setDefaultOption("CZ", 15);
     SmartDashboard.putData("Target Distence", distance);
 
