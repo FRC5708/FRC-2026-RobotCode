@@ -86,7 +86,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     RobotConfig config = RobotConfig.fromGUISettings();
-
+ 
     cameras.add(new Camera(new CameraIOPhoton(VisionConstants.PhotonCamConfig.RED_CAMERA,() -> new Pose3d(getPose()),() -> getPose().getRotation())));
     cameras.add(new Camera(new CameraIOPhoton(VisionConstants.PhotonCamConfig.BLUE_CAMERA,() -> new Pose3d(getPose()),() -> getPose().getRotation())));
 
@@ -94,7 +94,7 @@ public class DriveSubsystem extends SubsystemBase {
     swerveDrive = new SwerveParser(swerveJsons).createSwerveDrive(Drive.maxSpeed);
 
     // Sets creep mode to base value
-    creepMode = 1.5;
+    creepMode = 4.5; // 1.5 is normal, 4.5 is slow
 
     // Configure AutoBuilder last
     AutoBuilder.configure(
