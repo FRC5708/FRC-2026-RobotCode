@@ -6,16 +6,16 @@ import static edu.wpi.first.units.Units.Radians;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
-//import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
-//import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Auto.RotationK;
 import frc.robot.ballistics.BallisticsCalculator;
-//import frc.robot.ballistics.BallisticsCommon;
-//import frc.robot.ballistics.BallisticsLookupTable;
+import frc.robot.ballistics.BallisticsCommon;
+import frc.robot.ballistics.BallisticsLookupTable;
 import frc.robot.ballistics.ShotSolution;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexSubsystem;
@@ -29,7 +29,7 @@ import frc.robot.Constants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-//import frc.robot.utils.GeometryUtils;
+import frc.robot.utils.GeometryUtils;
 
 //TODO: remove timed delays, replace with empirical measurement of encoders
 //This command uses an internal FSM for control
@@ -91,7 +91,7 @@ public class ShootAutoDistance extends Command {
                 m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
                 m_index.indexFromStage(true);
                 m_intake.intake(.1);
-                //executeAutoalign(solution.robotAngleRads());
+                executeAutoalign(solution.robotAngleRads());
                 if (inThreshold()) {
                     state = CommandState.FIRING;
                 }
@@ -102,7 +102,7 @@ public class ShootAutoDistance extends Command {
                 m_index.indexToStage(true);
                 m_shoot.shoot(solution.flywheelSpeedRPM(),RPM);
                 m_intake.intake(.2);
-                //executeAutoalign(solution.robotAngleRads());
+                executeAutoalign(solution.robotAngleRads());
                 System.out.println(solution.shootAngleRads());
                 if (!inThreshold()) {
                     state = CommandState.TRANSITIONING;
@@ -113,10 +113,11 @@ public class ShootAutoDistance extends Command {
     }
 
     private boolean inThreshold() {
-        return true;
-            //Math.abs(m_shoot.getShootAngle().in(Radians) - solution.shootAngleRads()) < hoodAngleThreshRads &&
-            //Math.abs(solution.robotAngleRads().getRadians() - m_drive.getPose().getRotation().getRadians()) < robotRotationThreshRads &&
-            //Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
+        // return true;
+        return
+            Math.abs(m_shoot.getShootAngle().in(Radians) - solution.shootAngleRads()) < hoodAngleThreshRads && // might want to remove .in(Radians) as it is already in Radians.
+            Math.abs(solution.robotAngleRads().getRadians() - m_drive.getPose().getRotation().getRadians()) < robotRotationThreshRads &&
+            Math.abs(solution.flywheelSpeedRPM() - m_shoot.getRightShooterVelocityUnitSafe().abs(RPM)) < flywheelSpeedThreshRPM;
     }
 
     private void executeAutoalign(Rotation2d angle) {
