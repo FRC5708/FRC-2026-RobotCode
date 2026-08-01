@@ -121,9 +121,9 @@ public class RobotContainer {
 
     //Deploy the funnel (intake) controls
     //May want to change it back .4 and .45
-    m_driverController.a().onTrue(new Deploy(m_intake, m_index, .8));
+    m_driverController.leftBumper().onTrue(new Deploy(m_intake, m_index, .8));
 
-    m_driverController.x().onTrue(new Deploy(m_intake, m_index, -.7));
+    m_driverController.rightBumper().onTrue(new Deploy(m_intake, m_index, -.7));
 
     //Shoot controls
     m_driverController.rightTrigger().whileTrue(new Shoot(m_shoot, m_index, m_intake));
@@ -136,15 +136,20 @@ public class RobotContainer {
     m_driverController.leftStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.rightStick().toggleOnTrue(new CreepMode(m_drive));
     m_driverController.start().onTrue(m_drive.zeroGyro());
+
+    // Deploy in and out on bumpers Rys is bad
+    //m_driverController.rightBumper().whileTrue(new Deploy(m_intake, m_index, .8));
+    //m_driverController.leftBumper().whileTrue(new Deploy(m_intake, m_index, -.7));
+
     //lowkirkuinely cooked, refactor
-    m_driverController.leftBumper().whileTrue(new ShootAutoDistance(
-      m_driverController::getLeftX,
-      m_driverController::getLeftY,
-      m_shoot,
-      m_index,
-      m_intake,
-      m_drive)
-    );
+    // m_driverController.leftBumper().whileTrue(new ShootAutoDistance(
+    //   m_driverController::getLeftX,
+    //   m_driverController::getLeftY,
+    //   m_shoot,
+    //   m_index,
+    //   m_intake,
+    //   m_drive)
+    // );
     // m_driverController.rightBumper().whileTrue(new ShootAutoDistance(hubPosition, m_driverController::getLeftX,
     //   m_driverController::getLeftY, m_shoot, m_index, m_intake, m_drive));
   }
