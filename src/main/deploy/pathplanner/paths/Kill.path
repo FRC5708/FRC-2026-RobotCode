@@ -1,0 +1,184 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.650898716119829,
+        "y": 7.340827389443652
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.972410841649183,
+        "y": 6.435121255350508
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 14.33823109843081,
+        "y": 6.059900142653353
+      },
+      "prevControl": {
+        "x": 14.312353780313838,
+        "y": 8.298288159771754
+      },
+      "nextControl": {
+        "x": 14.377482292885471,
+        "y": 2.6646718223248325
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 17.68693295292439,
+        "y": 2.825235378031384
+      },
+      "prevControl": {
+        "x": 17.789659008252812,
+        "y": 3.0872044166591066
+      },
+      "nextControl": {
+        "x": 17.58420689759597,
+        "y": 2.5632663394036617
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.502895863047186,
+        "y": 4.339058487875473
+      },
+      "prevControl": {
+        "x": 7.1443366619059585,
+        "y": -0.2929814550631855
+      },
+      "nextControl": {
+        "x": 9.564012694258915,
+        "y": 7.956961588578318
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.8432097004279597,
+        "y": 1.7901426533523535
+      },
+      "prevControl": {
+        "x": 0.29790669283141535,
+        "y": 0.12015219258793541
+      },
+      "nextControl": {
+        "x": 1.2572467902995714,
+        "y": 3.0581312410841655
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 15.360385164045761,
+        "y": 7.133808844508853
+      },
+      "prevControl": {
+        "x": 17.29005664728446,
+        "y": 8.336000343655085
+      },
+      "nextControl": {
+        "x": 11.310584878747484,
+        "y": 4.610770328100758
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 14.726390870185448,
+        "y": 0.7679885877318122
+      },
+      "prevControl": {
+        "x": 13.726390870185448,
+        "y": 0.7679885877318122
+      },
+      "nextControl": {
+        "x": 15.726390870185448,
+        "y": 0.7679885877318122
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 10.146105563480742,
+        "y": 4.339058487875473
+      },
+      "prevControl": {
+        "x": 16.339115549215393,
+        "y": 3.1939871611992965
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "DeployIntake",
+      "waypointRelativePos": 0.38224121557456237,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "DeployIntake"
+        }
+      }
+    },
+    {
+      "name": "FreakyShooterStart",
+      "waypointRelativePos": 2.4026590693257397,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "FreakyShooterStart"
+        }
+      }
+    },
+    {
+      "name": "HubShoot",
+      "waypointRelativePos": 2.811016144349465,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "HubShoot"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": true
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Cool",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}
