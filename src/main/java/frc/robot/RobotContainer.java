@@ -99,7 +99,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("DropKick", new DropKick(m_intake, m_index, -1.0));
     NamedCommands.registerCommand("StopIntake", new StopIntake(m_intake, m_index, 0));
 
-    autoChooser = AutoBuilder.buildAutoChooser("rightShoot");
+    autoChooser = AutoBuilder.buildAutoChooser("midAuto");
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
