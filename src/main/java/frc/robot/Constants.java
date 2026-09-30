@@ -58,8 +58,8 @@ public final class Constants {
 
     public static final double maxStallTime = 1;
     //Change this number if it isn't stopping fast enough for your taste(lower equals lower velocity to cut at)
-    public static final double velocityThreshold = 6;
-    public static final double wayTooFuckingLong = 5;
+    public static final double velocityThreshold = 3;
+    public static final double perfectTime = 3;
   }
 
   public static class Index {

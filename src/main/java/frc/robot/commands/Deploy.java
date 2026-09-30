@@ -16,13 +16,15 @@ public class Deploy extends Command {
   private final IntakeSubsystem m_intake;
   private final IndexSubsystem m_index;
   private final double m_power;
+  private final double m_suck;
   private boolean velocityTripped;
   private final Timer m_totalTime = new Timer();
   private final Timer m_stallTimer = new Timer();
-  public Deploy(IntakeSubsystem  intake, IndexSubsystem  index, double power) {
+  public Deploy(IntakeSubsystem  intake, IndexSubsystem  index, double power, double suckPower) {
     m_power = power;
     m_intake = intake;
     m_index = index;
+    m_suck = suckPower;
     addRequirements(m_intake);
   }
 
@@ -39,10 +41,10 @@ public class Deploy extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.deploy(m_power);
+    m_intake.deploy(m_power, m_suck);
     m_index.indexToStage(true);
 
-    if (m_totalTime.hasElapsed(Intake.wayTooFuckingLong)){
+    if (m_totalTime.hasElapsed(Intake.perfectTime)){
       velocityTripped = true;
     }
     else if (m_intake.getDeployVelocity() >= Intake.velocityThreshold){
@@ -58,7 +60,7 @@ public class Deploy extends Command {
   public void end(boolean interrupted) {
     m_totalTime.stop();
     m_stallTimer.stop();
-    m_intake.deploy(0);
+    m_intake.deploy(0, 0);
     m_index.indexToStage(false);
   }
 

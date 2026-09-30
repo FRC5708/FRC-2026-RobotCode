@@ -44,8 +44,9 @@ public class IntakeSubsystem extends SubsystemBase {
   //So yes I did change all of the duty cycles to power
   //I understand that you are more corret but it makes it harder to read for others
   //Duty cycle is very specfic word that could have others miss-think so please use power... like everywhere else
-  public void deploy(double power) {
+  public void deploy(double power, double suckPower) {
     m_deploy.set(power);
+    m_intake.set(suckPower);
   }
 
   public double getDeployVelocity() {
